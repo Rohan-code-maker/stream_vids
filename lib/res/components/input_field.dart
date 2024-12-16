@@ -5,10 +5,10 @@ import 'package:stream_vids/utils/utils.dart';
 class InputField extends StatelessWidget {
   const InputField(
       {super.key,
-      required this.obscure,
+      this.obscure = false,
       required this.hintText,
       required this.labelText,
-      required this.obscureChar,
+      this.obscureChar = "*",
       required this.controller,
       required this.currentFocusNode,
       required this.nextFocusNode,
