@@ -1,0 +1,36 @@
+import 'package:get/get.dart';
+
+class Languages extends Translations{
+  @override
+  // TODO: implement keys
+  Map<String, Map<String, String>> get keys => {
+    'en_US': {
+      'email_hint': "Enter Your Email",
+      'password_hint': "Enter Your Password",
+      'internet_exception': "Internet Unavailable\nPlease check your internet connection",
+      'retry': "Retry",
+      'general_exception': "We're unable to process your request.\nPlease try again",
+      "welcome_back": "Welcome\nback",
+      "login_screen":"Login Screen",
+      "home_screen":"Home Screen",
+      "login": "Login",
+      "invalid_email": "Invalid Email",
+      "password_length": "Password must be at least 8 characters"
+    },
+    'hi_IN': {
+      'email_hint': "अपना ईमेल दर्ज करें",
+      'password_hint': "अपना पासवर्ड दर्ज करें",
+      'internet_exception': "इंटरनेट अनुपलब्ध\nकृपया अपने इंटरनेट कनेक्शन की जांच करें",
+      'retry': "पुनः प्रयास करें",
+      'general_exception': "हम आपका अनुरोध संसाधित नहीं कर पा रहे हैं।\nकृपया पुनः प्रयास करें",
+    },
+    'ne_NP': {
+      'email_hint': "तपाईंको इमेल प्रविष्ट गर्नुहोस्",
+      'password_hint': "तपाईंको पासवर्ड प्रविष्ट गर्नुहोस्",
+      'internet_exception': "इन्टरनेट उपलब्ध छैन\nकृपया तपाईंको इन्टरनेट जाँच गर्नुहोस्",
+      'retry': "पुन: प्रयास गर्नुहोस्",
+      'general_exception': "हामी तपाईंको अनुरोध प्रक्रिया गर्न असमर्थ छौं।\nकृपया फेरि प्रयास गर्नुहोस्",
+    },
+  };
+  
+}
