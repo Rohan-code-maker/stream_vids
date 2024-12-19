@@ -56,7 +56,7 @@ class User {
   String? fullname;
   String? avatar;
   String? coverImage;
-  List<dynamic>? watchHistory; // Empty array implies dynamic type
+  List<String>? watchHistory;
   String? createdAt;
   String? updatedAt;
   int? v;
@@ -81,7 +81,9 @@ class User {
     fullname = json['fullname'];
     avatar = json['avatar'];
     coverImage = json['coverImage'];
-    watchHistory = json['watchHistory'] ?? [];
+    watchHistory = json['watchHistory'] != null
+        ? List<String>.from(json['watchHistory'])
+        : [];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     v = json['__v'];

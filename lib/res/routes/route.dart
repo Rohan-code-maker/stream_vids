@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:stream_vids/res/routes/route_name.dart';
+import 'package:stream_vids/view/home/home_screen.dart';
 import 'package:stream_vids/view/login/login_screen.dart';
 import 'package:stream_vids/view/register/register_screen.dart';
 import 'package:stream_vids/view/splash_screen.dart';
@@ -15,6 +16,10 @@ class AppRoutes {
     transitionDuration: const Duration(microseconds: 250)
     ),
     GetPage(name: RouteName.registerScreen, page: () => const RegisterScreen(),
+    transition: Transition.leftToRightWithFade,
+    transitionDuration: const Duration(microseconds: 250)
+    ),
+    GetPage(name: RouteName.homeScreen, page: () => const HomeScreen(),
     transition: Transition.leftToRightWithFade,
     transitionDuration: const Duration(microseconds: 250)
     ),

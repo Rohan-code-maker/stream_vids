@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stream_vids/repository/register_repository/register_repository.dart';
+import 'package:stream_vids/res/routes/route_name.dart';
+import 'package:stream_vids/utils/utils.dart';
 
 class RegisterController extends GetxController {
   final _api = RegisterRepository();
@@ -32,6 +34,17 @@ class RegisterController extends GetxController {
       "avatar": avatarController.value.text,
       "coverImage": coverImageController.value.text,
     };
-  }
+    _api.registerApi(data).then((value) {
+      loading.value = false;
 
+      Get.delete<RegisterController>();
+
+      Get.toNamed(RouteName.loginScreen)!.then((value) {});
+
+      Utils.snackBar("Success", "Registration Successful");
+    }).onError((error,stackTrace){
+      loading.value = false;
+      Utils.snackBar("Error", error.toString());
+    });
+  }
 }

@@ -4,6 +4,7 @@ import 'package:stream_vids/res/components/input_field.dart';
 import 'package:stream_vids/res/components/round_btn.dart';
 import 'package:stream_vids/utils/utils.dart';
 import 'package:stream_vids/view_models/controller/login_controller/login_controller.dart';
+import 'package:stream_vids/view_models/services/splash_services.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -13,6 +14,13 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  SplashServices splashServices = SplashServices();
+  @override
+  void initState() {
+    super.initState();
+    splashServices.isLogin();
+  }
+
   final loginController = Get.put(LoginController());
   final _formKey = GlobalKey<FormState>();
   @override
@@ -21,6 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
+        automaticallyImplyLeading: false,
         title: Text('login_screen'.tr),
       ),
       body: Form(
@@ -49,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
               ),
               SizedBox(
-                height: mq.height * .15,
+                height: mq.height * .1,
               ),
               InputField(
                 obscure: true,
@@ -69,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
               ),
               SizedBox(
-                height: mq.height * .15,
+                height: mq.height * .1,
               ),
               Obx(() => RoundBtn(
                   loading: loginController.loading.value,

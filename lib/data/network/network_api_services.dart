@@ -2,9 +2,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:stream_vids/data/app_exceptions.dart';
 import 'package:stream_vids/data/network/base_api_services.dart';
+import 'package:stream_vids/view_models/controller/user_preferences/user_preferences.dart';
 
 class NetworkApiService extends BaseApiService {
   final dio = Dio();
+  UserPreferences userPreferences = UserPreferences();
 
   dynamic returnResponse(Response response) {
     switch (response.statusCode) {
@@ -27,14 +29,15 @@ class NetworkApiService extends BaseApiService {
   }
 
   @override
-  Future deleteApi(String url) async{
+  Future deleteApi(String url) async {
     if (kDebugMode) {
       print(url);
     }
 
     dynamic responsejson;
     try {
-      final response = await dio.delete(url).timeout(const Duration(seconds: 10));
+      final response =
+          await dio.delete(url).timeout(const Duration(seconds: 10));
       responsejson = returnResponse(response);
     } on DioException catch (e) {
       // Handle Dio-specific errors
@@ -98,8 +101,19 @@ class NetworkApiService extends BaseApiService {
     dynamic responsejson;
 
     try {
-      final response =
-          await dio.post(url, data: data).timeout(const Duration(seconds: 10));
+      final user = await userPreferences.getUser();
+      final accessToken = user.accessToken;
+      final response = await dio
+          .post(url,
+              options: Options(
+                headers: {
+                  'Authorization':
+                      'Bearer $accessToken', // Automatically use the stored accessToken
+                  'Content-Type': 'application/json',
+                },
+              ),
+              data: data)
+          .timeout(const Duration(seconds: 10));
       responsejson = returnResponse(response);
     } on DioException catch (e) {
       // Handle Dio-specific errors
@@ -123,7 +137,7 @@ class NetworkApiService extends BaseApiService {
   }
 
   @override
-  Future putApi(data, String url) async{
+  Future putApi(data, String url) async {
     if (kDebugMode) {
       print(url);
       print(data);
@@ -131,7 +145,8 @@ class NetworkApiService extends BaseApiService {
 
     dynamic responsejson;
     try {
-      final response = await dio.put(url, data: data).timeout(const Duration(seconds: 10));
+      final response =
+          await dio.put(url, data: data).timeout(const Duration(seconds: 10));
       responsejson = returnResponse(response);
     } on DioException catch (e) {
       // Handle Dio-specific errors

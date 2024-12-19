@@ -1,0 +1,50 @@
+
+import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
+import 'package:stream_vids/models/logout/logout_model.dart';
+import 'package:stream_vids/repository/logout_repository/logout_repository.dart';
+import 'package:stream_vids/res/cookies/cookie_manager';
+import 'package:stream_vids/res/routes/route_name.dart';
+import 'package:stream_vids/utils/utils.dart';
+import 'package:stream_vids/view_models/controller/user_preferences/user_preferences.dart';
+
+class LogoutController extends GetxController {
+  final LogoutRepository _api = LogoutRepository();
+  UserPreferences userPreferences = UserPreferences();
+  CookieManager cookieManager = CookieManager();
+  RxBool loading = false.obs;
+
+  void logout() async {
+    loading.value = true; // Show loading indicator
+
+    try {
+      // Get user preferences
+      final user = await userPreferences.getUser();
+      final accessToken = user.accessToken;
+
+      // Call logout API
+      final response = await _api.logoutApi({"accessToken": accessToken}).onError((err,stackTrace){
+        Utils.snackBar("Error", "Error while Api call");
+      });
+      final logoutModel = LogoutModel.fromJson(response);
+
+      if (logoutModel.statusCode == 200) {
+        // Logout successful
+        await userPreferences.clearUser(); // Clear user data
+        cookieManager.removeCookie('accessToken');
+        Get.delete<LogoutController>(); // Remove the controller
+        Get.toNamed(RouteName.loginScreen); // Navigate to login screen
+        Utils.snackBar("Success", "Logout Successfully");
+      } else {
+        // Logout failed
+        Utils.snackBar("Error", "Logout Failed");
+      }
+    } catch (e) {
+      // Handle errors
+      Utils.snackBar("Error", "Logout failed:");
+    } finally {
+      // Hide loading indicator
+      loading.value = false;
+    }
+  }
+}
