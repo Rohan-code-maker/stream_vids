@@ -7,21 +7,19 @@ class RegisterModel {
   RegisterModel({this.statusCode, this.data, this.message, this.success});
 
   RegisterModel.fromJson(Map<String, dynamic> json) {
-    statusCode = json['statusCode'];
+    statusCode = json['statusCode'] ?? 0; // Default to 0 if missing
     data = json['data'] != null ? Data.fromJson(json['data']) : null;
-    message = json['message'];
-    success = json['success'];
+    message = json['message'] ?? 'No message provided'; // Default message
+    success = json['success'] ?? false; // Default to false
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> jsonMap = {};
-    jsonMap['statusCode'] = statusCode;
-    if (data != null) {
-      jsonMap['data'] = data!.toJson();
-    }
-    jsonMap['message'] = message;
-    jsonMap['success'] = success;
-    return jsonMap;
+    return {
+      'statusCode': statusCode,
+      'data': data?.toJson(),
+      'message': message,
+      'success': success,
+    };
   }
 }
 
@@ -32,7 +30,7 @@ class Data {
   String? fullname;
   String? avatar;
   String? coverImage;
-  List<WatchHistoryItem>? watchHistory;
+  List<WatchHistoryItem>? watchHistory = [];
   String? createdAt;
   String? updatedAt;
   int? iV;
@@ -52,38 +50,33 @@ class Data {
 
   Data.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
-    username = json['username'];
-    email = json['email'];
-    fullname = json['fullname'];
-    avatar = json['avatar'];
-    coverImage = json['coverImage'];
-    if (json['watchHistory'] != null) {
-      watchHistory = <WatchHistoryItem>[];
-      json['watchHistory'].forEach((v) {
-        watchHistory!.add(WatchHistoryItem.fromJson(v));
-      });
-    }
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
-    iV = json['__v'];
+    username = json['username'] ?? 'Unknown'; // Default username
+    email = json['email'] ?? '';
+    fullname = json['fullname'] ?? '';
+    avatar = json['avatar'] ?? '';
+    coverImage = json['coverImage'] ?? '';
+    watchHistory = (json['watchHistory'] as List<dynamic>?)
+        ?.map((v) => WatchHistoryItem.fromJson(v))
+        .toList() ??
+        []; // Handle null watchHistory
+    createdAt = json['createdAt'] ?? '';
+    updatedAt = json['updatedAt'] ?? '';
+    iV = json['__v'] ?? 0;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> jsonMap = {};
-    jsonMap['_id'] = sId;
-    jsonMap['username'] = username;
-    jsonMap['email'] = email;
-    jsonMap['fullname'] = fullname;
-    jsonMap['avatar'] = avatar;
-    jsonMap['coverImage'] = coverImage;
-    if (watchHistory != null) {
-      jsonMap['watchHistory'] =
-          watchHistory!.map((v) => v.toJson()).toList();
-    }
-    jsonMap['createdAt'] = createdAt;
-    jsonMap['updatedAt'] = updatedAt;
-    jsonMap['__v'] = iV;
-    return jsonMap;
+    return {
+      '_id': sId,
+      'username': username,
+      'email': email,
+      'fullname': fullname,
+      'avatar': avatar,
+      'coverImage': coverImage,
+      'watchHistory': watchHistory?.map((v) => v.toJson()).toList() ?? [],
+      'createdAt': createdAt,
+      'updatedAt': updatedAt,
+      '__v': iV,
+    };
   }
 }
 
@@ -94,8 +87,8 @@ class WatchHistoryItem {
   WatchHistoryItem({this.videoId, this.watchedAt});
 
   WatchHistoryItem.fromJson(Map<String, dynamic> json) {
-    videoId = json['videoId'];
-    watchedAt = json['watchedAt'];
+    videoId = json['videoId'] ?? 'Unknown'; // Default videoId
+    watchedAt = json['watchedAt'] ?? '';
   }
 
   Map<String, dynamic> toJson() {
