@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stream_vids/res/components/input_field.dart';
 import 'package:stream_vids/res/components/round_btn.dart';
+import 'package:stream_vids/res/routes/route_name.dart';
 import 'package:stream_vids/utils/utils.dart';
 import 'package:stream_vids/view_models/controller/login_controller/login_controller.dart';
 import 'package:stream_vids/view_models/services/splash_services.dart';
@@ -88,7 +89,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     if (_formKey.currentState!.validate()) {
                       loginController.login();
                     }
-                  }))
+                  })),
+              SizedBox(height: mq.height * .1),
+              RoundBtn(
+                  title: "register".tr,
+                  width: mq.width * .35,
+                  onPress: () {
+                    Get.toNamed(RouteName.registerScreen);
+                  }),
             ],
           ),
         ),

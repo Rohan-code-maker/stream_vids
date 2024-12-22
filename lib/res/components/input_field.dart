@@ -23,6 +23,7 @@ class InputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      
       maxLines: 1,
       autofocus: false,
       controller: controller,

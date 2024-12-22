@@ -2,18 +2,23 @@ import 'package:get/get.dart';
 
 class Languages extends Translations{
   @override
-  // TODO: implement keys
   Map<String, Map<String, String>> get keys => {
     'en_US': {
       'email_hint': "Enter Your Email",
       'password_hint': "Enter Your Password",
+      "fullName_hint":"Enter Your Full Name",
+      "username_hint":"Enter Your Username",
+      "avatar_hint" : "Select Avatar Photo",
+      "coverImage_hint" : "Select cover Image",
       'internet_exception': "Internet Unavailable\nPlease check your internet connection",
       'retry': "Retry",
       'general_exception': "We're unable to process your request.\nPlease try again",
       "welcome_back": "Welcome\nback",
       "login_screen":"Login Screen",
+      "register_screen":"Register Screen",
       "home_screen":"Home Screen",
       "login": "Login",
+      "register":"Register",
       "invalid_email": "Invalid Email",
       "password_length": "Password must be at least 8 characters"
     },

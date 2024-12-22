@@ -1,5 +1,4 @@
 
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:stream_vids/models/logout/logout_model.dart';
 import 'package:stream_vids/repository/logout_repository/logout_repository.dart';
