@@ -7,7 +7,8 @@ class LogoutRepository {
   final _apiService = NetworkApiService();
 
   Future<dynamic> logoutApi(var data) async {
-    dynamic response = await _apiService.postApi(jsonEncode(data), AppUrl.logoutUrl);
+    dynamic response =
+        await _apiService.postApi(jsonEncode(data), AppUrl.logoutUrl,requiresAuth: true);
     return response;
   }
 }

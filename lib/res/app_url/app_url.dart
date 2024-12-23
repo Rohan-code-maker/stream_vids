@@ -4,4 +4,5 @@ class AppUrl {
   static const String registerUrl = "$baseUrl/users/register";
   static const String logoutUrl = "$baseUrl/users/logout";
   static const String forgotPasswordUrl = "$baseUrl/users/change-password";
+  static const String getAllVideoUrl = "$baseUrl/videos?query=";
 }

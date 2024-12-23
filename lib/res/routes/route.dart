@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:stream_vids/res/routes/route_name.dart';
+import 'package:stream_vids/view/bottom_navbar/bottol_navbar_screen.dart';
 import 'package:stream_vids/view/forgot_password/forgot_password_screen.dart';
 import 'package:stream_vids/view/home/home_screen.dart';
 import 'package:stream_vids/view/language_screen.dart';
@@ -22,6 +23,10 @@ class AppRoutes {
     transitionDuration: const Duration(microseconds: 250)
     ),
     GetPage(name: RouteName.registerScreen, page: () => const RegisterScreen(),
+    transition: Transition.leftToRightWithFade,
+    transitionDuration: const Duration(microseconds: 250)
+    ),
+    GetPage(name: RouteName.navBarScreen, page: () => BottomNavigationBarScreen(),
     transition: Transition.leftToRightWithFade,
     transitionDuration: const Duration(microseconds: 250)
     ),

@@ -70,9 +70,6 @@ class RegisterController extends GetxController {
         Utils.snackBar("Error", "No image selected");
       }
     } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
       Utils.snackBar("Error", "Failed to pick an image: $e");
     }
   }
@@ -197,16 +194,14 @@ class RegisterController extends GetxController {
           Utils.snackBar(
               "Error", "Unexpected status code: ${response.statusCode}");
         }
-      } catch (e) {
+      } catch (err,stackTrace) {
         if (kDebugMode) {
-          print("Error while registering: $e");
+          print("Error while registering: $err");
+          print("stackTrace: $stackTrace");
         }
-        Utils.snackBar("Error", "Error while registering: $e");
+        Utils.snackBar("Error", "Error while registering: $err");
       }
     } catch (error) {
-      if (kDebugMode) {
-        print(error);
-      }
       Utils.snackBar("Error", "Registration failed: $error");
     } finally {
       loading.value = false;

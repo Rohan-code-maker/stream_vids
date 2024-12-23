@@ -44,7 +44,7 @@ class SplashServices {
       Get.toNamed(RouteName.loginScreen);
     } else {
       // Navigate to HomeScreen if the user is already logged in
-      Get.toNamed(RouteName.homeScreen);
+      Get.toNamed(RouteName.navBarScreen);
     }
   }
 }
