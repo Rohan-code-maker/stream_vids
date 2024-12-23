@@ -15,7 +15,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    splashServices.isLogin();
+    splashServices.handleAppNavigation();
   }
 
   final logoutController = Get.put(LogoutController());

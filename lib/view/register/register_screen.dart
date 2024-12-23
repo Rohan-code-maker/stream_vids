@@ -105,7 +105,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   readOnly: true,
                   decoration: InputDecoration(
                     labelText: 'avatar_hint'.tr,
-                    hintText: 'Tap to select an image',
+                    hintText: 'avatar_hint'.tr,
                     suffixIcon: IconButton(
                       icon: const Icon(Icons.photo),
                       onPressed: () =>
@@ -132,7 +132,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   readOnly: true,
                   decoration: InputDecoration(
                     labelText: 'coverImage_hint'.tr,
-                    hintText: 'Tap to select Cover image',
+                    hintText: 'coverImage_hint'.tr,
                     suffixIcon: IconButton(
                       icon: const Icon(Icons.photo),
                       onPressed: () =>

@@ -4,6 +4,10 @@ class Languages extends Translations{
   @override
   Map<String, Map<String, String>> get keys => {
     'en_US': {
+      "english":"English",
+      "hindi":"हिंदी",
+      "nepali":"नेपाली",
+      "choose_language":"Choose Language",
       'email_hint': "Enter Your Email",
       'password_hint': "Enter Your Password",
       "fullName_hint":"Enter Your Full Name",
@@ -13,12 +17,16 @@ class Languages extends Translations{
       'internet_exception': "Internet Unavailable\nPlease check your internet connection",
       'retry': "Retry",
       'general_exception': "We're unable to process your request.\nPlease try again",
-      "welcome_back": "Welcome\nback",
+      "setting_up":"We're setting things up for you. This will only take a moment.",
+      "welcome": "Hello and Welcome",
       "login_screen":"Login Screen",
       "register_screen":"Register Screen",
       "home_screen":"Home Screen",
       "login": "Login",
       "register":"Register",
+      "forgot_password":"Forgot Password",
+      "old_password_hint":"Enter Old Password",
+      "new_password_hint":"Enter New Password",
       "invalid_email": "Invalid Email",
       "password_length": "Password must be at least 8 characters"
     },

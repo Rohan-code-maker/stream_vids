@@ -19,7 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    splashServices.isLogin();
+    splashServices.handleAppNavigation();
   }
 
   final loginController = Get.put(LoginController());
