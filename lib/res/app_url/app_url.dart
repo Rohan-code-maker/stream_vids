@@ -8,4 +8,5 @@ class AppUrl {
   static const String getAllVideoUrl = "$baseUrl/videos?query=";
   static const String getVideoByIdUrl = "$baseUrl/videos/?videoId=";
   static const String getCurrentUserUrl = "$baseUrl/users/current-user";
+  static const String refreshTokenUrl = "$baseUrl/users/refresh-token";
 }

@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stream_vids/repository/refresh_token/refresh_token_repository.dart';
 import 'package:stream_vids/res/routes/route_name.dart';
 import 'package:stream_vids/utils/utils.dart';
 import 'package:stream_vids/view_models/controller/user_preferences/user_preferences.dart';
@@ -9,25 +11,20 @@ import 'package:stream_vids/view_models/services/language_service.dart';
 class SplashServices {
   final UserPreferences userPreferences = UserPreferences();
   final LanguageService languageService = LanguageService();
+  final _api = RefreshTokenRepository();
 
   Future<void> handleAppNavigation() async {
     try {
-      // Get shared preferences instance
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      
-      // Check if the app is opened for the first time
-      bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
 
-      // Simulate a splash screen delay
+      bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
       Duration splashDelay = isFirstTime ? const Duration(seconds: 2) : const Duration(milliseconds: 500);
       await Future.delayed(splashDelay);
 
       if (isFirstTime) {
-        // Navigate to LanguageScreen if the app is opened for the first time
         Get.toNamed(RouteName.languageScreen);
         prefs.setBool('isFirstTime', false);
       } else {
-        // Check login status
         await _checkLoginStatus();
       }
     } catch (error) {
@@ -36,15 +33,72 @@ class SplashServices {
   }
 
   Future<void> _checkLoginStatus() async {
-    // Get saved user data
     final userData = await userPreferences.getUser();
 
     if (userData.accessToken == null || userData.accessToken!.isEmpty) {
-      // Navigate to LoginScreen if the user is not logged in
       Get.toNamed(RouteName.loginScreen);
     } else {
-      // Navigate to HomeScreen if the user is already logged in
-      Get.toNamed(RouteName.navBarScreen);
+      final isAccessTokenValid = _isTokenValid(userData.accessToken!);
+      final isRefreshTokenValid = _isTokenValid(userData.refreshToken!);
+
+      if (isAccessTokenValid) {
+        // Token is valid, navigate to HomeScreen
+        Get.toNamed(RouteName.navBarScreen);
+      } else if (isRefreshTokenValid) {
+        // Access token expired, but refresh token is valid. Refresh it.
+        await _refreshAccessToken(userData.refreshToken!);
+      } else {
+        // Both tokens are invalid, navigate to LoginScreen
+        Get.toNamed(RouteName.loginScreen);
+      }
+    }
+  }
+
+  bool _isTokenValid(String token) {
+    // Decode the token and check its expiry
+    final payload = _decodeJWT(token);
+    if (payload == null || !payload.containsKey('exp')) return false;
+
+    final expiryDate = DateTime.fromMillisecondsSinceEpoch(payload['exp'] * 1000);
+    return expiryDate.isAfter(DateTime.now());
+  }
+
+  Map<String, dynamic>? _decodeJWT(String token) {
+    try {
+      final parts = token.split('.');
+      if (parts.length != 3) return null;
+
+      final payload = parts[1];
+      final decoded = String.fromCharCodes(base64Url.decode(base64Url.normalize(payload)));
+      return jsonDecode(decoded);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<void> _refreshAccessToken(String refreshToken) async {
+    try {
+      final response = await _api.refreshTokenApi({'refreshToken': refreshToken});
+
+      if (response['statusCode'] == 200) {
+        final newAccessToken = response['data']['accessToken'];
+        final newRefreshToken = response['data']['refreshToken'];
+
+        // Update tokens in user preferences
+        final updatedUser = await userPreferences.getUser();
+        updatedUser.accessToken = newAccessToken;
+        updatedUser.refreshToken = newRefreshToken;
+        await userPreferences.saveUser(updatedUser);
+
+        Get.toNamed(RouteName.navBarScreen);
+      } else {
+        // Refresh failed, navigate to LoginScreen
+        Get.toNamed(RouteName.loginScreen);
+        Utils.snackBar("Error", "Session expired. Please log in again.");
+      }
+    } catch (error) {
+      Utils.snackBar("Error", "Failed to refresh access token: $error");
+      Get.toNamed(RouteName.loginScreen);
     }
   }
 }

@@ -11,7 +11,8 @@ class UserPreferences {
   Future<Data> getUser() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
     String? accessToken = sp.getString('accessToken');
-    return Data(accessToken: accessToken ?? "");
+    String? refreshToken = sp.getString('refreshToken');
+    return Data(accessToken: accessToken ?? "", refreshToken: refreshToken ?? "");
   }
 
   Future<bool> clearUser() async{
