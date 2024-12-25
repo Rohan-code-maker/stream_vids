@@ -97,6 +97,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPress: () {
                     Get.toNamed(RouteName.registerScreen);
                   }),
+              RoundBtn(
+                  title: "forgot_password".tr,
+                  width: mq.width * .35,
+                  onPress: () {
+                    Get.toNamed(RouteName.forgotPasswordScreen);
+                  }),
             ],
           ),
         ),

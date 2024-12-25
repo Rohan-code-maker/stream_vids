@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stream_vids/view_models/controller/search/search_controller.dart';
+import 'package:stream_vids/view_models/services/splash_services.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -11,6 +12,12 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   final SearchVideoController _searchController = Get.put(SearchVideoController());
   final TextEditingController _textEditingController = TextEditingController();
+  SplashServices splashServices = SplashServices();
+  @override
+  void initState() {
+    super.initState();
+    splashServices.handleAppNavigation();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +25,7 @@ class _SearchScreenState extends State<SearchScreen> {
       appBar: AppBar(
         title: const Text('Search'),
         centerTitle: true,
+        automaticallyImplyLeading: false,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

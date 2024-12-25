@@ -166,16 +166,8 @@ class RegisterController extends GetxController {
       // Call the register API
       try {
         final response = await _api.registerApi(formData);
-
-        if (kDebugMode) {
-          print('Response data: ${response.data}');
-          print('Response status: ${response.statusCode}');
-        }
-        if (response.statusCode == 200) {
+        if (response['statusCode'] == 200) {
           final registerModel = RegisterModel.fromJson(response);
-          if (kDebugMode) {
-            print(registerModel.statusCode);
-          }
 
           if (registerModel.statusCode == 200) {
             // Registration successful
@@ -188,17 +180,10 @@ class RegisterController extends GetxController {
           }
         } else {
           // Handle unexpected status code
-          if (kDebugMode) {
-            print(response);
-          }
           Utils.snackBar(
-              "Error", "Unexpected status code: ${response.statusCode}");
+              "Error", "Unexpected status code: ${response['statusCode']}");
         }
-      } catch (err,stackTrace) {
-        if (kDebugMode) {
-          print("Error while registering: $err");
-          print("stackTrace: $stackTrace");
-        }
+      } catch (err) {
         Utils.snackBar("Error", "Error while registering: $err");
       }
     } catch (error) {

@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:stream_vids/res/routes/route_name.dart';
 import 'package:stream_vids/view_models/controller/get_all_video/get_all_video_controller.dart';
 import 'package:stream_vids/view_models/controller/logout_controller/logout_controller.dart';
 import 'package:stream_vids/view_models/services/splash_services.dart';
@@ -46,10 +48,20 @@ class _HomeScreenState extends State<HomeScreen> {
             itemBuilder: (context, index) {
               return ListTile(
                 title: Text(getAllVideoController.videoList[index].title),
-                subtitle: Text(getAllVideoController.videoList[index].description),
-                leading: Image.network(getAllVideoController.videoList[index].thumbnail),
+                subtitle:
+                    Text(getAllVideoController.videoList[index].description),
+                leading: Image.network(
+                    getAllVideoController.videoList[index].thumbnail),
                 onTap: () {
-                  Get.toNamed('/video', arguments: getAllVideoController.videoList[index]);
+                  Get.toNamed(
+                    RouteName.videoScreen.replaceFirst(
+                        ':videoId', getAllVideoController.videoList[index].id),
+                  );
+                  if (kDebugMode) {
+                    print(
+                        'Navigating to: ${RouteName.videoScreen.replaceFirst(':videoId', getAllVideoController.videoList[index].id)}');
+                    print('Get.parameters: ${Get.parameters}');
+                  }
                 },
               );
             },

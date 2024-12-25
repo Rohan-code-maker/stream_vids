@@ -4,7 +4,6 @@ import 'package:stream_vids/res/components/input_field.dart';
 import 'package:stream_vids/res/components/round_btn.dart';
 import 'package:stream_vids/utils/utils.dart';
 import 'package:stream_vids/view_models/controller/register_controller/register_controller.dart';
-import 'package:stream_vids/view_models/services/splash_services.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -15,12 +14,6 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final registerController = Get.put(RegisterController());
-  SplashServices splashServices = SplashServices();
-  @override
-  void initState() {
-    super.initState();
-    splashServices.handleAppNavigation();
-  }
 
   final _formKey = GlobalKey<FormState>();
   @override

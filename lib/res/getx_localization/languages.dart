@@ -22,12 +22,15 @@ class Languages extends Translations{
       "login_screen":"Login Screen",
       "register_screen":"Register Screen",
       "home_screen":"Home Screen",
+      "video_screen":"Video Screen",
+      "forgot_password":"Forgot Password?",
       "login": "Login",
       "register":"Register",
-      "forgot_password":"Forgot Password",
+      "change_password":"Change Password",
       "old_password_hint":"Enter Old Password",
       "new_password_hint":"Enter New Password",
       "invalid_email": "Invalid Email",
+      "no_video": "No video found",
       "password_length": "Password must be at least 8 characters"
     },
     'hi_IN': {

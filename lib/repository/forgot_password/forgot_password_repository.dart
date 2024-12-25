@@ -1,11 +1,11 @@
 import 'package:stream_vids/data/network/network_api_services.dart';
 import 'package:stream_vids/res/app_url/app_url.dart';
 
-class ChangePasswordRepository {
+class ForgotPasswordRepository {
   final _apiService = NetworkApiService();
 
-  Future<dynamic> changePasswordApi(var data) async {
-    dynamic reponse = await _apiService.postApi(data, AppUrl.changePasswordUrl,requiresAuth: true);
+  Future<dynamic> forgotPasswordApi(var data) async {
+    dynamic reponse = await _apiService.postApi(data, AppUrl.forgotPasswordUrl);
     return reponse;
   }
 }

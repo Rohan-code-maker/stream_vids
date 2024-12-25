@@ -3,17 +3,26 @@ import 'package:get/get.dart';
 import 'package:stream_vids/res/components/input_field.dart';
 import 'package:stream_vids/res/components/round_btn.dart';
 import 'package:stream_vids/utils/utils.dart';
-import 'package:stream_vids/view_models/controller/forgot_password/forgot_password_controller.dart';
+import 'package:stream_vids/view_models/controller/change_password_controller/change_password_controller.dart';
+import 'package:stream_vids/view_models/services/splash_services.dart';
 
-class ForgotPasswordScreen extends StatefulWidget {
-  const ForgotPasswordScreen({super.key});
+class ChangePasswordScreen extends StatefulWidget {
+  const ChangePasswordScreen({super.key});
 
   @override
-  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
+  State<ChangePasswordScreen> createState() => _ChangePasswordScreenState();
 }
 
-class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
-  final _controller = Get.put(ForgotPasswordController());
+class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
+  SplashServices splashServices = SplashServices();
+  ChangePasswordController changePasswordController =
+      Get.put(ChangePasswordController());
+  @override
+  void initState() {
+    super.initState();
+    splashServices.handleAppNavigation();
+  }
+
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -21,7 +30,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('forgot_password'.tr),
+        title: Text('change_password'.tr),
       ),
       body: Form(
           key: _formKey,
@@ -33,42 +42,21 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   InputField(
-                    hintText: 'email_hint'.tr,
-                    labelText: 'email_hint'.tr,
+                    obscure: true,
+                    hintText: 'old_password_hint'.tr,
+                    labelText: 'old_password_hint'.tr,
                     controller:
-                        _controller.emailController.value,
+                        changePasswordController.oldPasswordController.value,
                     currentFocusNode:
-                        _controller.emailFocusNode.value,
+                        changePasswordController.oldPasswordFocusNode.value,
                     nextFocusNode:
-                        _controller.usernameFocusNode.value,
+                        changePasswordController.newPasswordFocusNode.value,
                     validator: (value) {
                       if (value!.isEmpty) {
-                        Utils.toastMessageBottom("email_hint".tr);
+                        Utils.toastMessageBottom("old_password_hint".tr);
                       }
                       if (value.length < 8) {
-                        Utils.toastMessageBottom("email_hint".tr);
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(
-                    height: mq.height * .1,
-                  ),
-                  InputField(
-                    hintText: 'username_hint'.tr,
-                    labelText: 'username_hint'.tr,
-                    controller:
-                        _controller.usernameController.value,
-                    currentFocusNode:
-                        _controller.usernameFocusNode.value,
-                    nextFocusNode:
-                        _controller.newPasswordFocusNode.value,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        Utils.toastMessageBottom("username_hint".tr);
-                      }
-                      if (value.length < 8) {
-                        Utils.toastMessageBottom("username_hint".tr);
+                        Utils.toastMessageBottom("old_password_hint".tr);
                       }
                       return null;
                     },
@@ -81,11 +69,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     hintText: 'new_password_hint'.tr,
                     labelText: 'new_password_hint'.tr,
                     controller:
-                        _controller.newPasswordController.value,
+                        changePasswordController.newPasswordController.value,
                     currentFocusNode:
-                        _controller.newPasswordFocusNode.value,
+                        changePasswordController.newPasswordFocusNode.value,
                     nextFocusNode:
-                        _controller.usernameFocusNode.value,
+                        changePasswordController.oldPasswordFocusNode.value,
                     validator: (value) {
                       if (value!.isEmpty) {
                         Utils.toastMessageBottom("new_password_hint".tr);
@@ -100,12 +88,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     height: mq.height * .1,
                   ),
                   Obx(() => RoundBtn(
-                      loading: _controller.loading.value,
+                      loading: changePasswordController.loading.value,
                       title: "login".tr,
                       width: mq.width * .35,
                       onPress: () {
                         if (_formKey.currentState!.validate()) {
-                          _controller.forgotPassword();
+                          changePasswordController.changePassword();
                         }
                       })),
                 ],
