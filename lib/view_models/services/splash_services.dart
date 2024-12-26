@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:stream_vids/repository/refresh_token/refresh_token_repository.dart';
+import 'package:stream_vids/repository/user/refresh_token/refresh_token_repository.dart';
 import 'package:stream_vids/res/routes/route_name.dart';
 import 'package:stream_vids/utils/utils.dart';
-import 'package:stream_vids/view_models/controller/user_preferences/user_preferences.dart';
+import 'package:stream_vids/res/user_preferences/user_preferences.dart';
 import 'package:stream_vids/view_models/services/language_service.dart';
 
 class SplashServices {

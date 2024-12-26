@@ -26,12 +26,16 @@ class Languages extends Translations{
       "forgot_password":"Forgot Password?",
       "login": "Login",
       "register":"Register",
+      "update":"Update",
       "change_password":"Change Password",
       "old_password_hint":"Enter Old Password",
       "new_password_hint":"Enter New Password",
       "invalid_email": "Invalid Email",
       "no_video": "No video found",
-      "password_length": "Password must be at least 8 characters"
+      "password_length": "Password must be at least 8 characters",
+      "update_account": "Update Account Details",
+      "update_avatar": "Update Avatar Image",
+      "update_coverimage": "Update CoverImage Image",
     },
     'hi_IN': {
       'email_hint': "अपना ईमेल दर्ज करें",

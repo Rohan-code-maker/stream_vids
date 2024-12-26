@@ -9,4 +9,7 @@ class AppUrl {
   static const String getVideoByIdUrl = "$baseUrl/videos/?videoId=";
   static const String getCurrentUserUrl = "$baseUrl/users/current-user";
   static const String refreshTokenUrl = "$baseUrl/users/refresh-token";
+  static const String updateAccountUrl = "$baseUrl/users/update-account";
+  static const String updateAvatarUrl = "$baseUrl/users/avatar";
+  static const String updateCoverImageUrl = "$baseUrl/users/cover-image";
 }

@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:stream_vids/data/app_exceptions.dart';
 import 'package:stream_vids/data/network/base_api_services.dart';
-import 'package:stream_vids/view_models/controller/user_preferences/user_preferences.dart';
+import 'package:stream_vids/res/user_preferences/user_preferences.dart';
 
 class NetworkApiService extends BaseApiService {
   final dio = Dio();
@@ -16,19 +16,41 @@ class NetworkApiService extends BaseApiService {
     switch (response.statusCode) {
       case 200:
         return response.data;
-      case 400:
+      case 400: // Bad Request
         throw BadRequestException(response.data.toString());
-      case 401:
-        throw Exception('Unauthorized');
-      case 403:
-        throw Exception('Forbidden');
-      case 404:
-        throw InvalidUrlException("Invalid URL");
-      case 500:
-        throw ServerException("Internal Server Error");
+      case 401: // Unauthorized
+        throw UnauthorizedException('Unauthorized: ${response.data}');
+      case 403: // Forbidden
+        throw ForbiddenException('Forbidden: ${response.data}');
+      case 404: // Not Found
+        throw InvalidUrlException("Invalid URL: ${response.data}");
+      case 405: // Method Not Allowed
+        throw MethodNotAllowedException('Method not allowed: ${response.data}');
+      case 408: // Request Timeout
+        throw RequestTimeoutException('Request timeout: ${response.data}');
+      case 409: // Conflict
+        throw ConflictException('Conflict: ${response.data}');
+      case 422: // Unprocessable Entity
+        throw UnprocessableEntityException(
+            'Unprocessable entity: ${response.data}');
+
+      // Server errors
+      case 500: // Internal Server Error
+        throw ServerException("Internal Server Error: ${response.data}");
+      case 501: // Not Implemented
+        throw NotImplementedException('Not implemented: ${response.data}');
+      case 502: // Bad Gateway
+        throw BadGatewayException('Bad gateway: ${response.data}');
+      case 503: // Service Unavailable
+        throw ServiceUnavailableException(
+            'Service unavailable: ${response.data}');
+      case 504: // Gateway Timeout
+        throw GatewayTimeoutException('Gateway timeout: ${response.data}');
+
+      // Other/unhandled cases
       default:
         throw FetchDataException(
-            'Error occurred while communicating with the server with status code: ${response.statusCode}');
+            'Unhandled error with status code: ${response.statusCode} and message: ${response.data}');
     }
   }
 
@@ -163,11 +185,29 @@ class NetworkApiService extends BaseApiService {
   }
 
   @override
-  Future putApi(data, String url) async {
+  Future patchApi(data, String url, {bool requiresAuth = false}) async {
     dynamic responsejson;
     try {
-      final response =
-          await dio.put(url, data: data).timeout(const Duration(seconds: 10));
+      // Prepare headers
+      Map<String, dynamic> headers = {
+        'accept': '*/*',
+        'response-type': ResponseType.json,
+        'Content-Type':
+            data is FormData ? 'multipart/form-data' : 'application/json',
+      };
+
+      // Include Authorization header only if required
+      if (requiresAuth) {
+        final user = await userPreferences.getUser();
+        final accessToken = user.accessToken;
+        headers['Authorization'] = 'Bearer $accessToken';
+      }
+
+      // Configure options
+      Options options = Options(headers: headers);
+      final response = await dio
+          .patch(url, data: data, options: options)
+          .timeout(const Duration(seconds: 10));
       responsejson = returnResponse(response);
     } on DioException catch (e) {
       // Handle Dio-specific errors
