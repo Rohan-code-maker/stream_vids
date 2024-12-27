@@ -25,44 +25,44 @@ class _UpdateAvatarScreenState extends State<UpdateAvatarScreen> {
         body: Form(
           key: _formKey,
           child: Center(
-            child: Column(
-              children: [
-                TextFormField(
-                  readOnly: true,
-                  decoration: InputDecoration(
-                    labelText: 'avatar_hint'.tr,
-                    hintText: 'avatar_hint'.tr,
-                    suffixIcon: IconButton(
-                      icon: const Icon(Icons.photo),
-                      onPressed: () => _controller.pickImage(),
+            child: Obx(
+              () => Column(
+                children: [
+                  TextFormField(
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      labelText: 'avatar_hint'.tr,
+                      hintText: 'avatar_hint'.tr,
+                      suffixIcon: IconButton(
+                        icon: const Icon(Icons.photo),
+                        onPressed: () => _controller.pickImage(),
+                      ),
                     ),
-                  ),
-                  controller: TextEditingController(
-                    text: _controller.avatarImage.value?.path
-                            .split('/')
-                            .last,
-                  ),
-                  validator: (value) {
-                    if (_controller.avatarImage.value == null) {
-                      // Validate if avatar image is selected
-                      Utils.toastMessageBottom("select_photo".tr);
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(
-                  height: mq.height * .05,
-                ),
-                Obx(() => RoundBtn(
-                    loading: _controller.loading.value,
-                    title: "update".tr,
-                    width: mq.width * .35,
-                    onPress: () {
-                      if (_formKey.currentState!.validate()) {
-                        _controller.updateAvatar();
+                    controller: TextEditingController(
+                      text: _controller.avatarImageName.value,
+                    ),
+                    validator: (value) {
+                      if (_controller.avatarImage.value == null) {
+                        // Validate if avatar image is selected
+                        Utils.toastMessageBottom("select_photo".tr);
                       }
-                    }))
-              ],
+                      return null;
+                    },
+                  ),
+                  SizedBox(
+                    height: mq.height * .05,
+                  ),
+                  RoundBtn(
+                      loading: _controller.loading.value,
+                      title: "update".tr,
+                      width: mq.width * .35,
+                      onPress: () {
+                        if (_formKey.currentState!.validate()) {
+                          _controller.updateAvatar();
+                        }
+                      })
+                ],
+              ),
             ),
           ),
         ));

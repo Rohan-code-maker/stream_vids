@@ -113,9 +113,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                   controller: TextEditingController(
-                    text: registerController.avatarImage.value?.path
-                            .split('/')
-                            .last,
+                    text: registerController.avatarImageName.value,
                   ),
                   validator: (value) {
                     if (registerController.avatarImage.value == null) {
@@ -140,16 +138,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                   controller: TextEditingController(
-                    text: registerController.coverImage.value?.path
-                            .split('/')
-                            .last ??
-                        '',
+                    text: registerController.coverImageName.isNotEmpty
+                        ? registerController.coverImageName.value
+                        : '',
                   ),
                 ),
                 SizedBox(
                   height: mq.height * .05,
                 ),
-                Obx(() => RoundBtn(
+                RoundBtn(
                     loading: registerController.loading.value,
                     title: "register".tr,
                     width: mq.width * .35,
@@ -157,7 +154,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       if (_formKey.currentState!.validate()) {
                         registerController.register();
                       }
-                    }))
+                    })
               ],
             ),
           ),

@@ -4,7 +4,7 @@ import 'package:stream_vids/res/app_url/app_url.dart';
 class UpdateCoverImageRepository {
   final NetworkApiService _apiService = NetworkApiService();
 
-  Future<dynamic> updateCoverImageApi(String data){
+  Future<dynamic> updateCoverImageApi(var data){
     final response = _apiService.patchApi(data, AppUrl.updateCoverImageUrl,requiresAuth: true);
     return response;
   }
