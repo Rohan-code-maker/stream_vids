@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:stream_vids/res/routes/route_name.dart';
+import 'package:stream_vids/view_models/controller/user/watch_history/add_watch_history_controller.dart';
 import 'package:stream_vids/view_models/controller/video_folder/search/search_controller.dart';
 import 'package:stream_vids/view_models/services/splash_services.dart';
 
@@ -9,8 +11,8 @@ class SearchScreen extends StatefulWidget {
   @override
   State<SearchScreen> createState() => _SearchScreenState();
 }
+
 class _SearchScreenState extends State<SearchScreen> {
-  final SearchVideoController _searchController = Get.put(SearchVideoController());
   final TextEditingController _textEditingController = TextEditingController();
   SplashServices splashServices = SplashServices();
   @override
@@ -19,6 +21,9 @@ class _SearchScreenState extends State<SearchScreen> {
     splashServices.handleAppNavigation();
   }
 
+  final SearchVideoController _searchController =
+      Get.put(SearchVideoController());
+  final addWatchHistoryController = Get.put(AddWatchHistoryController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,7 +70,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     final video = _searchController.videoList[index];
                     return ListTile(
                       leading: Image.network(
-                        video.thumbnail ?? 'https://via.placeholder.com/150',
+                        video.thumbnail,
                         errorBuilder: (context, error, stackTrace) {
                           return const Icon(Icons.broken_image);
                         },
@@ -73,7 +78,12 @@ class _SearchScreenState extends State<SearchScreen> {
                       title: Text(video.title),
                       subtitle: Text(video.description),
                       onTap: () {
-                        // Handle video tap
+                        addWatchHistoryController.addToWatchHistory(
+                            _searchController.videoList[index].id);
+                        Get.toNamed(
+                          RouteName.videoScreen.replaceFirst(':videoId',
+                              _searchController.videoList[index].id),
+                        );
                       },
                     );
                   },
@@ -92,4 +102,3 @@ class _SearchScreenState extends State<SearchScreen> {
     super.dispose();
   }
 }
-

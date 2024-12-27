@@ -32,7 +32,7 @@ class Data {
   String? fullname;
   String? avatar;
   String? coverImage;
-  List<String>? watchHistory; // Corrected type
+  List<WatchHistory>? watchHistory;
   String? createdAt;
   String? updatedAt;
   int? iV;
@@ -57,9 +57,12 @@ class Data {
     fullname = json['fullname'];
     avatar = json['avatar'];
     coverImage = json['coverImage'];
-    watchHistory = json['watchHistory'] != null
-        ? List<String>.from(json['watchHistory'])
-        : null; // Corrected handling
+    if (json['watchHistory'] != null) {
+      watchHistory = <WatchHistory>[];
+      json['watchHistory'].forEach((v) {
+        watchHistory!.add(WatchHistory.fromJson(v));
+      });
+    }
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     iV = json['__v'];
@@ -74,7 +77,7 @@ class Data {
     data['avatar'] = avatar;
     data['coverImage'] = coverImage;
     if (watchHistory != null) {
-      data['watchHistory'] = watchHistory; // Fixed mapping
+      data['watchHistory'] = watchHistory!.map((v) => v.toJson()).toList();
     }
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
@@ -82,3 +85,23 @@ class Data {
     return data;
   }
 }
+
+class WatchHistory {
+  String? videoId;
+  String? watchedAt;
+
+  WatchHistory({this.videoId, this.watchedAt});
+
+  WatchHistory.fromJson(Map<String, dynamic> json) {
+    videoId = json['videoId'];
+    watchedAt = json['watchedAt'];
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'videoId': videoId,
+      'watchedAt': watchedAt,
+    };
+  }
+}
+

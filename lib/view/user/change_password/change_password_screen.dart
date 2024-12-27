@@ -4,7 +4,6 @@ import 'package:stream_vids/res/components/input_field.dart';
 import 'package:stream_vids/res/components/round_btn.dart';
 import 'package:stream_vids/utils/utils.dart';
 import 'package:stream_vids/view_models/controller/user/change_password_controller/change_password_controller.dart';
-import 'package:stream_vids/view_models/services/splash_services.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({super.key});
@@ -14,14 +13,7 @@ class ChangePasswordScreen extends StatefulWidget {
 }
 
 class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
-  SplashServices splashServices = SplashServices();
-  ChangePasswordController changePasswordController =
-      Get.put(ChangePasswordController());
-  @override
-  void initState() {
-    super.initState();
-    splashServices.handleAppNavigation();
-  }
+  ChangePasswordController changePasswordController = Get.put(ChangePasswordController());
 
   final _formKey = GlobalKey<FormState>();
   @override
@@ -89,7 +81,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   ),
                   Obx(() => RoundBtn(
                       loading: changePasswordController.loading.value,
-                      title: "login".tr,
+                      title: "change_password".tr,
                       width: mq.width * .35,
                       onPress: () {
                         if (_formKey.currentState!.validate()) {

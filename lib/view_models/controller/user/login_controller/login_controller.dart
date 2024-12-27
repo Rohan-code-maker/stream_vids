@@ -42,6 +42,7 @@ class LoginController extends GetxController {
         // Save user data to preferences
         final isSaved = await userPreferences.saveUser(dataModel);
         cookieManager.setCookie('accessToken', dataModel.accessToken!);
+        cookieManager.setCookie('refreshToken', dataModel.refreshToken!);
         if (isSaved) {
           Get.delete<LoginController>();
           Get.toNamed(RouteName.homeScreen);

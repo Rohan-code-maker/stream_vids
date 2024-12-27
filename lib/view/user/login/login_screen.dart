@@ -5,7 +5,6 @@ import 'package:stream_vids/res/components/round_btn.dart';
 import 'package:stream_vids/res/routes/route_name.dart';
 import 'package:stream_vids/utils/utils.dart';
 import 'package:stream_vids/view_models/controller/user/login_controller/login_controller.dart';
-import 'package:stream_vids/view_models/services/splash_services.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -15,12 +14,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  SplashServices splashServices = SplashServices();
-  @override
-  void initState() {
-    super.initState();
-    splashServices.handleAppNavigation();
-  }
+
 
   final loginController = Get.put(LoginController());
   final _formKey = GlobalKey<FormState>();

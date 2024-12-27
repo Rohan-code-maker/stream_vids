@@ -15,7 +15,7 @@ class BottomNavigationBarScreen extends StatelessWidget {
   final List<Widget> _pages = [
     const HomeScreen(),
     const SearchScreen(),
-    ProfileScreen(),
+    const ProfileScreen(),
   ];
 
   @override

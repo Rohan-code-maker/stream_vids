@@ -32,9 +32,9 @@ class Data {
   String? fullname;
   String? avatar;
   String? coverImage;
-  List<dynamic>? watchHistory;
-  DateTime? createdAt; // Change to DateTime
-  DateTime? updatedAt; // Change to DateTime
+  List<WatchHistory>? watchHistory;
+  String? createdAt;
+  String? updatedAt; 
   int? v;
 
   Data({
@@ -58,10 +58,13 @@ class Data {
     avatar = json['avatar'];
     coverImage = json['coverImage'];
     if (json['watchHistory'] != null) {
-      watchHistory = List<dynamic>.from(json['watchHistory']);
+      watchHistory = <WatchHistory>[];
+      json['watchHistory'].forEach((v) {
+        watchHistory!.add(WatchHistory.fromJson(v));
+      });
     }
-    createdAt = DateTime.parse(json['createdAt']);
-    updatedAt = DateTime.parse(json['updatedAt']);
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
     v = json['__v'];
   }
 
@@ -74,11 +77,31 @@ class Data {
     data['avatar'] = avatar;
     data['coverImage'] = coverImage;
     if (watchHistory != null) {
-      data['watchHistory'] = watchHistory;
+      data['watchHistory'] = watchHistory!.map((v) => v.toJson()).toList();
     }
-    data['createdAt'] = createdAt?.toIso8601String();
-    data['updatedAt'] = updatedAt?.toIso8601String();
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
     data['__v'] = v;
     return data;
   }
 }
+
+class WatchHistory {
+  String? videoId;
+  String? watchedAt;
+
+  WatchHistory({this.videoId, this.watchedAt});
+
+  WatchHistory.fromJson(Map<String, dynamic> json) {
+    videoId = json['videoId'];
+    watchedAt = json['watchedAt'];
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'videoId': videoId,
+      'watchedAt': watchedAt,
+    };
+  }
+}
+

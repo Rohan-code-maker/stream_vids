@@ -7,6 +7,7 @@ class AppUrl {
   static const String forgotPasswordUrl = "$baseUrl/users/forgot-password";
   static const String getAllVideoUrl = "$baseUrl/videos?query=";
   static const String getVideoByIdUrl = "$baseUrl/videos/?videoId=";
+  static const String addWatchHistoryUrl = "$baseUrl/users/history/?videoId=";
   static const String getCurrentUserUrl = "$baseUrl/users/current-user";
   static const String refreshTokenUrl = "$baseUrl/users/refresh-token";
   static const String updateAccountUrl = "$baseUrl/users/update-account";

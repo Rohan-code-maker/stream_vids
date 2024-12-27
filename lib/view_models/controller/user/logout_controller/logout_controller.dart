@@ -1,4 +1,3 @@
-
 import 'package:get/get.dart';
 import 'package:stream_vids/models/user/logout/logout_model.dart';
 import 'package:stream_vids/repository/user/logout_repository/logout_repository.dart';
@@ -29,10 +28,11 @@ class LogoutController extends GetxController {
 
       if (logoutModel.statusCode == 200) {
         // Logout successful
-        await userPreferences.clearUser(); // Clear user data
+        await userPreferences.clearUser(); 
         cookieManager.removeCookie('accessToken');
-        Get.delete<LogoutController>(); // Remove the controller
-        Get.toNamed(RouteName.loginScreen); // Navigate to login screen
+        cookieManager.removeCookie('refreshToken');
+        Get.delete<LogoutController>(); 
+        Get.toNamed(RouteName.loginScreen); 
         Utils.snackBar("Success", "Logout Successfully");
       } else {
         // Logout failed

@@ -32,7 +32,7 @@ class Data {
   String? fullname;
   String? avatar;
   String? coverImage;
-  List<WatchHistory>? watchHistory; // Updated type to List<WatchHistory>
+  List<WatchHistory>? watchHistory;
   String? createdAt;
   String? updatedAt;
   int? iV;
@@ -61,7 +61,7 @@ class Data {
     if (json['watchHistory'] != null) {
       watchHistory = <WatchHistory>[];
       json['watchHistory'].forEach((v) {
-        watchHistory!.add(WatchHistory.fromJson(v)); // Deserialize to WatchHistory
+        watchHistory!.add(WatchHistory.fromJson(v));
       });
     }
     createdAt = json['createdAt'];
@@ -79,7 +79,7 @@ class Data {
     dataMap['avatar'] = avatar;
     dataMap['coverImage'] = coverImage;
     if (watchHistory != null) {
-      dataMap['watchHistory'] = watchHistory!.map((v) => v.toJson()).toList(); // Serialize WatchHistory
+      dataMap['watchHistory'] = watchHistory!.map((v) => v.toJson()).toList();
     }
     dataMap['createdAt'] = createdAt;
     dataMap['updatedAt'] = updatedAt;
@@ -90,7 +90,7 @@ class Data {
 }
 
 class WatchHistory {
-  String? videoId; // Example field; adjust based on actual structure
+  String? videoId;
   String? watchedAt;
 
   WatchHistory({this.videoId, this.watchedAt});

@@ -30,7 +30,7 @@ class Data {
   String? fullname;
   String? avatar;
   String? coverImage;
-  List<WatchHistoryItem>? watchHistory = [];
+  List<String>? watchHistory = [];
   String? createdAt;
   String? updatedAt;
   int? iV;
@@ -50,15 +50,14 @@ class Data {
 
   Data.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
-    username = json['username'] ?? 'Unknown'; // Default username
+    username = json['username'] ?? 'Unknown';
     email = json['email'] ?? '';
     fullname = json['fullname'] ?? '';
     avatar = json['avatar'] ?? '';
     coverImage = json['coverImage'] ?? '';
-    watchHistory = (json['watchHistory'] as List<dynamic>?)
-        ?.map((v) => WatchHistoryItem.fromJson(v))
-        .toList() ??
-        []; // Handle null watchHistory
+    watchHistory = json['watchHistory'] != null
+        ? List<String>.from(json['watchHistory'])
+        : [];
     createdAt = json['createdAt'] ?? '';
     updatedAt = json['updatedAt'] ?? '';
     iV = json['__v'] ?? 0;
@@ -72,29 +71,10 @@ class Data {
       'fullname': fullname,
       'avatar': avatar,
       'coverImage': coverImage,
-      'watchHistory': watchHistory?.map((v) => v.toJson()).toList() ?? [],
+      'watchHistory': watchHistory,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
       '__v': iV,
-    };
-  }
-}
-
-class WatchHistoryItem {
-  String? videoId;
-  String? watchedAt;
-
-  WatchHistoryItem({this.videoId, this.watchedAt});
-
-  WatchHistoryItem.fromJson(Map<String, dynamic> json) {
-    videoId = json['videoId'] ?? 'Unknown'; // Default videoId
-    watchedAt = json['watchedAt'] ?? '';
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'videoId': videoId,
-      'watchedAt': watchedAt,
     };
   }
 }
