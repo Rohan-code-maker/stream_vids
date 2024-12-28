@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stream_vids/res/routes/route_name.dart';
@@ -45,8 +44,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 leading: Image.network(
                     getAllVideoController.videoList[index].thumbnail),
                 onTap: () {
-                  addWatchHistoryController.addToWatchHistory(
-                      getAllVideoController.videoList[index].id);
+                  if (addWatchHistoryController.isLoading.value) {
+                    addWatchHistoryController.addToWatchHistory(
+                        getAllVideoController.videoList[index].id);
+                  }
                   Get.toNamed(
                     RouteName.videoScreen.replaceFirst(
                         ':videoId', getAllVideoController.videoList[index].id),

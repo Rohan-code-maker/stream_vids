@@ -5,9 +5,11 @@ class AppUrl {
   static const String logoutUrl = "$baseUrl/users/logout";
   static const String changePasswordUrl = "$baseUrl/users/change-password";
   static const String forgotPasswordUrl = "$baseUrl/users/forgot-password";
+  static const String addVideoUrl = "$baseUrl/videos";
   static const String getAllVideoUrl = "$baseUrl/videos?query=";
   static const String getVideoByIdUrl = "$baseUrl/videos/?videoId=";
   static const String addWatchHistoryUrl = "$baseUrl/users/history/?videoId=";
+  static const String getWatchHistoryUrl = "$baseUrl/users/history";
   static const String getCurrentUserUrl = "$baseUrl/users/current-user";
   static const String refreshTokenUrl = "$baseUrl/users/refresh-token";
   static const String updateAccountUrl = "$baseUrl/users/update-account";

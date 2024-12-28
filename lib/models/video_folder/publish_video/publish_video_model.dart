@@ -59,8 +59,8 @@ class SavedVideo {
   final bool isPublished;
   final String owner;
   final String id;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  final String createdAt;
+  final String updatedAt;
   final int version;
 
   SavedVideo({
@@ -89,8 +89,8 @@ class SavedVideo {
       isPublished: json['isPublished'],
       owner: json['owner'],
       id: json['_id'],
-      createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
+      createdAt: json['createdAt'],
+      updatedAt: json['updatedAt'],
       version: json['__v'],
     );
   }
@@ -106,8 +106,8 @@ class SavedVideo {
       'isPublished': isPublished,
       'owner': owner,
       '_id': id,
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
+      'createdAt': createdAt,
+      'updatedAt': updatedAt,
       '__v': version,
     };
   }

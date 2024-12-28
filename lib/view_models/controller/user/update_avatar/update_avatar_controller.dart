@@ -51,12 +51,12 @@ class UpdateAvatarController extends GetxController {
 
     try {
       dio.FormData formData = dio.FormData();
+      final mimeType =
+          lookupMimeType(avatarImage.value!.path) ?? 'application/octet-stream';
 
       // Handle image upload differently based on platform
       if (kIsWeb) {
         // For web, use MultipartFile.fromBytes (use XFile for web)
-        final mimeType = lookupMimeType(avatarImage.value!.path) ??
-            'application/octet-stream';
 
         formData.files.add(MapEntry(
           "avatar",
@@ -68,15 +68,13 @@ class UpdateAvatarController extends GetxController {
         ));
       } else {
         // For mobile/desktop, use MultipartFile.fromFile (supports dart:io)
-        final avatarMimeType = lookupMimeType(avatarImage.value!.path) ??
-            'application/octet-stream';
 
         formData.files.add(MapEntry(
           "avatar",
           await dio.MultipartFile.fromFile(
             avatarImage.value!.path,
             filename: avatarImageName.value,
-            contentType: MediaType.parse(avatarMimeType),
+            contentType: MediaType.parse(mimeType),
           ),
         ));
       }
@@ -94,8 +92,8 @@ class UpdateAvatarController extends GetxController {
           }
         } else {
           // Handle unexpected status code
-          Utils.snackBar(
-              "Error", "Unexpected status code: ${response['statusCode']} \n ${response['message']}");
+          Utils.snackBar("Error",
+              "Unexpected status code: ${response['statusCode']} \n ${response['message']}");
         }
       } catch (err) {
         Utils.snackBar("Error", "Error while Updating: $err");
