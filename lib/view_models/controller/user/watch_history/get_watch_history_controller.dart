@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:stream_vids/models/user/watch_history/get_watch_history_model.dart';
 import 'package:stream_vids/repository/user/watch_history/get_watch_history_repository.dart';
 
 class GetWatchHistoryController extends GetxController {
@@ -6,12 +7,23 @@ class GetWatchHistoryController extends GetxController {
   var watchHistory = [].obs;
   var isLoading = false.obs;
 
+  @override
+  void onInit() {
+    fetchWatchHistory();
+    super.onInit();
+  }
+
   Future<void> fetchWatchHistory() async {
     try {
       isLoading.value = true;
-      final response =await _api.getWatchHistory();
+      final response = await _api.getWatchHistory();
       if (response['statusCode'] == 200) {
-        watchHistory.assignAll(response['data']['watchHistory']);
+        final model = GetWatchHistoryModel.fromJson(response);
+        if (model.data!.isNotEmpty) {
+          watchHistory.assignAll(model.data!);
+        } else {
+          Get.snackbar('Info', 'No videos available');
+        }
       } else {
         Get.snackbar('Error', 'Failed to fetch Watch History');
       }

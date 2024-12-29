@@ -44,13 +44,9 @@ Future<void> pickVideo() async {
       } else {
         // For mobile/desktop, use file path
         String? filePath = result.files.single.path;
-        if (filePath != null) {
-          videoFile.value = XFile(filePath);
-          videoName.value = videoFile.value.name;
-        } else {
-          Utils.snackBar("Error", "No video selected");
-        }
-      }
+        videoFile.value = XFile(filePath!);
+        videoName.value = videoFile.value.name;
+            }
     } else {
       Utils.snackBar("Error", "No video selected");
     }
@@ -145,8 +141,9 @@ Future<void> pickVideo() async {
           final model = PublishVideoModel.fromJson(response);
           if (model.success == true) {
             Get.delete<AddVideoController>();
-            Utils.snackBar("Success", "Avatar Updated successfully");
-            Get.toNamed(RouteName.navBarScreen, arguments: {'initialIndex': 2});
+            Utils.snackBar("Success", "Video Posted successfully");
+            Get.toNamed(RouteName.navBarScreen, arguments: {'initialIndex': 0});
+            clearFields();
           } else {
             Utils.snackBar("Error", model.message);
           }

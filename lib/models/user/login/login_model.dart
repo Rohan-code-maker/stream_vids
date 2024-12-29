@@ -14,14 +14,14 @@ class LoginModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> jsonMap = {};
-    jsonMap['statusCode'] = statusCode;
-    if (data != null) {
-      jsonMap['data'] = data!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['statusCode'] = statusCode;
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
     }
-    jsonMap['message'] = message;
-    jsonMap['success'] = success;
-    return jsonMap;
+    data['message'] = message;
+    data['success'] = success;
+    return data;
   }
 }
 
@@ -39,92 +39,65 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> jsonMap = {};
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (user != null) {
-      jsonMap['user'] = user!.toJson();
+      data['user'] = user!.toJson();
     }
-    jsonMap['accessToken'] = accessToken;
-    jsonMap['refreshToken'] = refreshToken;
-    return jsonMap;
+    data['accessToken'] = accessToken;
+    data['refreshToken'] = refreshToken;
+    return data;
   }
 }
 
 class User {
-  String? id;
+  String? sId;
   String? username;
   String? email;
   String? fullname;
   String? avatar;
   String? coverImage;
-  List<WatchHistory>? watchHistory;
+  List<String>? watchHistory;
   String? createdAt;
   String? updatedAt;
-  int? v;
+  int? iV;
 
-  User({
-    this.id,
-    this.username,
-    this.email,
-    this.fullname,
-    this.avatar,
-    this.coverImage,
-    this.watchHistory,
-    this.createdAt,
-    this.updatedAt,
-    this.v,
-  });
+  User(
+      {this.sId,
+      this.username,
+      this.email,
+      this.fullname,
+      this.avatar,
+      this.coverImage,
+      this.watchHistory,
+      this.createdAt,
+      this.updatedAt,
+      this.iV});
 
   User.fromJson(Map<String, dynamic> json) {
-    id = json['_id'];
+    sId = json['_id'];
     username = json['username'];
     email = json['email'];
     fullname = json['fullname'];
     avatar = json['avatar'];
     coverImage = json['coverImage'];
-    if (json['watchHistory'] != null) {
-      watchHistory = <WatchHistory>[];
-      json['watchHistory'].forEach((v) {
-        watchHistory!.add(WatchHistory.fromJson(v));
-      });
-    }
+    watchHistory = json['watchHistory'].cast<String>();
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
-    v = json['__v'];
+    iV = json['__v'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> jsonMap = {};
-    jsonMap['_id'] = id;
-    jsonMap['username'] = username;
-    jsonMap['email'] = email;
-    jsonMap['fullname'] = fullname;
-    jsonMap['avatar'] = avatar;
-    jsonMap['coverImage'] = coverImage;
-    if (watchHistory != null) {
-      jsonMap['watchHistory'] = watchHistory!.map((v) => v.toJson()).toList();
-    }
-    jsonMap['createdAt'] = createdAt;
-    jsonMap['updatedAt'] = updatedAt;
-    jsonMap['__v'] = v;
-    return jsonMap;
-  }
-}
-
-class WatchHistory {
-  String? videoId;
-  String? watchedAt;
-
-  WatchHistory({this.videoId, this.watchedAt});
-
-  WatchHistory.fromJson(Map<String, dynamic> json) {
-    videoId = json['videoId'];
-    watchedAt = json['watchedAt'];
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'videoId': videoId,
-      'watchedAt': watchedAt,
-    };
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    data['username'] = username;
+    data['email'] = email;
+    data['fullname'] = fullname;
+    data['avatar'] = avatar;
+    data['coverImage'] = coverImage;
+    data['watchHistory'] = watchHistory;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    data['__v'] = iV;
+    return data;
   }
 }

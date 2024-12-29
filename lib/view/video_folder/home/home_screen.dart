@@ -20,8 +20,8 @@ class _HomeScreenState extends State<HomeScreen> {
     splashServices.handleAppNavigation();
   }
 
-  final addWatchHistoryController = Get.put(AddWatchHistoryController());
   final getAllVideoController = Get.put(GetAllVideoController());
+  final addWatchHistory = Get.put(AddWatchHistoryController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,10 +44,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 leading: Image.network(
                     getAllVideoController.videoList[index].thumbnail),
                 onTap: () {
-                  if (addWatchHistoryController.isLoading.value) {
-                    addWatchHistoryController.addToWatchHistory(
-                        getAllVideoController.videoList[index].id);
-                  }
+                  addWatchHistory.addToWatchHistory(
+                      getAllVideoController.videoList[index].id);
                   Get.toNamed(
                     RouteName.videoScreen.replaceFirst(
                         ':videoId', getAllVideoController.videoList[index].id),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:stream_vids/view/user/watch_history/watch_history_screen.dart';
 import 'package:stream_vids/view/video_folder/add_video/add_video_screen.dart';
 import 'package:stream_vids/view/video_folder/home/home_screen.dart';
 import 'package:stream_vids/view/user/profile/profile_screen.dart';
@@ -17,6 +18,7 @@ class BottomNavigationBarScreen extends StatelessWidget {
     const HomeScreen(),
     const SearchScreen(),
     const AddVideoScreen(),
+    const WatchHistoryScreen(),
     const ProfileScreen(),
   ];
 
@@ -39,6 +41,10 @@ class BottomNavigationBarScreen extends StatelessWidget {
               BottomNavigationBarItem(
                 icon: Icon(Icons.add_box),
                 label: 'Post Video',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.watch_later),
+                label: 'Watch History',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.person),

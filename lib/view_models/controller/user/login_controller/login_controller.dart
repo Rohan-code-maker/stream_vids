@@ -47,6 +47,7 @@ class LoginController extends GetxController {
           Get.delete<LoginController>();
           Get.toNamed(RouteName.homeScreen);
           Utils.snackBar("Success", "Login Successfully");
+          clearFields();
         } else {
           Utils.snackBar("Error", "Failed to save user data.");
         }
@@ -58,4 +59,9 @@ class LoginController extends GetxController {
       Utils.snackBar("Error", "Login failed. Please check your credentials.");
     }
   }
+
+  void clearFields(){
+  emailController.value.clear();
+  passwordController.value.clear();
+}
 }

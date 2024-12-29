@@ -14,7 +14,7 @@ class CurrentUserModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {};
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['statusCode'] = statusCode;
     if (this.data != null) {
       data['data'] = this.data!.toJson();
@@ -32,23 +32,22 @@ class Data {
   String? fullname;
   String? avatar;
   String? coverImage;
-  List<WatchHistory>? watchHistory;
+  List<String>? watchHistory;
   String? createdAt;
-  String? updatedAt; 
-  int? v;
+  String? updatedAt;
+  int? iV;
 
-  Data({
-    this.sId,
-    this.username,
-    this.email,
-    this.fullname,
-    this.avatar,
-    this.coverImage,
-    this.watchHistory,
-    this.createdAt,
-    this.updatedAt,
-    this.v,
-  });
+  Data(
+      {this.sId,
+      this.username,
+      this.email,
+      this.fullname,
+      this.avatar,
+      this.coverImage,
+      this.watchHistory,
+      this.createdAt,
+      this.updatedAt,
+      this.iV});
 
   Data.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -57,51 +56,24 @@ class Data {
     fullname = json['fullname'];
     avatar = json['avatar'];
     coverImage = json['coverImage'];
-    if (json['watchHistory'] != null) {
-      watchHistory = <WatchHistory>[];
-      json['watchHistory'].forEach((v) {
-        watchHistory!.add(WatchHistory.fromJson(v));
-      });
-    }
+    watchHistory = json['watchHistory'].cast<String>();
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
-    v = json['__v'];
+    iV = json['__v'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = {};
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['_id'] = sId;
     data['username'] = username;
     data['email'] = email;
     data['fullname'] = fullname;
     data['avatar'] = avatar;
     data['coverImage'] = coverImage;
-    if (watchHistory != null) {
-      data['watchHistory'] = watchHistory!.map((v) => v.toJson()).toList();
-    }
+    data['watchHistory'] = watchHistory;
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
-    data['__v'] = v;
+    data['__v'] = iV;
     return data;
   }
 }
-
-class WatchHistory {
-  String? videoId;
-  String? watchedAt;
-
-  WatchHistory({this.videoId, this.watchedAt});
-
-  WatchHistory.fromJson(Map<String, dynamic> json) {
-    videoId = json['videoId'];
-    watchedAt = json['watchedAt'];
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'videoId': videoId,
-      'watchedAt': watchedAt,
-    };
-  }
-}
-

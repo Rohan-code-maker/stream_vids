@@ -174,6 +174,7 @@ class RegisterController extends GetxController {
             Get.delete<RegisterController>();
             Get.toNamed(RouteName.loginScreen);
             Utils.snackBar("Success", "Registration Successful");
+            clearFields();
           } else {
             Utils.snackBar(
                 "Error", registerModel.message ?? "Unknown error occurred");
@@ -191,5 +192,14 @@ class RegisterController extends GetxController {
     } finally {
       loading.value = false;
     }
+  }
+
+  void clearFields() {
+    fullnameController.value.clear();
+    usernameController.value.clear();
+    emailController.value.clear();
+    passwordController.value.clear();
+    avatarImage.value = null;
+    coverImage.value = null;
   }
 }
