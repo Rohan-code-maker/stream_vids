@@ -3,6 +3,7 @@ import 'package:stream_vids/res/routes/route_name.dart';
 import 'package:stream_vids/view/bottom_navbar/bottom_navbar_screen.dart';
 import 'package:stream_vids/view/user/change_password/change_password_screen.dart';
 import 'package:stream_vids/view/user/forgot_password/forgot_password_screen.dart';
+import 'package:stream_vids/view/user/profile/profile_screen.dart';
 import 'package:stream_vids/view/user/update_account/update_account_screen.dart';
 import 'package:stream_vids/view/user/update_avatar/update_avatar_screen.dart';
 import 'package:stream_vids/view/user/update_coverimage/update_coverimage_screen.dart';
@@ -13,6 +14,7 @@ import 'package:stream_vids/view/user/login/login_screen.dart';
 import 'package:stream_vids/view/user/register/register_screen.dart';
 import 'package:stream_vids/view/splash_screen.dart';
 import 'package:stream_vids/view/video_folder/video/video_screen.dart';
+import 'package:stream_vids/view_models/controller/user/get_channel_profile/get_channel_profile_controller.dart';
 
 class AppRoutes {
   static appRoutes() => [
@@ -80,6 +82,11 @@ class AppRoutes {
         GetPage(
             name: RouteName.watchHistory,
             page: () => const WatchHistoryScreen(),
+            transition: Transition.leftToRightWithFade,
+            transitionDuration: const Duration(microseconds: 250)),
+        GetPage(
+            name: RouteName.profileScreen,
+            page: () => const ProfileScreen(),
             transition: Transition.leftToRightWithFade,
             transitionDuration: const Duration(microseconds: 250)),
       ];

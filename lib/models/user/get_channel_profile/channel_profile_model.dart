@@ -1,12 +1,12 @@
-class CurrentUserModel {
+class ChannelProfileModel {
   int? statusCode;
   Data? data;
   String? message;
   bool? success;
 
-  CurrentUserModel({this.statusCode, this.data, this.message, this.success});
+  ChannelProfileModel({this.statusCode, this.data, this.message, this.success});
 
-  CurrentUserModel.fromJson(Map<String, dynamic> json) {
+  ChannelProfileModel.fromJson(Map<String, dynamic> json) {
     statusCode = json['statusCode'];
     data = json['data'] != null ? Data.fromJson(json['data']) : null;
     message = json['message'];
@@ -32,10 +32,9 @@ class Data {
   String? fullname;
   String? avatar;
   String? coverImage;
-  List<String>? watchHistory;
-  String? createdAt;
-  String? updatedAt;
-  int? iV;
+  int? subscribersCount;
+  int? channelsSubscribedToCount;
+  bool? isSubscribed;
 
   Data(
       {this.sId,
@@ -44,10 +43,9 @@ class Data {
       this.fullname,
       this.avatar,
       this.coverImage,
-      this.watchHistory,
-      this.createdAt,
-      this.updatedAt,
-      this.iV});
+      this.subscribersCount,
+      this.channelsSubscribedToCount,
+      this.isSubscribed});
 
   Data.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -56,10 +54,9 @@ class Data {
     fullname = json['fullname'];
     avatar = json['avatar'];
     coverImage = json['coverImage'];
-    watchHistory = json['watchHistory'].cast<String>();
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
-    iV = json['__v'];
+    subscribersCount = json['subscribersCount'];
+    channelsSubscribedToCount = json['channelsSubscribedToCount'];
+    isSubscribed = json['isSubscribed'];
   }
 
   Map<String, dynamic> toJson() {
@@ -70,10 +67,9 @@ class Data {
     data['fullname'] = fullname;
     data['avatar'] = avatar;
     data['coverImage'] = coverImage;
-    data['watchHistory'] = watchHistory;
-    data['createdAt'] = createdAt;
-    data['updatedAt'] = updatedAt;
-    data['__v'] = iV;
+    data['subscribersCount'] = subscribersCount;
+    data['channelsSubscribedToCount'] = channelsSubscribedToCount;
+    data['isSubscribed'] = isSubscribed;
     return data;
   }
 }

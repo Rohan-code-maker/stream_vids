@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stream_vids/res/routes/route_name.dart';
-import 'package:stream_vids/view_models/controller/user/get_current_user/current_user_controller.dart';
+import 'package:stream_vids/view_models/controller/user/get_channel_profile/get_channel_profile_controller.dart';
 import 'package:stream_vids/view_models/controller/user/logout_controller/logout_controller.dart';
 import 'package:stream_vids/view_models/services/splash_services.dart';
 
@@ -13,7 +13,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final CurrentUserController _controller = Get.put(CurrentUserController());
+  final GetChannelProfileController _controller = Get.put(GetChannelProfileController());
 
   final logoutController = Get.put(LogoutController());
 
@@ -50,7 +50,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           return const Center(child: CircularProgressIndicator());
         }
 
-        final user = _controller.currentUser.value;
+        final user = _controller.channelProfile.value;
 
         if (user.username == null || user.email == null) {
           return const Center(child: Text("No data available"));
@@ -76,6 +76,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
               const SizedBox(height: 8),
               Text(
                 "Email: ${user.email}",
+                style: const TextStyle(fontSize: 16),
+              ),
+              Text(
+                "Subscribers: ${user.subscribersCount}",
+                style: const TextStyle(fontSize: 16),
+              ),
+              Text(
+                "Channel subscribed to: ${user.channelsSubscribedToCount}",
                 style: const TextStyle(fontSize: 16),
               ),
             ],
