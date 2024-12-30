@@ -13,8 +13,8 @@ import 'package:stream_vids/view/language_screen.dart';
 import 'package:stream_vids/view/user/login/login_screen.dart';
 import 'package:stream_vids/view/user/register/register_screen.dart';
 import 'package:stream_vids/view/splash_screen.dart';
+import 'package:stream_vids/view/video_folder/update_video/update_video_screen.dart';
 import 'package:stream_vids/view/video_folder/video/video_screen.dart';
-import 'package:stream_vids/view_models/controller/user/get_channel_profile/get_channel_profile_controller.dart';
 
 class AppRoutes {
   static appRoutes() => [
@@ -87,6 +87,11 @@ class AppRoutes {
         GetPage(
             name: RouteName.profileScreen,
             page: () => const ProfileScreen(),
+            transition: Transition.leftToRightWithFade,
+            transitionDuration: const Duration(microseconds: 250)),
+        GetPage(
+            name: RouteName.updateVideoScreen,
+            page: () => UpdateVideoScreen(videoId: Get.parameters['videoId'] ?? ''),
             transition: Transition.leftToRightWithFade,
             transitionDuration: const Duration(microseconds: 250)),
       ];

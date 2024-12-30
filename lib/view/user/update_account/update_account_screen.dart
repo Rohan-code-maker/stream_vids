@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:stream_vids/res/components/input_field.dart';
 import 'package:stream_vids/res/components/round_btn.dart';
 import 'package:stream_vids/utils/utils.dart';
-import 'package:stream_vids/view_models/controller/user/update_acccount/update_account_controller.dart';
+import 'package:stream_vids/view_models/controller/user/update_account/update_account_controller.dart';
 
 class UpdateAccountScreen extends StatefulWidget {
   const UpdateAccountScreen({super.key});

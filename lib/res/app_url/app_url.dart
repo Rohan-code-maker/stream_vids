@@ -8,6 +8,7 @@ class AppUrl {
   static const String addVideoUrl = "$baseUrl/videos";
   static const String getAllVideoUrl = "$baseUrl/videos?query=";
   static const String getVideoByIdUrl = "$baseUrl/videos/?videoId=";
+  static const String getMyVideoUrl = "$baseUrl/videos/my-video";
   static const String addWatchHistoryUrl = "$baseUrl/users/history/:videoId";
   static const String getWatchHistoryUrl = "$baseUrl/users/history";
   static const String getChannelProfileUrl = "$baseUrl/users/channel";
@@ -15,4 +16,5 @@ class AppUrl {
   static const String updateAccountUrl = "$baseUrl/users/update-account";
   static const String updateAvatarUrl = "$baseUrl/users/avatar";
   static const String updateCoverImageUrl = "$baseUrl/users/cover-image";
+  static const String updateVideoUrl = "$baseUrl/videos/:videoId";
 }

@@ -55,11 +55,32 @@ class NetworkApiService extends BaseApiService {
   }
 
   @override
-  Future deleteApi(String url) async {
+  Future deleteApi(String url, {bool requiresAuth = false}) async {
     dynamic responsejson;
+    var headers = {
+      'accept': '*/*',
+    };
     try {
-      final response =
-          await dio.delete(url).timeout(const Duration(seconds: 10));
+      if (requiresAuth) {
+        final user = await userPreferences.getUser();
+        final accessToken = user.accessToken;
+        if (accessToken == null) {
+          throw FetchDataException(
+              "Authentication token is missing or invalid.");
+        }
+        headers.addAll({
+          'Authorization': 'Bearer $accessToken',
+        });
+      }
+      final response = await dio
+          .delete(
+            url,
+            options: Options(
+              headers: headers,
+              responseType: ResponseType.json,
+            ),
+          )
+          .timeout(const Duration(seconds: 20));
       responsejson = returnResponse(response);
     } on DioException catch (e) {
       // Handle Dio-specific errors
@@ -110,7 +131,7 @@ class NetworkApiService extends BaseApiService {
               responseType: ResponseType.json,
             ),
           )
-          .timeout(const Duration(seconds: 10));
+          .timeout(const Duration(seconds: 20));
 
       responseJson = returnResponse(response);
     } on DioException catch (e) {
@@ -161,7 +182,7 @@ class NetworkApiService extends BaseApiService {
       // Make the POST request
       final response = await dio
           .post(url, data: data, options: options)
-          .timeout(const Duration(seconds: 10));
+          .timeout(const Duration(seconds: 20));
 
       responseJson = returnResponse(response);
     } on DioException catch (e) {
@@ -207,7 +228,7 @@ class NetworkApiService extends BaseApiService {
       Options options = Options(headers: headers);
       final response = await dio
           .patch(url, data: data, options: options)
-          .timeout(const Duration(seconds: 10));
+          .timeout(const Duration(seconds: 20));
       responsejson = returnResponse(response);
     } on DioException catch (e) {
       // Handle Dio-specific errors

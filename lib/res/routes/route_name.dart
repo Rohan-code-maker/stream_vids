@@ -13,4 +13,5 @@ class RouteName {
   static const String updateAvatarScreen = "/update-avatar";
   static const String updateCoverImageScreen = "/update-coverimage";
   static const String watchHistory = "/watch-history";
+  static const String updateVideoScreen = "/update/:videoId";
 }

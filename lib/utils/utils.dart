@@ -42,4 +42,36 @@ class Utils {
     final regex = RegExp(emailPattern);
     return regex.hasMatch(email);
   }
+
+  static void showConfirmation({
+  required BuildContext context,
+  required String title,
+  required String message,
+  required VoidCallback onConfirm,
+}) {
+  Get.dialog(
+    AlertDialog(
+      title: Text(title),
+      content: Text(message),
+      actions: [
+        TextButton(
+          onPressed: () {
+            // Close the dialog
+            Get.back();
+          },
+          child: const Text("Cancel"),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            // Perform the confirm action
+            Get.back(); // Close the dialog first
+            onConfirm(); // Call the passed callback function
+          },
+          child: const Text("Confirm"),
+        ),
+      ],
+    ),
+    barrierDismissible: false,
+  );
+}
 }
