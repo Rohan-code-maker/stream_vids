@@ -5,7 +5,8 @@ import 'package:chewie/chewie.dart';
 import 'package:stream_vids/utils/utils.dart';
 import 'package:stream_vids/view_models/controller/user/subscribe_user/subscribe_status_controller.dart';
 import 'package:stream_vids/view_models/controller/user/subscribe_user/subscribe_user_controller.dart';
-import 'package:stream_vids/view_models/controller/video_folder/get_video_like_status/get_video_like_status_controller.dart';
+import 'package:stream_vids/view_models/controller/video_folder/like_video/get_video_like_status_controller.dart';
+import 'package:stream_vids/view_models/controller/video_folder/like_video/like_count_controller.dart';
 import 'package:stream_vids/view_models/controller/video_folder/like_video/like_video_controller.dart';
 import 'package:video_player/video_player.dart';
 import 'package:stream_vids/view_models/controller/video_folder/get_video_byid/get_video_byid_controller.dart';
@@ -23,6 +24,7 @@ class _VideoScreenState extends State<VideoScreen> {
   final _controller = Get.put(GetVideoByIdController());
   final likeController = Get.put(LikeVideoController());
   final likeStatusController = Get.put(GetVideoLikeStatusController());
+  final likeCountController = Get.put(LikeCountController());
   final subscriptionController = Get.put(SubscribeUserController());
   final subscriptionStatusController = Get.put(SubscribeStatusController());
 
@@ -36,6 +38,7 @@ class _VideoScreenState extends State<VideoScreen> {
     super.initState();
     _controller.fetchVideoById(widget.videoId);
     likeStatusController.fetchLikeStatus(widget.videoId);
+    likeCountController.count(widget.videoId);
   }
 
   @override
@@ -43,6 +46,7 @@ class _VideoScreenState extends State<VideoScreen> {
     Get.delete<GetVideoByIdController>();
     Get.delete<LikeVideoController>();
     Get.delete<GetVideoLikeStatusController>();
+    Get.delete<LikeCountController>();
     Get.delete<SubscribeUserController>();
     Get.delete<SubscribeStatusController>();
     _videoPlayerController.dispose();
@@ -129,7 +133,8 @@ class _VideoScreenState extends State<VideoScreen> {
                       const SizedBox(height: 16),
                       Row(
                         children: [
-                          Obx(() => IconButton(
+                          Column(children: [
+                            Obx(() => IconButton(
                                 icon: Icon(
                                   likeStatusController.isliked.value
                                       ? Icons.favorite
@@ -144,12 +149,17 @@ class _VideoScreenState extends State<VideoScreen> {
                                     likeController.likeVideo(widget.videoId);
                                     likeStatusController
                                         .fetchLikeStatus(widget.videoId);
+                                        likeCountController.count(widget.videoId);
                                   } catch (e) {
                                     Utils.snackBar("Error",
                                         "Failed to update like status: $e");
                                   }
                                 },
                               )),
+                              Text(likeCountController.likeCount.value.toString())
+                          ],
+                          
+                          ),
                           const SizedBox(width: 16),
                           Obx(() => ElevatedButton(
                                 onPressed: () {

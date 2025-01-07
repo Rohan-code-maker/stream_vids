@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:stream_vids/models/video_folder/get_video_like_status.dart/get_video_like_status_model.dart';
-import 'package:stream_vids/repository/video_folder/get_video_like_status/get_video_like_status_repository.dart';
+import 'package:stream_vids/models/video_folder/get_liked_videos/get_video_like_status_model.dart';
+import 'package:stream_vids/repository/video_folder/like_video_repository/get_video_like_status_repository.dart';
 import 'package:stream_vids/utils/utils.dart';
 
 class GetVideoLikeStatusController extends GetxController {

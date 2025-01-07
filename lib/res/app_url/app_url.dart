@@ -22,6 +22,7 @@ class AppUrl {
   static const String updateCoverImageUrl = "$baseUrl/users/cover-image";
   static const String updateVideoUrl = "$baseUrl/videos/:videoId";
   static const String likeVideoUrl = "$baseUrl/likes/toggle/v/:videoId";
+  static const String likeVideoCountUrl = "$baseUrl/likes/count/:videoId";
   static const String getlikeVideoUrl = "$baseUrl/likes/videos";
   static const String subscribeUrl = "$baseUrl/subscriptions/c/:channelId";
 }
