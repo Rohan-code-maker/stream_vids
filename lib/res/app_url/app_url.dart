@@ -1,5 +1,9 @@
+import 'package:flutter/foundation.dart';
+
 class AppUrl {
-  static const String baseUrl = "http://localhost:8000/api/v1";
+  static const String baseUrl = kIsWeb
+      ? "http://localhost:8000/api/v1"
+      : "http://192.168.1.5:8000/api/v1";
   static const String loginUrl = "$baseUrl/users/login";
   static const String registerUrl = "$baseUrl/users/register";
   static const String logoutUrl = "$baseUrl/users/logout";
@@ -7,7 +11,7 @@ class AppUrl {
   static const String forgotPasswordUrl = "$baseUrl/users/forgot-password";
   static const String addVideoUrl = "$baseUrl/videos";
   static const String getAllVideoUrl = "$baseUrl/videos?query=";
-  static const String getVideoByIdUrl = "$baseUrl/videos/?videoId=";
+  static const String getVideoByIdUrl = "$baseUrl/videos/:videoId";
   static const String getMyVideoUrl = "$baseUrl/videos/my-video";
   static const String addWatchHistoryUrl = "$baseUrl/users/history/:videoId";
   static const String getWatchHistoryUrl = "$baseUrl/users/history";
@@ -17,4 +21,7 @@ class AppUrl {
   static const String updateAvatarUrl = "$baseUrl/users/avatar";
   static const String updateCoverImageUrl = "$baseUrl/users/cover-image";
   static const String updateVideoUrl = "$baseUrl/videos/:videoId";
+  static const String likeVideoUrl = "$baseUrl/likes/toggle/v/:videoId";
+  static const String getlikeVideoUrl = "$baseUrl/likes/videos";
+  static const String subscribeUrl = "$baseUrl/subscriptions/c/:channelId";
 }

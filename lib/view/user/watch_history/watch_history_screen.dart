@@ -19,6 +19,11 @@ class _WatchHistoryScreenState extends State<WatchHistoryScreen> {
   void initState() {
     super.initState();
     splashServices.handleAppNavigation();
+    _refreshVideos();
+  }
+
+  Future<void> _refreshVideos() async {
+    _controller.fetchWatchHistory();
   }
 
   @override

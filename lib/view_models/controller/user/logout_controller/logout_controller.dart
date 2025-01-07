@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 import 'package:stream_vids/models/user/logout/logout_model.dart';
 import 'package:stream_vids/repository/user/logout_repository/logout_repository.dart';
-import 'package:stream_vids/res/cookies/cookie_manager';
 import 'package:stream_vids/res/routes/route_name.dart';
 import 'package:stream_vids/utils/utils.dart';
 import 'package:stream_vids/res/user_preferences/user_preferences.dart';
@@ -9,7 +8,6 @@ import 'package:stream_vids/res/user_preferences/user_preferences.dart';
 class LogoutController extends GetxController {
   final LogoutRepository _api = LogoutRepository();
   UserPreferences userPreferences = UserPreferences();
-  CookieManager cookieManager = CookieManager();
   RxBool loading = false.obs;
 
   void logout() async {
@@ -21,18 +19,17 @@ class LogoutController extends GetxController {
       final accessToken = user.accessToken;
 
       // Call logout API
-      final response = await _api.logoutApi({"accessToken": accessToken}).onError((err,stackTrace){
+      final response = await _api
+          .logoutApi({"accessToken": accessToken}).onError((err, stackTrace) {
         Utils.snackBar("Error", "Error while Api call");
       });
       final logoutModel = LogoutModel.fromJson(response);
 
       if (logoutModel.statusCode == 200) {
         // Logout successful
-        await userPreferences.clearUser(); 
-        cookieManager.removeCookie('accessToken');
-        cookieManager.removeCookie('refreshToken');
-        Get.delete<LogoutController>(); 
-        Get.toNamed(RouteName.loginScreen); 
+        await userPreferences.clearUser();
+        Get.delete<LogoutController>();
+        Get.toNamed(RouteName.loginScreen);
         Utils.snackBar("Success", "Logout Successfully");
       } else {
         // Logout failed

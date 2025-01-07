@@ -13,7 +13,8 @@ class ChangePasswordScreen extends StatefulWidget {
 }
 
 class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
-  ChangePasswordController changePasswordController = Get.put(ChangePasswordController());
+  ChangePasswordController changePasswordController =
+      Get.put(ChangePasswordController());
 
   final _formKey = GlobalKey<FormState>();
   @override
@@ -29,66 +30,72 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  InputField(
-                    obscure: true,
-                    hintText: 'old_password_hint'.tr,
-                    labelText: 'old_password_hint'.tr,
-                    controller:
-                        changePasswordController.oldPasswordController.value,
-                    currentFocusNode:
-                        changePasswordController.oldPasswordFocusNode.value,
-                    nextFocusNode:
-                        changePasswordController.newPasswordFocusNode.value,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        Utils.toastMessageBottom("old_password_hint".tr);
-                      }
-                      if (value.length < 8) {
-                        Utils.toastMessageBottom("old_password_hint".tr);
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(
-                    height: mq.height * .1,
-                  ),
-                  InputField(
-                    obscure: true,
-                    hintText: 'new_password_hint'.tr,
-                    labelText: 'new_password_hint'.tr,
-                    controller:
-                        changePasswordController.newPasswordController.value,
-                    currentFocusNode:
-                        changePasswordController.newPasswordFocusNode.value,
-                    nextFocusNode:
-                        changePasswordController.oldPasswordFocusNode.value,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        Utils.toastMessageBottom("new_password_hint".tr);
-                      }
-                      if (value.length < 8) {
-                        Utils.toastMessageBottom("new_password_hint".tr);
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(
-                    height: mq.height * .1,
-                  ),
-                  Obx(() => RoundBtn(
-                      loading: changePasswordController.loading.value,
-                      title: "change_password".tr,
-                      width: mq.width * .35,
-                      onPress: () {
-                        if (_formKey.currentState!.validate()) {
-                          changePasswordController.changePassword();
+              child: Obx(
+                () => Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    InputField(
+                      obscure: true,
+                      hintText: 'old_password_hint'.tr,
+                      labelText: 'old_password_hint'.tr,
+                      controller:
+                          changePasswordController.oldPasswordController.value,
+                      currentFocusNode:
+                          changePasswordController.oldPasswordFocusNode.value,
+                      nextFocusNode:
+                          changePasswordController.newPasswordFocusNode.value,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          Utils.toastMessageBottom("old_password_hint".tr);
+                          return 'old_password_hint'.tr;
                         }
-                      })),
-                ],
+                        if (value.length < 8) {
+                          Utils.toastMessageBottom("old_password_hint".tr);
+                          return 'password_length'.tr;
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(
+                      height: mq.height * .1,
+                    ),
+                    InputField(
+                      obscure: true,
+                      hintText: 'new_password_hint'.tr,
+                      labelText: 'new_password_hint'.tr,
+                      controller:
+                          changePasswordController.newPasswordController.value,
+                      currentFocusNode:
+                          changePasswordController.newPasswordFocusNode.value,
+                      nextFocusNode:
+                          changePasswordController.oldPasswordFocusNode.value,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          Utils.toastMessageBottom("new_password_hint".tr);
+                          return 'new_password_hint'.tr;
+                        }
+                        if (value.length < 8) {
+                          Utils.toastMessageBottom("new_password_hint".tr);
+                          return 'password_length'.tr;
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(
+                      height: mq.height * .1,
+                    ),
+                    RoundBtn(
+                        loading: changePasswordController.loading.value,
+                        title: "change_password".tr,
+                        width: mq.width * .35,
+                        onPress: () {
+                          if (_formKey.currentState!.validate()) {
+                            changePasswordController.changePassword();
+                          }
+                        }),
+                  ],
+                ),
               ),
             ),
           )),

@@ -44,6 +44,7 @@ class _UpdateCoverimageScreenState extends State<UpdateCoverimageScreen> {
                       if (_controller.coverImage.value == null) {
                         // Validate if avatar image is selected
                         Utils.toastMessageBottom("select_photo".tr);
+                        return "select_photo".tr;
                       }
                       return null;
                     },

@@ -42,6 +42,7 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
                   validator: (value) {
                     if (value!.isEmpty) {
                       Utils.toastMessageBottom("title_hint".tr);
+                      return 'title_hint'.tr;
                     }
                     return null;
                   },
@@ -58,6 +59,7 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
                   validator: (value) {
                     if (value!.isEmpty) {
                       Utils.toastMessageBottom("description_hint".tr);
+                      return 'description_hint'.tr;
                     }
                     return null;
                   },
@@ -81,6 +83,7 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
                   validator: (value) {
                     if (_controller.videoFile.value == null) {
                       Utils.toastMessageBottom("select_video".tr);
+                      return'select_video'.tr;
                     }
                     return null;
                   },
@@ -104,6 +107,7 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
                   validator: (value) {
                     if (_controller.thumbnailImage.value == null) {
                       Utils.toastMessageBottom("select_photo".tr);
+                      return 'select_photo'.tr;
                     }
                     return null;
                   },

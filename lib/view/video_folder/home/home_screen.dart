@@ -14,14 +14,16 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   SplashServices splashServices = SplashServices();
+  final getAllVideoController = Get.put(GetAllVideoController());
+  final addWatchHistory = Get.put(AddWatchHistoryController());
+
   @override
   void initState() {
     super.initState();
     splashServices.handleAppNavigation();
+    getAllVideoController.getAllVideo();
   }
 
-  final getAllVideoController = Get.put(GetAllVideoController());
-  final addWatchHistory = Get.put(AddWatchHistoryController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(

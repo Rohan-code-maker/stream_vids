@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stream_vids/models/user/login/login_model.dart';
 import 'package:stream_vids/repository/user/login_repository/login_repository.dart';
-import 'package:stream_vids/res/cookies/cookie_manager';
 import 'package:stream_vids/res/routes/route_name.dart';
 import 'package:stream_vids/utils/utils.dart';
 import 'package:stream_vids/res/user_preferences/user_preferences.dart';
@@ -10,7 +9,6 @@ import 'package:stream_vids/res/user_preferences/user_preferences.dart';
 class LoginController extends GetxController {
   final _api = LoginRepository();
   final userPreferences = UserPreferences();
-  final cookieManager = CookieManager();
 
   // Non-observable TextEditingControllers
   final emailController = TextEditingController().obs;
@@ -34,15 +32,12 @@ class LoginController extends GetxController {
     try {
       // Call login API
       final response = await _api.loginApi(data);
-      loading.value = false;
 
       final dataModel = Data.fromJson(response['data']);
 
       if (dataModel.accessToken != null) {
         // Save user data to preferences
         final isSaved = await userPreferences.saveUser(dataModel);
-        cookieManager.setCookie('accessToken', dataModel.accessToken!);
-        cookieManager.setCookie('refreshToken', dataModel.refreshToken!);
         if (isSaved) {
           Get.delete<LoginController>();
           Get.toNamed(RouteName.homeScreen);
@@ -52,16 +47,17 @@ class LoginController extends GetxController {
           Utils.snackBar("Error", "Failed to save user data.");
         }
       } else {
-        Utils.snackBar("Error", "Login failed.");
+        Utils.snackBar("Error", "Login failed");
       }
     } catch (error) {
+      Utils.snackBar("Error", "Login Failed:$error");
+    } finally {
       loading.value = false;
-      Utils.snackBar("Error", "Login failed. Please check your credentials.");
     }
   }
 
-  void clearFields(){
-  emailController.value.clear();
-  passwordController.value.clear();
-}
+  void clearFields() {
+    emailController.value.clear();
+    passwordController.value.clear();
+  }
 }

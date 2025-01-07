@@ -5,8 +5,12 @@ class GetVideoByIdRepository {
   final _apiService = NetworkApiService();
 
   Future<dynamic> getVideoByIdApi(String videoId) async {
-    dynamic response = await _apiService
-        .getApi(AppUrl.getVideoByIdUrl + videoId, requiresAuth: true);
+    String getUrl(String videoId) {
+      return AppUrl.getVideoByIdUrl.replaceFirst(":videoId", videoId);
+    }
+
+    dynamic response =
+        await _apiService.getApi(getUrl(videoId), requiresAuth: true);
     return response;
   }
 }

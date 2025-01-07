@@ -45,6 +45,7 @@ class _UpdateAvatarScreenState extends State<UpdateAvatarScreen> {
                       if (_controller.avatarImage.value == null) {
                         // Validate if avatar image is selected
                         Utils.toastMessageBottom("select_photo".tr);
+                        return 'select_photo'.tr;
                       }
                       return null;
                     },

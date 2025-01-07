@@ -28,6 +28,11 @@ class UpdateVideoController extends GetxController {
   var videoName = ''.obs;
   var thumbnailImageName = ''.obs;
 
+   void setVideoData(Map<String, dynamic> video) {
+    titleController.value.text = video['title'] ?? "";
+    descriptionController.value.text = video['description'] ?? "";
+  }
+
 Future<void> pickVideo() async {
   try {
     FilePickerResult? result = await FilePicker.platform.pickFiles(

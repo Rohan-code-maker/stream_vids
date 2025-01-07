@@ -14,13 +14,20 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
-
   final loginController = Get.put(LoginController());
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    loginController.emailFocusNode.value.dispose();
+    loginController.passwordFocusNode.value.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -31,73 +38,77 @@ class _LoginScreenState extends State<LoginScreen> {
         key: _formKey,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              InputField(
-                hintText: 'email_hint'.tr,
-                labelText: 'email_hint'.tr,
-                controller: loginController.emailController.value,
-                currentFocusNode: loginController.emailFocusNode.value,
-                nextFocusNode: loginController.passwordFocusNode.value,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    Utils.toastMessageBottom("email_hint".tr);
-                  }
-                  if (!Utils.isValidEmail(
-                      loginController.emailController.value.text)) {
-                    Utils.toastMessageBottom("invalid_email".tr);
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(
-                height: mq.height * .1,
-              ),
-              InputField(
-                obscure: true,
-                hintText: 'password_hint'.tr,
-                labelText: 'password_hint'.tr,
-                controller: loginController.passwordController.value,
-                currentFocusNode: loginController.passwordFocusNode.value,
-                nextFocusNode: loginController.emailFocusNode.value,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    Utils.toastMessageBottom("password_hint".tr);
-                  }
-                  if (value.length < 8) {
-                    Utils.toastMessageBottom("password_length".tr);
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(
-                height: mq.height * .1,
-              ),
-              Obx(() => RoundBtn(
-                  loading: loginController.loading.value,
-                  title: "login".tr,
-                  width: mq.width * .35,
-                  onPress: () {
-                    if (_formKey.currentState!.validate()) {
-                      loginController.login();
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                InputField(
+                  hintText: 'email_hint'.tr,
+                  labelText: 'email_hint'.tr,
+                  controller: loginController.emailController.value,
+                  currentFocusNode: loginController.emailFocusNode.value,
+                  nextFocusNode: loginController.passwordFocusNode.value,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "email_hint".tr;
                     }
-                  })),
-              SizedBox(height: mq.height * .1),
-              RoundBtn(
+                    if (!Utils.isValidEmail(value)) {
+                      return "invalid_email".tr;
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: mq.height * .1),
+                InputField(
+                  obscure: true,
+                  hintText: 'password_hint'.tr,
+                  labelText: 'password_hint'.tr,
+                  controller: loginController.passwordController.value,
+                  currentFocusNode: loginController.passwordFocusNode.value,
+                  nextFocusNode: loginController.emailFocusNode.value,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "password_hint".tr;
+                    }
+                    if (value.length < 4) {
+                      return "password_length".tr;
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: mq.height * .1),
+                Obx(
+                  () => RoundBtn(
+                    loading: loginController.loading.value,
+                    title: "login".tr,
+                    width: mq.width * .35,
+                    onPress: () {
+                      if (_formKey.currentState!.validate()) {
+                        loginController.login();
+                      }
+                    },
+                  ),
+                ),
+                SizedBox(height: mq.height * .1),
+                RoundBtn(
                   title: "register".tr,
                   width: mq.width * .35,
                   onPress: () {
                     Get.toNamed(RouteName.registerScreen);
-                  }),
-              RoundBtn(
+                  },
+                ),
+                RoundBtn(
                   title: "forgot_password".tr,
                   width: mq.width * .35,
                   onPress: () {
                     Get.toNamed(RouteName.forgotPasswordScreen);
-                  }),
-            ],
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),

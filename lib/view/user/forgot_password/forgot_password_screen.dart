@@ -28,87 +28,83 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  InputField(
-                    hintText: 'email_hint'.tr,
-                    labelText: 'email_hint'.tr,
-                    controller:
-                        _controller.emailController.value,
-                    currentFocusNode:
-                        _controller.emailFocusNode.value,
-                    nextFocusNode:
-                        _controller.usernameFocusNode.value,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        Utils.toastMessageBottom("email_hint".tr);
-                      }
-                      if (value.length < 8) {
-                        Utils.toastMessageBottom("email_hint".tr);
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(
-                    height: mq.height * .1,
-                  ),
-                  InputField(
-                    hintText: 'username_hint'.tr,
-                    labelText: 'username_hint'.tr,
-                    controller:
-                        _controller.usernameController.value,
-                    currentFocusNode:
-                        _controller.usernameFocusNode.value,
-                    nextFocusNode:
-                        _controller.newPasswordFocusNode.value,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        Utils.toastMessageBottom("username_hint".tr);
-                      }
-                      if (value.length < 8) {
-                        Utils.toastMessageBottom("username_hint".tr);
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(
-                    height: mq.height * .1,
-                  ),
-                  InputField(
-                    obscure: true,
-                    hintText: 'new_password_hint'.tr,
-                    labelText: 'new_password_hint'.tr,
-                    controller:
-                        _controller.newPasswordController.value,
-                    currentFocusNode:
-                        _controller.newPasswordFocusNode.value,
-                    nextFocusNode:
-                        _controller.usernameFocusNode.value,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        Utils.toastMessageBottom("new_password_hint".tr);
-                      }
-                      if (value.length < 8) {
-                        Utils.toastMessageBottom("new_password_hint".tr);
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(
-                    height: mq.height * .1,
-                  ),
-                  Obx(() => RoundBtn(
-                      loading: _controller.loading.value,
-                      title: "login".tr,
-                      width: mq.width * .35,
-                      onPress: () {
-                        if (_formKey.currentState!.validate()) {
-                          _controller.forgotPassword();
+              child: Obx(
+                () => Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    InputField(
+                      hintText: 'email_hint'.tr,
+                      labelText: 'email_hint'.tr,
+                      controller: _controller.emailController.value,
+                      currentFocusNode: _controller.emailFocusNode.value,
+                      nextFocusNode: _controller.usernameFocusNode.value,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          Utils.toastMessageBottom("email_hint".tr);
+                          return "email_hint".tr; // Return an error message
                         }
-                      })),
-                ],
+                        if (!Utils.isValidEmail(
+                            _controller.emailController.value.text)) {
+                          Utils.toastMessageBottom("invalid_email".tr);
+                          return "invalid_email".tr; // Return an error message
+                        }
+                        return null; // Return null if validation passes
+                      },
+                    ),
+                    SizedBox(
+                      height: mq.height * .1,
+                    ),
+                    InputField(
+                      hintText: 'username_hint'.tr,
+                      labelText: 'username_hint'.tr,
+                      controller: _controller.usernameController.value,
+                      currentFocusNode: _controller.usernameFocusNode.value,
+                      nextFocusNode: _controller.newPasswordFocusNode.value,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          Utils.toastMessageBottom("username_hint".tr);
+                          return "username_hint".tr;
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(
+                      height: mq.height * .1,
+                    ),
+                    InputField(
+                      obscure: true,
+                      hintText: 'new_password_hint'.tr,
+                      labelText: 'new_password_hint'.tr,
+                      controller: _controller.newPasswordController.value,
+                      currentFocusNode: _controller.newPasswordFocusNode.value,
+                      nextFocusNode: _controller.usernameFocusNode.value,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          Utils.toastMessageBottom("new_password_hint".tr);
+                          return "new_password_hint".tr;
+                        }
+                        if (value.length < 8) {
+                          Utils.toastMessageBottom("password_length".tr);
+                          return "password_length".tr;
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(
+                      height: mq.height * .1,
+                    ),
+                    RoundBtn(
+                        loading: _controller.loading.value,
+                        title: "login".tr,
+                        width: mq.width * .35,
+                        onPress: () {
+                          if (_formKey.currentState!.validate()) {
+                            _controller.forgotPassword();
+                          }
+                        }),
+                  ],
+                ),
               ),
             ),
           )),

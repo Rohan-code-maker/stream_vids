@@ -18,6 +18,17 @@ class _UpdateVideoScreenState extends State<UpdateVideoScreen> {
   final _controller = Get.put(UpdateVideoController());
 
   @override
+  void initState() {
+    super.initState();
+
+    final video = Get.arguments;
+
+    if (video != null) {
+      _controller.setVideoData(video);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     Size mq = MediaQuery.of(context).size;
     return Scaffold(
@@ -43,6 +54,7 @@ class _UpdateVideoScreenState extends State<UpdateVideoScreen> {
                   validator: (value) {
                     if (value!.isEmpty) {
                       Utils.toastMessageBottom("title_hint".tr);
+                      return "title_hint".tr;
                     }
                     return null;
                   },
@@ -59,6 +71,7 @@ class _UpdateVideoScreenState extends State<UpdateVideoScreen> {
                   validator: (value) {
                     if (value!.isEmpty) {
                       Utils.toastMessageBottom("description_hint".tr);
+                      return "description_hint".tr;
                     }
                     return null;
                   },
@@ -82,6 +95,7 @@ class _UpdateVideoScreenState extends State<UpdateVideoScreen> {
                   validator: (value) {
                     if (_controller.videoFile.value == null) {
                       Utils.toastMessageBottom("select_video".tr);
+                      return "select_video".tr;
                     }
                     return null;
                   },
@@ -105,6 +119,7 @@ class _UpdateVideoScreenState extends State<UpdateVideoScreen> {
                   validator: (value) {
                     if (_controller.thumbnailImage.value == null) {
                       Utils.toastMessageBottom("select_photo".tr);
+                      return "select_photo".tr;
                     }
                     return null;
                   },

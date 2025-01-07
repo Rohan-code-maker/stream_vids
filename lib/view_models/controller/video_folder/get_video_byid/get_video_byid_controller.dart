@@ -15,17 +15,13 @@ class GetVideoByIdController extends GetxController {
     try {
       final response = await _api.getVideoByIdApi(videoId);
 
-      if (response != null && response['success'] == true) {
-        if (response['data'] != null && response['data']['videos'] != null) {
-          // Assuming the backend returns a single video in the videos array for the given videoId
-          final videos = response['data']['videos'];
-          if (videos.isNotEmpty) {
-            video.value = Video.fromJson(videos[0]); // Extract the first video
-          } else {
-            Utils.snackBar("Error", "No video found for the given ID");
-          }
+      if (response['statusCode'] == 200) {
+        final model = VideoModel.fromJson(response);
+        if (model.success!) {
+          video.value = model.data!.video;
         } else {
-          Utils.snackBar("Error", "Invalid response structure");
+          video.value = null;
+          Utils.snackBar("Error", "${model.message}");
         }
       } else {
         Utils.snackBar(

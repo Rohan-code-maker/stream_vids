@@ -13,6 +13,7 @@ import 'package:stream_vids/view/language_screen.dart';
 import 'package:stream_vids/view/user/login/login_screen.dart';
 import 'package:stream_vids/view/user/register/register_screen.dart';
 import 'package:stream_vids/view/splash_screen.dart';
+import 'package:stream_vids/view/video_folder/liked_videos/liked_video_screen.dart';
 import 'package:stream_vids/view/video_folder/update_video/update_video_screen.dart';
 import 'package:stream_vids/view/video_folder/video/video_screen.dart';
 
@@ -87,6 +88,11 @@ class AppRoutes {
         GetPage(
             name: RouteName.profileScreen,
             page: () => const ProfileScreen(),
+            transition: Transition.leftToRightWithFade,
+            transitionDuration: const Duration(microseconds: 250)),
+        GetPage(
+            name: RouteName.likedVideoScreen,
+            page: () => const LikedVideoScreen(),
             transition: Transition.leftToRightWithFade,
             transitionDuration: const Duration(microseconds: 250)),
         GetPage(

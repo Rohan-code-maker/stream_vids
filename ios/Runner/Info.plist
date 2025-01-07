@@ -3,6 +3,13 @@
 <plist version="1.0">
 <dict>
 
+<key>NSAppTransportSecurity</key>
+<dict>
+    <key>NSAllowsArbitraryLoads</key>
+    <true/>
+</dict>
+
+
 <key>NSPhotoLibraryUsageDescription</key>
 <string>$(PRODUCT_NAME)photos description.</string>
 <key>NSCameraUsageDescription</key>

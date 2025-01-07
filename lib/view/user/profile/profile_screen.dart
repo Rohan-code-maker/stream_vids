@@ -29,6 +29,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     splashServices.handleAppNavigation();
+    _refreshVideos();
+  }
+
+  Future<void> _refreshVideos() async {
+    videoController.myVideos();
   }
 
   @override
@@ -124,6 +129,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Get.toNamed(
                                 RouteName.updateVideoScreen
                                     .replaceFirst(':videoId', video.sId),
+                                arguments: {
+                                  'title': video.title,
+                                  'description': video.description,
+                                },
                               );
                             },
                           ),
@@ -198,9 +207,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 },
               ),
               ListTile(
-                title: Text("watch_history".tr),
+                title: Text("get_liked_videos".tr),
                 onTap: () {
-                  Get.toNamed(RouteName.watchHistory);
+                  Get.toNamed(RouteName.likedVideoScreen);
                 },
               ),
               ListTile(

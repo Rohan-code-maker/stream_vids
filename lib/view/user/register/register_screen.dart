@@ -42,6 +42,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   validator: (value) {
                     if (value!.isEmpty) {
                       Utils.toastMessageBottom("fullName_hint".tr);
+                      return 'fullName_hint'.tr;
                     }
                     return null;
                   },
@@ -58,6 +59,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   validator: (value) {
                     if (value!.isEmpty) {
                       Utils.toastMessageBottom("username_hint".tr);
+                      return 'username_hint'.tr;
                     }
                     return null;
                   },
@@ -74,10 +76,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   validator: (value) {
                     if (value!.isEmpty) {
                       Utils.toastMessageBottom("email_hint".tr);
+                      return 'email_hint'.tr;
                     }
                     if (!Utils.isValidEmail(
                         registerController.emailController.value.text)) {
                       Utils.toastMessageBottom("invalid_email".tr);
+                      return 'invalid_email'.tr;
                     }
                     return null;
                   },
@@ -86,14 +90,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   height: mq.height * .05,
                 ),
                 InputField(
+                  obscure: true,
                   hintText: 'password_hint'.tr,
                   labelText: 'password_hint'.tr,
                   controller: registerController.passwordController.value,
                   currentFocusNode: registerController.passwordFocusNode.value,
-                  nextFocusNode: registerController.emailFocusNode.value,
+                  nextFocusNode: registerController.fullnameFocusNode.value,
                   validator: (value) {
-                    if (value!.isEmpty) {
-                      Utils.toastMessageBottom("email_hint".tr);
+                    if (value == null || value.isEmpty) {
+                      Utils.toastMessageBottom("password_hint".tr);
+                      return "password_hint".tr;
+                    }
+                    if (value.length < 4) {
+                      Utils.toastMessageBottom("password_length".tr);
+                      return "password_length".tr;
                     }
                     return null;
                   },
@@ -117,8 +127,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   validator: (value) {
                     if (registerController.avatarImage.value == null) {
-                      // Validate if avatar image is selected
                       Utils.toastMessageBottom("select_photo".tr);
+                      return "select_photo".tr;
                     }
                     return null;
                   },

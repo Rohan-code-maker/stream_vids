@@ -20,6 +20,7 @@ class GetWatchHistoryController extends GetxController {
       if (response['statusCode'] == 200) {
         final model = GetWatchHistoryModel.fromJson(response);
         if (model.data!.isNotEmpty) {
+          Get.delete<GetWatchHistoryController>();
           watchHistory.assignAll(model.data!);
         } else {
           Get.snackbar('Info', 'No videos available');

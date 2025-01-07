@@ -23,6 +23,7 @@ class GetAllVideoController extends GetxController {
       if (videoModel.success) {
         if (videoModel.data.videos.isNotEmpty) {
           videoList.assignAll(videoModel.data.videos);
+          Get.delete<GetAllVideoController>();
         } else {
           Utils.snackBar("Info", "No videos available.");
         }

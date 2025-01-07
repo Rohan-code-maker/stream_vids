@@ -41,6 +41,7 @@ class _UpdateAccountScreenState extends State<UpdateAccountScreen> {
                 validator: (value) {
                   if (value!.isEmpty) {
                     Utils.toastMessageBottom("fullName_hint".tr);
+                    return 'fullName_hint'.tr;
                   }
                   return null;
                 },
@@ -57,6 +58,7 @@ class _UpdateAccountScreenState extends State<UpdateAccountScreen> {
                 validator: (value) {
                   if (value!.isEmpty) {
                     Utils.toastMessageBottom("username_hint".tr);
+                    return 'username_hint'.tr;
                   }
                   return null;
                 },
@@ -73,10 +75,12 @@ class _UpdateAccountScreenState extends State<UpdateAccountScreen> {
                 validator: (value) {
                   if (value!.isEmpty) {
                     Utils.toastMessageBottom("email_hint".tr);
+                    return 'email_hint'.tr;
                   }
                   if (!Utils.isValidEmail(
                       controller.emailController.value.text)) {
                     Utils.toastMessageBottom("invalid_email".tr);
+                    return 'invalid_email'.tr;
                   }
                   return null;
                 },

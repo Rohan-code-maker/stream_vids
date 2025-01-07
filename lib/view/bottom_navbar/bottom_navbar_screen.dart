@@ -29,6 +29,8 @@ class BottomNavigationBarScreen extends StatelessWidget {
       bottomNavigationBar: Obx(() => BottomNavigationBar(
             currentIndex: _controller.selectedIndex.value,
             onTap: (index) => _controller.changeIndex(index),
+            selectedItemColor: Colors.blue,
+            unselectedItemColor: Colors.grey,
             items: const [
               BottomNavigationBarItem(
                 icon: Icon(Icons.home),
