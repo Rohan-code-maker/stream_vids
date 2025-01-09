@@ -5,6 +5,8 @@ import 'package:chewie/chewie.dart';
 import 'package:stream_vids/utils/utils.dart';
 import 'package:stream_vids/view_models/controller/user/subscribe_user/subscribe_status_controller.dart';
 import 'package:stream_vids/view_models/controller/user/subscribe_user/subscribe_user_controller.dart';
+import 'package:stream_vids/view_models/controller/video_folder/comment/add_comment_controller.dart';
+import 'package:stream_vids/view_models/controller/video_folder/comment/view_comment_controller.dart';
 import 'package:stream_vids/view_models/controller/video_folder/like_video/get_video_like_status_controller.dart';
 import 'package:stream_vids/view_models/controller/video_folder/like_video/like_count_controller.dart';
 import 'package:stream_vids/view_models/controller/video_folder/like_video/like_video_controller.dart';
@@ -27,11 +29,13 @@ class _VideoScreenState extends State<VideoScreen> {
   final likeCountController = Get.put(LikeCountController());
   final subscriptionController = Get.put(SubscribeUserController());
   final subscriptionStatusController = Get.put(SubscribeStatusController());
+  final addCommentController = Get.put(AddCommentController());
+  final viewCommentController = Get.put(ViewCommentController());
 
   late VideoPlayerController _videoPlayerController;
   ChewieController? _chewieController;
-  final TextEditingController _commentController = TextEditingController();
-  final List<String> comments = <String>[].obs;
+
+  late String commentOwner;
 
   @override
   void initState() {
@@ -39,6 +43,7 @@ class _VideoScreenState extends State<VideoScreen> {
     _controller.fetchVideoById(widget.videoId);
     likeStatusController.fetchLikeStatus(widget.videoId);
     likeCountController.count(widget.videoId);
+    viewCommentController.viewComment(widget.videoId);
   }
 
   @override
@@ -49,9 +54,9 @@ class _VideoScreenState extends State<VideoScreen> {
     Get.delete<LikeCountController>();
     Get.delete<SubscribeUserController>();
     Get.delete<SubscribeStatusController>();
+    Get.delete<AddCommentController>();
     _videoPlayerController.dispose();
     _chewieController?.dispose();
-    _commentController.dispose();
     super.dispose();
   }
 
@@ -133,32 +138,34 @@ class _VideoScreenState extends State<VideoScreen> {
                       const SizedBox(height: 16),
                       Row(
                         children: [
-                          Column(children: [
-                            Obx(() => IconButton(
-                                icon: Icon(
-                                  likeStatusController.isliked.value
-                                      ? Icons.favorite
-                                      : Icons.favorite_border,
-                                  color: likeStatusController.isliked.value
-                                      ? Colors.red
-                                      : Colors.grey,
-                                ),
-                                onPressed: () {
-                                  try {
-                                    // Toggle the like status
-                                    likeController.likeVideo(widget.videoId);
-                                    likeStatusController
-                                        .fetchLikeStatus(widget.videoId);
-                                        likeCountController.count(widget.videoId);
-                                  } catch (e) {
-                                    Utils.snackBar("Error",
-                                        "Failed to update like status: $e");
-                                  }
-                                },
-                              )),
-                              Text(likeCountController.likeCount.value.toString())
-                          ],
-                          
+                          Column(
+                            children: [
+                              Obx(() => IconButton(
+                                    icon: Icon(
+                                      likeStatusController.isliked.value
+                                          ? Icons.favorite
+                                          : Icons.favorite_border,
+                                      color: likeStatusController.isliked.value
+                                          ? Colors.red
+                                          : Colors.grey,
+                                    ),
+                                    onPressed: () {
+                                      try {
+                                        likeController
+                                            .likeVideo(widget.videoId);
+                                        likeStatusController
+                                            .fetchLikeStatus(widget.videoId);
+                                        likeCountController
+                                            .count(widget.videoId);
+                                      } catch (e) {
+                                        Utils.snackBar("Error",
+                                            "Failed to update like status: $e");
+                                      }
+                                    },
+                                  )),
+                              Text(likeCountController.likeCount.value
+                                  .toString())
+                            ],
                           ),
                           const SizedBox(width: 16),
                           Obx(() => ElevatedButton(
@@ -188,31 +195,107 @@ class _VideoScreenState extends State<VideoScreen> {
                       ),
                       const SizedBox(height: 8),
                       TextField(
-                        controller: _commentController,
+                        controller:
+                            addCommentController.commentController.value,
+                        focusNode: addCommentController.commentFocusNode.value,
                         decoration: InputDecoration(
                           hintText: "add_comment".tr,
                           suffixIcon: IconButton(
                             icon: const Icon(Icons.send),
                             onPressed: () {
-                              if (_commentController.text.trim().isNotEmpty) {
-                                comments.add(_commentController.text.trim());
-                                _commentController.clear();
+                              if (addCommentController
+                                  .commentController.value.text
+                                  .trim()
+                                  .isNotEmpty) {
+                                addCommentController.addComment(widget.videoId);
+                                viewCommentController
+                                    .viewComment(widget.videoId);
                               }
                             },
                           ),
                         ),
                       ),
                       const SizedBox(height: 16),
-                      Obx(() => ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: comments.length,
-                            itemBuilder: (context, index) {
-                              return ListTile(
-                                title: Text(comments[index]),
-                              );
-                            },
-                          )),
+                      Obx(() {
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: viewCommentController.comments.length,
+                          itemBuilder: (context, index) {
+                            final comment =
+                                viewCommentController.comments[index];
+                            final commentId = comment.sId!;
+
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 8.0, horizontal: 16.0),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Avatar image
+                                  CircleAvatar(
+                                    radius: 20,
+                                    backgroundImage: NetworkImage(
+                                        comment.commentedBy?.avatar ?? ''),
+                                    backgroundColor: Colors.grey.shade200,
+                                  ),
+                                  const SizedBox(width: 10),
+                                  // Content and actions
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        // Comment owner's name
+                                        Text(
+                                          comment.commentedBy?.username ??
+                                              "Unknown",
+                                          style: const TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        const SizedBox(height: 5),
+                                        // Comment content
+                                        Text(comment.content ?? ""),
+                                        const SizedBox(height: 10),
+                                        Row(
+                                          children: [
+                                            Obx(() => IconButton(
+                                                  onPressed: () {
+                                                    viewCommentController
+                                                        .toggleCommentLike(
+                                                            commentId);
+                                                  },
+                                                  icon: Icon(
+                                                    viewCommentController
+                                                                .isLikedMap[
+                                                                    commentId]
+                                                                ?.value ??
+                                                            false
+                                                        ? Icons.favorite
+                                                        : Icons.favorite_border,
+                                                    color: viewCommentController
+                                                                .isLikedMap[
+                                                                    commentId]
+                                                                ?.value ??
+                                                            false
+                                                        ? Colors.red
+                                                        : Colors.grey,
+                                                  ),
+                                                )),
+                                            Obx(() => Text(
+                                                '${viewCommentController.likeCountMap[commentId]?.value ?? 0}')),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      }),
                     ],
                   ),
                 ),

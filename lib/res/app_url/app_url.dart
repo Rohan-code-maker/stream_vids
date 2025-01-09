@@ -25,4 +25,7 @@ class AppUrl {
   static const String likeVideoCountUrl = "$baseUrl/likes/count/:videoId";
   static const String getlikeVideoUrl = "$baseUrl/likes/videos";
   static const String subscribeUrl = "$baseUrl/subscriptions/c/:channelId";
+  static const String commentUrl = "$baseUrl/comments/:videoId";
+  static const String toggleCommentLikeUrl = "$baseUrl/likes/toggle/c/:commentId";
+  static const String commentLikeCountUrl = "$baseUrl/likes/like-count/:commentId";
 }

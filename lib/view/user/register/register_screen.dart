@@ -28,135 +28,135 @@ class _RegisterScreenState extends State<RegisterScreen> {
         key: _formKey,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Obx(
-            () => Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                InputField(
-                  hintText: 'fullName_hint'.tr,
-                  labelText: 'fullName_hint'.tr,
-                  controller: registerController.fullnameController.value,
-                  currentFocusNode: registerController.fullnameFocusNode.value,
-                  nextFocusNode: registerController.usernameFocusNode.value,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      Utils.toastMessageBottom("fullName_hint".tr);
-                      return 'fullName_hint'.tr;
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(
-                  height: mq.height * .05,
-                ),
-                InputField(
-                  hintText: 'username_hint'.tr,
-                  labelText: 'username_hint'.tr,
-                  controller: registerController.usernameController.value,
-                  currentFocusNode: registerController.usernameFocusNode.value,
-                  nextFocusNode: registerController.emailFocusNode.value,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      Utils.toastMessageBottom("username_hint".tr);
-                      return 'username_hint'.tr;
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(
-                  height: mq.height * .05,
-                ),
-                InputField(
-                  hintText: 'email_hint'.tr,
-                  labelText: 'email_hint'.tr,
-                  controller: registerController.emailController.value,
-                  currentFocusNode: registerController.emailFocusNode.value,
-                  nextFocusNode: registerController.passwordFocusNode.value,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      Utils.toastMessageBottom("email_hint".tr);
-                      return 'email_hint'.tr;
-                    }
-                    if (!Utils.isValidEmail(
-                        registerController.emailController.value.text)) {
-                      Utils.toastMessageBottom("invalid_email".tr);
-                      return 'invalid_email'.tr;
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(
-                  height: mq.height * .05,
-                ),
-                InputField(
-                  obscure: true,
-                  hintText: 'password_hint'.tr,
-                  labelText: 'password_hint'.tr,
-                  controller: registerController.passwordController.value,
-                  currentFocusNode: registerController.passwordFocusNode.value,
-                  nextFocusNode: registerController.fullnameFocusNode.value,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      Utils.toastMessageBottom("password_hint".tr);
-                      return "password_hint".tr;
-                    }
-                    if (value.length < 4) {
-                      Utils.toastMessageBottom("password_length".tr);
-                      return "password_length".tr;
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(
-                  height: mq.height * .05,
-                ),
-                TextFormField(
-                  readOnly: true,
-                  decoration: InputDecoration(
-                    labelText: 'avatar_hint'.tr,
-                    hintText: 'avatar_hint'.tr,
-                    suffixIcon: IconButton(
-                      icon: const Icon(Icons.photo),
-                      onPressed: () =>
-                          registerController.pickImage(isAvatar: true),
-                    ),
-                  ),
-                  controller: TextEditingController(
-                    text: registerController.avatarImageName.value,
-                  ),
-                  validator: (value) {
-                    if (registerController.avatarImage.value == null) {
-                      Utils.toastMessageBottom("select_photo".tr);
-                      return "select_photo".tr;
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(
-                  height: mq.height * .05,
-                ),
-                TextFormField(
-                  readOnly: true,
-                  decoration: InputDecoration(
-                    labelText: 'coverImage_hint'.tr,
-                    hintText: 'coverImage_hint'.tr,
-                    suffixIcon: IconButton(
-                      icon: const Icon(Icons.photo),
-                      onPressed: () =>
-                          registerController.pickImage(isAvatar: false),
-                    ),
-                  ),
-                  controller: TextEditingController(
-                    text: registerController.coverImageName.isNotEmpty
-                        ? registerController.coverImageName.value
-                        : '',
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              InputField(
+                hintText: 'fullName_hint'.tr,
+                labelText: 'fullName_hint'.tr,
+                controller: registerController.fullnameController.value,
+                currentFocusNode: registerController.fullnameFocusNode.value,
+                nextFocusNode: registerController.usernameFocusNode.value,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    Utils.toastMessageBottom("fullName_hint".tr);
+                    return 'fullName_hint'.tr;
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(
+                height: mq.height * .05,
+              ),
+              InputField(
+                hintText: 'username_hint'.tr,
+                labelText: 'username_hint'.tr,
+                controller: registerController.usernameController.value,
+                currentFocusNode: registerController.usernameFocusNode.value,
+                nextFocusNode: registerController.emailFocusNode.value,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    Utils.toastMessageBottom("username_hint".tr);
+                    return 'username_hint'.tr;
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(
+                height: mq.height * .05,
+              ),
+              InputField(
+                hintText: 'email_hint'.tr,
+                labelText: 'email_hint'.tr,
+                controller: registerController.emailController.value,
+                currentFocusNode: registerController.emailFocusNode.value,
+                nextFocusNode: registerController.passwordFocusNode.value,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    Utils.toastMessageBottom("email_hint".tr);
+                    return 'email_hint'.tr;
+                  }
+                  if (!Utils.isValidEmail(
+                      registerController.emailController.value.text)) {
+                    Utils.toastMessageBottom("invalid_email".tr);
+                    return 'invalid_email'.tr;
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(
+                height: mq.height * .05,
+              ),
+              InputField(
+                obscure: true,
+                hintText: 'password_hint'.tr,
+                labelText: 'password_hint'.tr,
+                controller: registerController.passwordController.value,
+                currentFocusNode: registerController.passwordFocusNode.value,
+                nextFocusNode: registerController.fullnameFocusNode.value,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    Utils.toastMessageBottom("password_hint".tr);
+                    return "password_hint".tr;
+                  }
+                  if (value.length < 4) {
+                    Utils.toastMessageBottom("password_length".tr);
+                    return "password_length".tr;
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(
+                height: mq.height * .05,
+              ),
+              TextFormField(
+                readOnly: true,
+                decoration: InputDecoration(
+                  labelText: 'avatar_hint'.tr,
+                  hintText: 'avatar_hint'.tr,
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.photo),
+                    onPressed: () =>
+                        registerController.pickImage(isAvatar: true),
                   ),
                 ),
-                SizedBox(
-                  height: mq.height * .05,
+                controller: TextEditingController(
+                  text: registerController.avatarImageName.value,
                 ),
-                RoundBtn(
+                validator: (value) {
+                  if (registerController.avatarImage.value == null) {
+                    Utils.toastMessageBottom("select_photo".tr);
+                    return "select_photo".tr;
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(
+                height: mq.height * .05,
+              ),
+              TextFormField(
+                readOnly: true,
+                decoration: InputDecoration(
+                  labelText: 'coverImage_hint'.tr,
+                  hintText: 'coverImage_hint'.tr,
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.photo),
+                    onPressed: () =>
+                        registerController.pickImage(isAvatar: false),
+                  ),
+                ),
+                controller: TextEditingController(
+                  text: registerController.coverImageName.isNotEmpty
+                      ? registerController.coverImageName.value
+                      : '',
+                ),
+              ),
+              SizedBox(
+                height: mq.height * .05,
+              ),
+              Obx(
+                () => RoundBtn(
                     loading: registerController.loading.value,
                     title: "register".tr,
                     width: mq.width * .35,
@@ -164,9 +164,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       if (_formKey.currentState!.validate()) {
                         registerController.register();
                       }
-                    })
-              ],
-            ),
+                    }),
+              )
+            ],
           ),
         ),
       ),
