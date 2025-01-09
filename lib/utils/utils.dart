@@ -44,34 +44,44 @@ class Utils {
   }
 
   static void showConfirmation({
-  required BuildContext context,
-  required String title,
-  required String message,
-  required VoidCallback onConfirm,
-}) {
-  Get.dialog(
-    AlertDialog(
-      title: Text(title),
-      content: Text(message),
-      actions: [
-        TextButton(
-          onPressed: () {
-            // Close the dialog
-            Get.back();
-          },
-          child: const Text("Cancel"),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            // Perform the confirm action
-            Get.back(); // Close the dialog first
-            onConfirm(); // Call the passed callback function
-          },
-          child: const Text("Confirm"),
-        ),
-      ],
-    ),
-    barrierDismissible: false,
-  );
-}
+    required BuildContext context,
+    required String title,
+    required String message,
+    required VoidCallback onConfirm,
+  }) {
+    Get.dialog(
+      AlertDialog(
+        title: Text(title),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () {
+              // Close the dialog
+              Get.back();
+            },
+            child: const Text("Cancel"),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              // Perform the confirm action
+              Get.back(); // Close the dialog first
+              onConfirm(); // Call the passed callback function
+            },
+            child: const Text("Confirm"),
+          ),
+        ],
+      ),
+      barrierDismissible: false,
+    );
+  }
+
+  static String extractErrorMessage(String html) {
+    // Regular expression to capture error message between "Error: " and "<br>"
+    final RegExp regExp = RegExp(r'Error:\s(.*?)<br>');
+    final match = regExp.firstMatch(html);
+    if (match != null) {
+      return match.group(1) ?? "Unknown error occurred.";
+    }
+    return "Unknown error occurred.";
+  }
 }

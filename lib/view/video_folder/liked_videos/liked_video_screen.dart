@@ -29,7 +29,10 @@ class _LikedVideoScreenState extends State<LikedVideoScreen> {
       body: Obx(() {
         if (getLikedVideoController.isLoading.value) {
           return const Center(child: CircularProgressIndicator());
-        } else {
+        } else if(getLikedVideoController.likedVideos.isEmpty) {
+          return const Center(child: Text('No liked videos found.'));
+        }
+        else {
           return ListView.builder(
             itemCount: getLikedVideoController.likedVideos.length,
             itemBuilder: (context, index) {

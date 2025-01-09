@@ -7,12 +7,6 @@ class GetWatchHistoryController extends GetxController {
   var watchHistory = [].obs;
   var isLoading = false.obs;
 
-  @override
-  void onInit() {
-    fetchWatchHistory();
-    super.onInit();
-  }
-
   Future<void> fetchWatchHistory() async {
     try {
       isLoading.value = true;

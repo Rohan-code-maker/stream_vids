@@ -18,7 +18,9 @@ class SplashServices {
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
       bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
-      Duration splashDelay = isFirstTime ? const Duration(seconds: 2) : const Duration(milliseconds: 500);
+      Duration splashDelay = isFirstTime
+          ? const Duration(seconds: 2)
+          : const Duration(milliseconds: 500);
       await Future.delayed(splashDelay);
 
       if (isFirstTime) {
@@ -59,7 +61,8 @@ class SplashServices {
     final payload = _decodeJWT(token);
     if (payload == null || !payload.containsKey('exp')) return false;
 
-    final expiryDate = DateTime.fromMillisecondsSinceEpoch(payload['exp'] * 1000);
+    final expiryDate =
+        DateTime.fromMillisecondsSinceEpoch(payload['exp'] * 1000);
     return expiryDate.isAfter(DateTime.now());
   }
 
@@ -69,7 +72,8 @@ class SplashServices {
       if (parts.length != 3) return null;
 
       final payload = parts[1];
-      final decoded = String.fromCharCodes(base64Url.decode(base64Url.normalize(payload)));
+      final decoded =
+          String.fromCharCodes(base64Url.decode(base64Url.normalize(payload)));
       return jsonDecode(decoded);
     } catch (e) {
       return null;
@@ -78,14 +82,17 @@ class SplashServices {
 
   Future<void> _refreshAccessToken(String refreshToken) async {
     try {
-      final response = await _api.refreshTokenApi({'refreshToken': refreshToken});
+      final response =
+          await _api.refreshTokenApi(refreshToken);
 
       if (response['statusCode'] == 200) {
+        final newId = response['data']['_id'];
         final newAccessToken = response['data']['accessToken'];
         final newRefreshToken = response['data']['refreshToken'];
 
         // Update tokens in user preferences
         final updatedUser = await userPreferences.getUser();
+        updatedUser.user!.sId = newId;
         updatedUser.accessToken = newAccessToken;
         updatedUser.refreshToken = newRefreshToken;
         await userPreferences.saveUser(updatedUser);

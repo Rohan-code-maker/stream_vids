@@ -40,7 +40,7 @@ class LoginController extends GetxController {
         final isSaved = await userPreferences.saveUser(dataModel);
         if (isSaved) {
           Get.delete<LoginController>();
-          Get.toNamed(RouteName.homeScreen);
+          Get.toNamed(RouteName.navBarScreen);
           Utils.snackBar("Success", "Login Successfully");
           clearFields();
         } else {
@@ -50,7 +50,8 @@ class LoginController extends GetxController {
         Utils.snackBar("Error", "Login failed");
       }
     } catch (error) {
-      Utils.snackBar("Error", "Login Failed:$error");
+      final String err = Utils.extractErrorMessage(error.toString());
+      Utils.snackBar("Error", "Login Failed:$err");
     } finally {
       loading.value = false;
     }

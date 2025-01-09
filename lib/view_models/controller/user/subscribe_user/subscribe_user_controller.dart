@@ -21,18 +21,8 @@ class SubscribeUserController extends GetxController {
         Utils.snackBar("Error", response['message']);
       }
     } catch (e) {
-      final String errorMessage = extractErrorMessage(e.toString());
+      final String errorMessage = Utils.extractErrorMessage(e.toString());
       Utils.snackBar("Error", "Error while api call: $errorMessage");
     }
-  }
-
-  String extractErrorMessage(String html) {
-    // Regular expression to capture error message between "Error: " and "<br>"
-    final RegExp regExp = RegExp(r'Error:\s(.*?)<br>');
-    final match = regExp.firstMatch(html);
-    if (match != null) {
-      return match.group(1) ?? "Unknown error occurred.";
-    }
-    return "Unknown error occurred.";
   }
 }

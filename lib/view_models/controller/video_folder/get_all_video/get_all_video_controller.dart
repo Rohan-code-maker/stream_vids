@@ -9,12 +9,6 @@ class GetAllVideoController extends GetxController {
   var isLoading = true.obs;
   var videoList = [].obs;
 
-  @override
-  void onInit() {
-    getAllVideo();
-    super.onInit();
-  }
-
   void getAllVideo() async {
     isLoading(true);
     try {

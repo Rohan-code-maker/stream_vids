@@ -22,7 +22,7 @@ class ForgotPasswordController extends GetxController {
     loading.value = true;
     Map<String, String> data = {
       "email": emailController.value.text.trim(),
-      "username": usernameController.value.text.trim(),
+      "username": usernameController.value.text.trim().toLowerCase(),
       "newPassword": newPasswordController.value.text.trim(),
     };
     try {

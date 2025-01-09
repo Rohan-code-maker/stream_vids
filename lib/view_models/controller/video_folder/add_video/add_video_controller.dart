@@ -142,7 +142,7 @@ Future<void> pickVideo() async {
           if (model.success == true) {
             Get.delete<AddVideoController>();
             Utils.snackBar("Success", "Video Posted successfully");
-            Get.toNamed(RouteName.navBarScreen, arguments: {'initialIndex': 0});
+            Get.toNamed(RouteName.navBarScreen);
             clearFields();
           } else {
             Utils.snackBar("Error", model.message);
@@ -166,7 +166,7 @@ Future<void> pickVideo() async {
   void clearFields() {
     titleController.value.clear();
     descriptionController.value.clear();
-    videoFile.value = null;
-    thumbnailImage.value = null;
+    videoName.value = '';
+    thumbnailImageName.value = '';
   }
 }

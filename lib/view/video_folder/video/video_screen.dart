@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:chewie/chewie.dart';
+import 'package:stream_vids/res/user_preferences/user_preferences.dart';
 import 'package:stream_vids/utils/utils.dart';
 import 'package:stream_vids/view_models/controller/user/subscribe_user/subscribe_status_controller.dart';
 import 'package:stream_vids/view_models/controller/user/subscribe_user/subscribe_user_controller.dart';
@@ -10,6 +11,7 @@ import 'package:stream_vids/view_models/controller/video_folder/comment/view_com
 import 'package:stream_vids/view_models/controller/video_folder/like_video/get_video_like_status_controller.dart';
 import 'package:stream_vids/view_models/controller/video_folder/like_video/like_count_controller.dart';
 import 'package:stream_vids/view_models/controller/video_folder/like_video/like_video_controller.dart';
+import 'package:stream_vids/view_models/controller/video_folder/views_count/views_count_controller.dart';
 import 'package:video_player/video_player.dart';
 import 'package:stream_vids/view_models/controller/video_folder/get_video_byid/get_video_byid_controller.dart';
 
@@ -31,11 +33,11 @@ class _VideoScreenState extends State<VideoScreen> {
   final subscriptionStatusController = Get.put(SubscribeStatusController());
   final addCommentController = Get.put(AddCommentController());
   final viewCommentController = Get.put(ViewCommentController());
+  final viewCountController = Get.put(ViewsCountController());
 
   late VideoPlayerController _videoPlayerController;
   ChewieController? _chewieController;
-
-  late String commentOwner;
+  UserPreferences preferences = UserPreferences();
 
   @override
   void initState() {
@@ -44,6 +46,7 @@ class _VideoScreenState extends State<VideoScreen> {
     likeStatusController.fetchLikeStatus(widget.videoId);
     likeCountController.count(widget.videoId);
     viewCommentController.viewComment(widget.videoId);
+    viewCountController.viewCount(widget.videoId);
   }
 
   @override
@@ -55,6 +58,7 @@ class _VideoScreenState extends State<VideoScreen> {
     Get.delete<SubscribeUserController>();
     Get.delete<SubscribeStatusController>();
     Get.delete<AddCommentController>();
+    Get.delete<ViewsCountController>();
     _videoPlayerController.dispose();
     _chewieController?.dispose();
     super.dispose();
@@ -83,6 +87,67 @@ class _VideoScreenState extends State<VideoScreen> {
   @override
   Widget build(BuildContext context) {
     Size mq = MediaQuery.of(context).size;
+
+    void showEditDialog(String commentId, String currentContent) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Edit Comment"),
+            content: TextField(
+              controller: viewCommentController.updateController,
+              decoration: InputDecoration(hintText: "Update your comment"),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Get.back(),
+                child: Text("Cancel"),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  final content = viewCommentController.updateController.text;
+                  if (content.isNotEmpty) {
+                    viewCommentController.updateComment(commentId);
+                    viewCommentController.viewComment(widget.videoId);
+                    Get.back();
+                  } else {
+                    Utils.snackBar("Error", "Comment cannot be empty");
+                  }
+                },
+                child: Text("Save"),
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    void confirmDeleteComment(String commentId) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Delete Comment"),
+            content: Text("Are you sure you want to delete this comment?"),
+            actions: [
+              TextButton(
+                onPressed: () => Get.back(),
+                child: Text("Cancel"),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  viewCommentController.deleteComment(commentId);
+                  viewCommentController.viewComment(widget.videoId);
+                  Get.back();
+                },
+                child: Text("Delete"),
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text("video_screen".tr),
@@ -134,7 +199,8 @@ class _VideoScreenState extends State<VideoScreen> {
                       const SizedBox(height: 8),
                       Text(video.description ?? "No description available."),
                       Text(video.duration.toString()),
-                      Text(video.views.toString()),
+                      Obx(() =>
+                          Text(viewCountController.views.value.toString())),
                       const SizedBox(height: 16),
                       Row(
                         children: [
@@ -178,8 +244,8 @@ class _VideoScreenState extends State<VideoScreen> {
                                 child: Text(
                                   subscriptionStatusController
                                           .isSubscribed.value
-                                      ? "unsubscribe".tr
-                                      : "subscribe".tr,
+                                      ? "subscribe".tr
+                                      : "unsubscribe".tr,
                                 ),
                               )),
                         ],
@@ -225,6 +291,8 @@ class _VideoScreenState extends State<VideoScreen> {
                             final comment =
                                 viewCommentController.comments[index];
                             final commentId = comment.sId!;
+                            final isUserComment = viewCommentController
+                                .isOwner.value; // Check ownership
 
                             return Padding(
                               padding: const EdgeInsets.symmetric(
@@ -285,6 +353,22 @@ class _VideoScreenState extends State<VideoScreen> {
                                                 )),
                                             Obx(() => Text(
                                                 '${viewCommentController.likeCountMap[commentId]?.value ?? 0}')),
+                                            if (isUserComment) ...[
+                                              IconButton(
+                                                icon: const Icon(Icons.edit),
+                                                onPressed: () {
+                                                  showEditDialog(commentId,
+                                                      comment.content ?? "");
+                                                },
+                                              ),
+                                              IconButton(
+                                                icon: const Icon(Icons.delete),
+                                                onPressed: () {
+                                                  confirmDeleteComment(
+                                                      commentId);
+                                                },
+                                              ),
+                                            ],
                                           ],
                                         ),
                                       ],
