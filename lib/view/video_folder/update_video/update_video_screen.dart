@@ -14,7 +14,7 @@ class UpdateVideoScreen extends StatefulWidget {
 }
 
 class _UpdateVideoScreenState extends State<UpdateVideoScreen> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _videoKey = GlobalKey<FormState>();
   final _controller = Get.put(UpdateVideoController());
 
   @override
@@ -37,7 +37,7 @@ class _UpdateVideoScreenState extends State<UpdateVideoScreen> {
         centerTitle: true,
       ),
       body: Form(
-        key: _formKey,
+        key: _videoKey,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Obx(
@@ -132,7 +132,7 @@ class _UpdateVideoScreenState extends State<UpdateVideoScreen> {
                   title: "post_video".tr,
                   width: mq.width * .35,
                   onPress: () {
-                    if (_formKey.currentState!.validate()) {
+                    if (_videoKey.currentState!.validate()) {
                       _controller.updateVideo(widget.videoId);
                     }
                   },

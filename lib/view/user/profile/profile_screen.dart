@@ -39,6 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: UniqueKey(),
       appBar: AppBar(
         title: const Text("Profile"),
         centerTitle: true,
@@ -116,6 +117,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   itemBuilder: (context, index) {
                     final video = videoController.videoList[index];
                     return ListTile(
+                      key: ValueKey(video.sId),
                       title: Text(video.title ?? "No Title"),
                       subtitle: Text(video.description ?? "No Description"),
                       leading: Image.network(video.thumbnail ?? ""),

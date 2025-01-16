@@ -32,6 +32,7 @@ class _WatchHistoryScreenState extends State<WatchHistoryScreen> {
       appBar: AppBar(
         title: Text("watch_history".tr),
         centerTitle: true,
+        automaticallyImplyLeading: false,
       ),
       body: Obx(() {
         if (_controller.isLoading.value) {

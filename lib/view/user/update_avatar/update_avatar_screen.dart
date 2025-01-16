@@ -12,7 +12,7 @@ class UpdateAvatarScreen extends StatefulWidget {
 }
 
 class _UpdateAvatarScreenState extends State<UpdateAvatarScreen> {
-  final _formKey = GlobalKey<FormState>();
+  final _avatarKey = GlobalKey<FormState>();
   final _controller = Get.put(UpdateAvatarController());
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class _UpdateAvatarScreenState extends State<UpdateAvatarScreen> {
           centerTitle: true,
         ),
         body: Form(
-          key: _formKey,
+          key: _avatarKey,
           child: Center(
             child: Obx(
               () => Column(
@@ -58,7 +58,7 @@ class _UpdateAvatarScreenState extends State<UpdateAvatarScreen> {
                       title: "update".tr,
                       width: mq.width * .35,
                       onPress: () {
-                        if (_formKey.currentState!.validate()) {
+                        if (_avatarKey.currentState!.validate()) {
                           _controller.updateAvatar();
                         }
                       })

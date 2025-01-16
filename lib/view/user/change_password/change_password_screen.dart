@@ -16,7 +16,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   ChangePasswordController changePasswordController =
       Get.put(ChangePasswordController());
 
-  final _formKey = GlobalKey<FormState>();
+  final _passwordKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context).size;
@@ -26,7 +26,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         title: Text('change_password'.tr),
       ),
       body: Form(
-          key: _formKey,
+          key: _passwordKey,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Center(
@@ -90,7 +90,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         title: "change_password".tr,
                         width: mq.width * .35,
                         onPress: () {
-                          if (_formKey.currentState!.validate()) {
+                          if (_passwordKey.currentState!.validate()) {
                             changePasswordController.changePassword();
                           }
                         }),

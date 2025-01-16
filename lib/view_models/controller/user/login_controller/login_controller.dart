@@ -30,28 +30,29 @@ class LoginController extends GetxController {
     };
 
     try {
-      // Call login API
       final response = await _api.loginApi(data);
+      if (response == null || !response.containsKey('data')) {
+        Utils.snackBar("Error","Invalid response format");
+      }
 
       final dataModel = Data.fromJson(response['data']);
 
       if (dataModel.accessToken != null) {
-        // Save user data to preferences
         final isSaved = await userPreferences.saveUser(dataModel);
         if (isSaved) {
           Get.delete<LoginController>();
-          Get.toNamed(RouteName.navBarScreen);
+          Get.offAllNamed(RouteName.navBarScreen);
           Utils.snackBar("Success", "Login Successfully");
           clearFields();
         } else {
           Utils.snackBar("Error", "Failed to save user data.");
         }
       } else {
-        Utils.snackBar("Error", "Login failed");
+        Utils.snackBar("Error", "Login failed: No access token found.");
       }
     } catch (error) {
       final String err = Utils.extractErrorMessage(error.toString());
-      Utils.snackBar("Error", "Login Failed:$err");
+      Utils.snackBar("Error", "Login Failed: $err");
     } finally {
       loading.value = false;
     }

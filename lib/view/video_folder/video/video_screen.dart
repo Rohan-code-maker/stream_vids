@@ -93,15 +93,15 @@ class _VideoScreenState extends State<VideoScreen> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text("Edit Comment"),
+            title: const Text("Edit Comment"),
             content: TextField(
               controller: viewCommentController.updateController,
-              decoration: InputDecoration(hintText: "Update your comment"),
+              decoration: const InputDecoration(hintText: "Update your comment"),
             ),
             actions: [
               TextButton(
                 onPressed: () => Get.back(),
-                child: Text("Cancel"),
+                child: const Text("Cancel"),
               ),
               ElevatedButton(
                 onPressed: () {
@@ -114,7 +114,7 @@ class _VideoScreenState extends State<VideoScreen> {
                     Utils.snackBar("Error", "Comment cannot be empty");
                   }
                 },
-                child: Text("Save"),
+                child: const Text("Save"),
               ),
             ],
           );
@@ -127,12 +127,12 @@ class _VideoScreenState extends State<VideoScreen> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text("Delete Comment"),
-            content: Text("Are you sure you want to delete this comment?"),
+            title: const Text("Delete Comment"),
+            content: const Text("Are you sure you want to delete this comment?"),
             actions: [
               TextButton(
                 onPressed: () => Get.back(),
-                child: Text("Cancel"),
+                child: const Text("Cancel"),
               ),
               ElevatedButton(
                 onPressed: () {
@@ -140,7 +140,7 @@ class _VideoScreenState extends State<VideoScreen> {
                   viewCommentController.viewComment(widget.videoId);
                   Get.back();
                 },
-                child: Text("Delete"),
+                child: const Text("Delete"),
               ),
             ],
           );

@@ -5,7 +5,8 @@ import 'package:stream_vids/res/routes/route.dart';
 import 'package:stream_vids/view_models/services/language_service.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // Ensure bindings are initialized for async calls
+  WidgetsFlutterBinding
+      .ensureInitialized(); // Ensure bindings are initialized for async calls
 
   // Initialize LanguageService to get saved locale
   final LanguageService languageService = LanguageService();
@@ -27,7 +28,14 @@ class MyApp extends StatelessWidget {
       translations: Languages(),
       locale: initialLocale,
       fallbackLocale: initialLocale,
-      theme: ThemeData(primarySwatch: Colors.blue),
+      theme: ThemeData(
+        appBarTheme: const AppBarTheme(backgroundColor: Color(0xFFFFF8E1)),
+        scaffoldBackgroundColor: const Color(0xFFFFF8E1),
+        textTheme: const TextTheme(
+          bodyLarge: TextStyle(color: Colors.black),
+          bodyMedium: TextStyle(color: Colors.black),
+        ),
+      ),
       getPages: AppRoutes.appRoutes(),
     );
   }

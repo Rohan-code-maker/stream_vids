@@ -15,7 +15,7 @@ class UpdateAccountScreen extends StatefulWidget {
 class _UpdateAccountScreenState extends State<UpdateAccountScreen> {
   UpdateAccountController controller = Get.put(UpdateAccountController());
 
-  final _formKey = GlobalKey<FormState>();
+  final _updateKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     Size mq = MediaQuery.of(context).size;
@@ -25,7 +25,7 @@ class _UpdateAccountScreenState extends State<UpdateAccountScreen> {
         centerTitle: true,
       ),
       body: Form(
-        key: _formKey,
+        key: _updateKey,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Column(
@@ -93,7 +93,7 @@ class _UpdateAccountScreenState extends State<UpdateAccountScreen> {
                   title: "update".tr,
                   width: mq.width * .35,
                   onPress: () {
-                    if (_formKey.currentState!.validate()) {
+                    if (_updateKey.currentState!.validate()) {
                       controller.updateAccount();
                     }
                   })),

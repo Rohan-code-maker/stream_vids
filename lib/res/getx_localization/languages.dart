@@ -27,6 +27,7 @@ class Languages extends Translations{
       "welcome": "Hello and Welcome",
       "login_screen":"Login Screen",
       "register_screen":"Register Screen",
+      "back_to_login":"Back to Login",
       "home_screen":"Home Screen",
       "video_screen":"Video Screen",
       "post_video":"Post Video",
@@ -52,6 +53,7 @@ class Languages extends Translations{
       "comments":"Comments",
       "get_liked_videos":"Get Liked Videos",
       "liked_videos":"Liked Videos",
+      "change_theme":"Change Theme",
     },
     'hi_IN': {
       'email_hint': "अपना ईमेल दर्ज करें",

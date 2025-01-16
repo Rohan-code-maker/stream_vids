@@ -12,7 +12,7 @@ class UpdateCoverimageScreen extends StatefulWidget {
 }
 
 class _UpdateCoverimageScreenState extends State<UpdateCoverimageScreen> {
-  final _formKey = GlobalKey<FormState>();
+  final _coverKey = GlobalKey<FormState>();
   final _controller = Get.put(UpdateCoverimageController());
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class _UpdateCoverimageScreenState extends State<UpdateCoverimageScreen> {
         title: Text('update_coverimage'.tr),
       ),
       body: Form(
-          key: _formKey,
+          key: _coverKey,
           child: Center(
             child: Obx(
               () => Column(
@@ -57,7 +57,7 @@ class _UpdateCoverimageScreenState extends State<UpdateCoverimageScreen> {
                       title: "update".tr,
                       width: mq.width * .35,
                       onPress: () {
-                        if (_formKey.currentState!.validate()) {
+                        if (_coverKey.currentState!.validate()) {
                           _controller.updateCoverImage();
                         }
                       })

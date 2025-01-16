@@ -6,6 +6,8 @@ class InputField extends StatelessWidget {
   const InputField(
       {super.key,
       this.obscure = false,
+      this.prefixIcon,
+      this.suffixIcon,
       required this.hintText,
       required this.labelText,
       this.obscureChar = "*",
@@ -19,11 +21,12 @@ class InputField extends StatelessWidget {
   final TextEditingController controller;
   final FocusNode currentFocusNode, nextFocusNode;
   final FormFieldValidator<String>? validator;
+  final Icon? prefixIcon;
+  final IconButton? suffixIcon;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      
       maxLines: 1,
       autofocus: false,
       controller: controller,
@@ -34,14 +37,14 @@ class InputField extends StatelessWidget {
       },
       obscureText: obscure,
       obscuringCharacter: obscureChar,
+      style: const TextStyle(color: Colors.black),
       decoration: InputDecoration(
-        labelText: labelText,
-        hintText: hintText,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0)
-        ),
-        errorStyle: const TextStyle(color: AppColors.red)
-      ),
+          suffixIcon: suffixIcon,
+          prefixIcon: prefixIcon,
+          labelText: labelText,
+          hintText: hintText,
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+          errorStyle: const TextStyle(color: AppColors.red)),
     );
   }
 }

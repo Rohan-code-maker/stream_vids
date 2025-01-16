@@ -29,7 +29,7 @@ class LogoutController extends GetxController {
         // Logout successful
         await userPreferences.clearUser();
         Get.delete<LogoutController>();
-        Get.toNamed(RouteName.loginScreen);
+        Get.offAllNamed(RouteName.loginScreen);
         Utils.snackBar("Success", "Logout Successfully");
       } else {
         // Logout failed

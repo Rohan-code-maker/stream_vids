@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:stream_vids/res/components/input_field.dart';
 import 'package:stream_vids/res/components/round_btn.dart';
 import 'package:stream_vids/utils/utils.dart';
@@ -13,101 +14,173 @@ class ForgotPasswordScreen extends StatefulWidget {
 }
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
-  final _controller = Get.put(ForgotPasswordController());
-  final _formKey = GlobalKey<FormState>();
+  final forgotPasswordController = Get.put(ForgotPasswordController());
+  final _forgotPasswordKey = GlobalKey<FormState>();
+  final RxBool _isPasswordObscured = true.obs;
+
   @override
   Widget build(BuildContext context) {
-    final mq = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('forgot_password'.tr),
+        automaticallyImplyLeading: true,
+        title: Text(
+          'forgot_password'.tr,
+        ),
       ),
-      body: Form(
-          key: _formKey,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Center(
-              child: Obx(
-                () => Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    InputField(
-                      hintText: 'email_hint'.tr,
-                      labelText: 'email_hint'.tr,
-                      controller: _controller.emailController.value,
-                      currentFocusNode: _controller.emailFocusNode.value,
-                      nextFocusNode: _controller.usernameFocusNode.value,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          Utils.toastMessageBottom("email_hint".tr);
-                          return "email_hint".tr; // Return an error message
-                        }
-                        if (!Utils.isValidEmail(
-                            _controller.emailController.value.text)) {
-                          Utils.toastMessageBottom("invalid_email".tr);
-                          return "invalid_email".tr; // Return an error message
-                        }
-                        return null; // Return null if validation passes
-                      },
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final isWideScreen = constraints.maxWidth > 600;
+          final mq = MediaQuery.of(context).size;
+          final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
+          return SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Container(
+                  width: isWideScreen ? mq.width * 0.5 : mq.width,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                    border: Border.all(
+                      width: 2,
+                      color: isDarkMode ? Colors.white : Colors.black,
                     ),
-                    SizedBox(
-                      height: mq.height * .1,
+                  ),
+                  child: Form(
+                    key: _forgotPasswordKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: mq.height * 0.3,
+                          child: Lottie.asset(
+                            'assets/animation/forgot_password_animation.json',
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                        SizedBox(height: mq.height * 0.1),
+                        SizedBox(
+                          width: isWideScreen ? mq.width * 0.3 : mq.width * 0.8,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Obx(() => InputField(
+                                    hintText: 'email_hint'.tr,
+                                    labelText: 'email_hint'.tr,
+                                    controller: forgotPasswordController
+                                        .emailController.value,
+                                    currentFocusNode: forgotPasswordController
+                                        .emailFocusNode.value,
+                                    nextFocusNode: forgotPasswordController
+                                        .usernameFocusNode.value,
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return "email_hint".tr;
+                                      }
+                                      if (!Utils.isValidEmail(value)) {
+                                        return "invalid_email".tr;
+                                      }
+                                      return null;
+                                    },
+                                    prefixIcon: const Icon(Icons.email),
+                                  )),
+                              SizedBox(height: mq.height * 0.05),
+                              Obx(() => InputField(
+                                    hintText: 'username_hint'.tr,
+                                    labelText: 'username_hint'.tr,
+                                    controller: forgotPasswordController
+                                        .usernameController.value,
+                                    currentFocusNode: forgotPasswordController
+                                        .usernameFocusNode.value,
+                                    nextFocusNode: forgotPasswordController
+                                        .newPasswordFocusNode.value,
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return "username_hint".tr;
+                                      }
+                                      return null;
+                                    },
+                                    prefixIcon: const Icon(Icons.person),
+                                  )),
+                              SizedBox(height: mq.height * 0.05),
+                              Obx(
+                                () => InputField(
+                                  obscure: true,
+                                  hintText: 'new_password_hint'.tr,
+                                  labelText: 'new_password_hint'.tr,
+                                  controller: forgotPasswordController
+                                      .newPasswordController.value,
+                                  currentFocusNode: forgotPasswordController
+                                      .newPasswordFocusNode.value,
+                                  nextFocusNode: forgotPasswordController
+                                      .emailFocusNode.value,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return "new_password_hint".tr;
+                                    }
+                                    if (value.length < 8) {
+                                      return "password_length".tr;
+                                    }
+                                    return null;
+                                  },
+                                  prefixIcon: const Icon(Icons.lock),
+                                  suffixIcon: IconButton(
+                                      onPressed: () {
+                                        _isPasswordObscured.value =
+                                            !_isPasswordObscured.value;
+                                      },
+                                      icon: _isPasswordObscured.value
+                                          ? const Icon(Icons.visibility_off)
+                                          : const Icon(Icons.visibility)),
+                                ),
+                              ),
+                              SizedBox(height: mq.height * 0.05),
+                              Obx(() => RoundBtn(
+                                    loading:
+                                        forgotPasswordController.loading.value,
+                                    title: "reset_password".tr,
+                                    width: isWideScreen
+                                        ? mq.width * 0.15
+                                        : mq.width * 0.5,
+                                    onPress: () {
+                                      if (_forgotPasswordKey.currentState!
+                                          .validate()) {
+                                        forgotPasswordController
+                                            .forgotPassword();
+                                      }
+                                    },
+                                  )),
+                              SizedBox(height: mq.height * 0.05),
+                              TextButton(
+                                onPressed: () {
+                                  Get.back(); // Navigate back to Login Screen
+                                },
+                                child: Text(
+                                  "back_to_login".tr,
+                                  style: TextStyle(
+                                    fontSize: isWideScreen
+                                        ? mq.width * 0.015
+                                        : mq.height * 0.03,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
                     ),
-                    InputField(
-                      hintText: 'username_hint'.tr,
-                      labelText: 'username_hint'.tr,
-                      controller: _controller.usernameController.value,
-                      currentFocusNode: _controller.usernameFocusNode.value,
-                      nextFocusNode: _controller.newPasswordFocusNode.value,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          Utils.toastMessageBottom("username_hint".tr);
-                          return "username_hint".tr;
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(
-                      height: mq.height * .1,
-                    ),
-                    InputField(
-                      obscure: true,
-                      hintText: 'new_password_hint'.tr,
-                      labelText: 'new_password_hint'.tr,
-                      controller: _controller.newPasswordController.value,
-                      currentFocusNode: _controller.newPasswordFocusNode.value,
-                      nextFocusNode: _controller.usernameFocusNode.value,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          Utils.toastMessageBottom("new_password_hint".tr);
-                          return "new_password_hint".tr;
-                        }
-                        if (value.length < 8) {
-                          Utils.toastMessageBottom("password_length".tr);
-                          return "password_length".tr;
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(
-                      height: mq.height * .1,
-                    ),
-                    RoundBtn(
-                        loading: _controller.loading.value,
-                        title: "login".tr,
-                        width: mq.width * .35,
-                        onPress: () {
-                          if (_formKey.currentState!.validate()) {
-                            _controller.forgotPassword();
-                          }
-                        }),
-                  ],
+                  ),
                 ),
               ),
             ),
-          )),
+          );
+        },
+      ),
     );
   }
 }

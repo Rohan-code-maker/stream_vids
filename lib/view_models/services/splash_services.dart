@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,7 +24,7 @@ class SplashServices {
 
       if (isFirstTime) {
         Get.toNamed(RouteName.languageScreen);
-        prefs.setBool('isFirstTime', false);
+        await prefs.setBool('isFirstTime', false);
       } else {
         await _checkLoginStatus();
       }
