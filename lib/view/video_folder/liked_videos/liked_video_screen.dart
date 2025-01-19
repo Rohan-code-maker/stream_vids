@@ -26,6 +26,11 @@ class _LikedVideoScreenState extends State<LikedVideoScreen> {
       appBar: AppBar(
         title: Text('liked_videos'.tr),
         centerTitle: true,
+        leading: IconButton(
+            onPressed: () {
+              Get.back();
+            },
+            icon: const Icon(Icons.arrow_back_ios)),
       ),
       body: Obx(() {
         if (getLikedVideoController.isLoading.value) {

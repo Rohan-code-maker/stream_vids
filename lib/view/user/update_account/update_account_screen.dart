@@ -23,6 +23,11 @@ class _UpdateAccountScreenState extends State<UpdateAccountScreen> {
       appBar: AppBar(
         centerTitle: true,
         title: Text('update_account'.tr),
+        leading: IconButton(
+            onPressed: () {
+              Get.back();
+            },
+            icon: const Icon(Icons.arrow_back_ios)),
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {

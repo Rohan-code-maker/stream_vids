@@ -35,6 +35,11 @@ class _UpdateVideoScreenState extends State<UpdateVideoScreen> {
       appBar: AppBar(
         title: const Text('Update Video'),
         centerTitle: true,
+        leading: IconButton(
+            onPressed: () {
+              Get.back();
+            },
+            icon: const Icon(Icons.arrow_back_ios)),
       ),
       body: Form(
         key: _videoKey,

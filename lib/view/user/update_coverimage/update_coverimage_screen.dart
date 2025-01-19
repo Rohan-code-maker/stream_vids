@@ -53,6 +53,11 @@ class _UpdateCoverImageScreenState extends State<UpdateCoverImageScreen>
       appBar: AppBar(
         title: Text('update_coverimage'.tr),
         centerTitle: true,
+        leading: IconButton(
+            onPressed: () {
+              Get.back();
+            },
+            icon: const Icon(Icons.arrow_back_ios)),
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {

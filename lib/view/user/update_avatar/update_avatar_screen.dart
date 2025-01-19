@@ -21,6 +21,11 @@ class _UpdateAvatarScreenState extends State<UpdateAvatarScreen> {
         appBar: AppBar(
           title: Text('update_avatar'.tr),
           centerTitle: true,
+          leading: IconButton(
+            onPressed: () {
+              Get.back();
+            },
+            icon: const Icon(Icons.arrow_back_ios)),
         ),
         body: Form(
           key: _avatarKey,
