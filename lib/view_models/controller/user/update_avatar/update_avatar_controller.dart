@@ -86,17 +86,17 @@ class UpdateAvatarController extends GetxController {
           if (model.success == true) {
             Get.delete<UpdateAvatarController>();
             Utils.snackBar("Success", "Avatar Updated successfully");
-            Get.toNamed(RouteName.navBarScreen, arguments: {'initialIndex': 2});
+            Get.toNamed(RouteName.navBarScreen);
           } else {
             Utils.snackBar("Error", model.message!);
           }
         } else {
-          // Handle unexpected status code
           Utils.snackBar("Error",
               "Unexpected status code: ${response['statusCode']} \n ${response['message']}");
         }
-      } catch (err) {
-        Utils.snackBar("Error", "Error while Updating: $err");
+      } catch (e) {
+        final String err = Utils.extractErrorMessage(e.toString());
+        Utils.snackBar("Error", err);
       }
     } catch (e) {
       Utils.snackBar("Error", "Error while uploading image: $e");

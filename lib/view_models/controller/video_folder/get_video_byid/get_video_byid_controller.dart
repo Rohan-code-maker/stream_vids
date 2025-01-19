@@ -28,7 +28,8 @@ class GetVideoByIdController extends GetxController {
             "Error", "$response['message'] ?? Failed to fetch video");
       }
     } catch (e) {
-      Utils.snackBar("Error", "Error while fetching video");
+      final String err = Utils.extractErrorMessage(e.toString());
+      Utils.snackBar("Error", err);
     } finally {
       isLoading(false);
     }

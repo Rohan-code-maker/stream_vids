@@ -6,7 +6,6 @@ import 'package:stream_vids/view_models/controller/user/get_channel_profile/get_
 import 'package:stream_vids/view_models/controller/user/logout_controller/logout_controller.dart';
 import 'package:stream_vids/view_models/controller/video_folder/delete_video/delete_video_controller.dart';
 import 'package:stream_vids/view_models/controller/video_folder/get_my_video/my_video_controller.dart';
-import 'package:stream_vids/view_models/services/splash_services.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -23,12 +22,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final DeleteVideoController deleteVideoController =
       Get.put(DeleteVideoController());
 
-  SplashServices splashServices = SplashServices();
 
   @override
   void initState() {
     super.initState();
-    splashServices.handleAppNavigation();
     _refreshVideos();
   }
 

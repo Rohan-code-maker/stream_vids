@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:stream_vids/models/user/watch_history/get_watch_history_model.dart';
 import 'package:stream_vids/repository/user/watch_history/get_watch_history_repository.dart';
+import 'package:stream_vids/utils/utils.dart';
 
 class GetWatchHistoryController extends GetxController {
   final _api = GetWatchHistoryRepository();
@@ -17,13 +18,14 @@ class GetWatchHistoryController extends GetxController {
           Get.delete<GetWatchHistoryController>();
           watchHistory.assignAll(model.data!);
         } else {
-          Get.snackbar('Info', 'No videos available');
+          Utils.snackBar("Error", model.message!);
         }
       } else {
-        Get.snackbar('Error', 'Failed to fetch Watch History');
+        Utils.snackBar('Error', response['message']);
       }
     } catch (e) {
-      Get.snackbar('Error', 'Something went wrong: $e');
+      final String err = Utils.extractErrorMessage(e.toString());
+      Utils.snackBar('Error', err);
     } finally {
       isLoading.value = false;
     }

@@ -1,15 +1,10 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:chewie/chewie.dart';
 import 'package:stream_vids/res/user_preferences/user_preferences.dart';
 import 'package:stream_vids/utils/utils.dart';
-import 'package:stream_vids/view_models/controller/user/subscribe_user/subscribe_status_controller.dart';
 import 'package:stream_vids/view_models/controller/user/subscribe_user/subscribe_user_controller.dart';
-import 'package:stream_vids/view_models/controller/video_folder/comment/add_comment_controller.dart';
 import 'package:stream_vids/view_models/controller/video_folder/comment/view_comment_controller.dart';
-import 'package:stream_vids/view_models/controller/video_folder/like_video/get_video_like_status_controller.dart';
-import 'package:stream_vids/view_models/controller/video_folder/like_video/like_count_controller.dart';
 import 'package:stream_vids/view_models/controller/video_folder/like_video/like_video_controller.dart';
 import 'package:stream_vids/view_models/controller/video_folder/views_count/views_count_controller.dart';
 import 'package:video_player/video_player.dart';
@@ -24,14 +19,11 @@ class VideoScreen extends StatefulWidget {
   State<VideoScreen> createState() => _VideoScreenState();
 }
 
-class _VideoScreenState extends State<VideoScreen> {
+class _VideoScreenState extends State<VideoScreen>
+    with SingleTickerProviderStateMixin {
   final _controller = Get.put(GetVideoByIdController());
   final likeController = Get.put(LikeVideoController());
-  final likeStatusController = Get.put(GetVideoLikeStatusController());
-  final likeCountController = Get.put(LikeCountController());
   final subscriptionController = Get.put(SubscribeUserController());
-  final subscriptionStatusController = Get.put(SubscribeStatusController());
-  final addCommentController = Get.put(AddCommentController());
   final viewCommentController = Get.put(ViewCommentController());
   final viewCountController = Get.put(ViewsCountController());
 
@@ -43,8 +35,8 @@ class _VideoScreenState extends State<VideoScreen> {
   void initState() {
     super.initState();
     _controller.fetchVideoById(widget.videoId);
-    likeStatusController.fetchLikeStatus(widget.videoId);
-    likeCountController.count(widget.videoId);
+    likeController.count(widget.videoId);
+    likeController.fetchLikeStatus(widget.videoId);
     viewCommentController.viewComment(widget.videoId);
     viewCountController.viewCount(widget.videoId);
   }
@@ -52,13 +44,6 @@ class _VideoScreenState extends State<VideoScreen> {
   @override
   void dispose() {
     Get.delete<GetVideoByIdController>();
-    Get.delete<LikeVideoController>();
-    Get.delete<GetVideoLikeStatusController>();
-    Get.delete<LikeCountController>();
-    Get.delete<SubscribeUserController>();
-    Get.delete<SubscribeStatusController>();
-    Get.delete<AddCommentController>();
-    Get.delete<ViewsCountController>();
     _videoPlayerController.dispose();
     _chewieController?.dispose();
     super.dispose();
@@ -76,10 +61,6 @@ class _VideoScreenState extends State<VideoScreen> {
     _videoPlayerController.initialize().then((_) {
       setState(() {});
     }).catchError((error, stackTrace) {
-      if (kDebugMode) {
-        print("Error initializing video: $error");
-        print("StackTrace: $stackTrace");
-      }
       Utils.snackBar("Error", "Error initializing video: $error");
     });
   }
@@ -96,7 +77,8 @@ class _VideoScreenState extends State<VideoScreen> {
             title: const Text("Edit Comment"),
             content: TextField(
               controller: viewCommentController.updateController,
-              decoration: const InputDecoration(hintText: "Update your comment"),
+              decoration:
+                  const InputDecoration(hintText: "Update your comment"),
             ),
             actions: [
               TextButton(
@@ -128,7 +110,8 @@ class _VideoScreenState extends State<VideoScreen> {
         builder: (context) {
           return AlertDialog(
             title: const Text("Delete Comment"),
-            content: const Text("Are you sure you want to delete this comment?"),
+            content:
+                const Text("Are you sure you want to delete this comment?"),
             actions: [
               TextButton(
                 onPressed: () => Get.back(),
@@ -153,241 +136,241 @@ class _VideoScreenState extends State<VideoScreen> {
         title: Text("video_screen".tr),
         centerTitle: true,
       ),
-      body: Obx(() {
-        if (_controller.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
-        }
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final isWideScreen = constraints.maxWidth > 600;
+          final theme = Theme.of(context);
 
-        final video = _controller.video.value;
+          return Obx(() {
+            if (_controller.isLoading.value) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-        if (video == null) {
-          return Center(child: Text("no_video".tr));
-        }
+            final video = _controller.video.value;
 
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (_chewieController == null && video.videoFile != null) {
-            initializeVideoPlayer(video.videoFile!);
-          }
-          subscriptionStatusController.getSubscribedStatus(video.owner!);
-        });
+            if (video == null) {
+              return Center(child: Text("no_video".tr));
+            }
 
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                if (_chewieController != null)
-                  AspectRatio(
-                    aspectRatio: _videoPlayerController.value.aspectRatio,
-                    child: Chewie(controller: _chewieController!),
-                  )
-                else
-                  const Center(child: CircularProgressIndicator()),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        video.title ?? "Untitled",
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (_chewieController == null && video.videoFile != null) {
+                initializeVideoPlayer(video.videoFile!);
+              }
+              subscriptionController.getSubscribedStatus(video.owner!);
+            });
+
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    if (_chewieController != null)
+                      AspectRatio(
+                        aspectRatio: _videoPlayerController.value.aspectRatio,
+                        child: Chewie(controller: _chewieController!),
+                      )
+                    else
+                      const Center(child: CircularProgressIndicator()),
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      padding: const EdgeInsets.all(16.0),
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.surface,
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                      const SizedBox(height: 8),
-                      Text(video.description ?? "No description available."),
-                      Text(video.duration.toString()),
-                      Obx(() =>
-                          Text(viewCountController.views.value.toString())),
-                      const SizedBox(height: 16),
-                      Row(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Column(
+                          Text(
+                            video.title!.toUpperCase(),
+                            style: TextStyle(
+                                fontFamily: 'Times New Roman',
+                                fontSize: mq.width * 0.05,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: mq.height * 0.03),
+                          Text("Description: ${video.description!.toUpperCase()}",style: TextStyle(fontSize: mq.width * 0.03),),
+                          SizedBox(height: mq.height * 0.03),
+                          Obx(() =>
+                              Text("Total Views: ${viewCountController.views.value.toString()}")),
+                          SizedBox(height: mq.height * 0.03),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Obx(() => IconButton(
-                                    icon: Icon(
-                                      likeStatusController.isliked.value
-                                          ? Icons.favorite
-                                          : Icons.favorite_border,
-                                      color: likeStatusController.isliked.value
-                                          ? Colors.red
-                                          : Colors.grey,
-                                    ),
+                              Column(
+                                children: [
+                                  Obx(() => IconButton(
+                                        icon: Icon(
+                                          likeController.isliked.value
+                                              ? Icons.favorite
+                                              : Icons.favorite_border,
+                                          color: likeController.isliked.value
+                                              ? Colors.red
+                                              : Colors.grey,
+                                        ),
+                                        onPressed: () {
+                                          likeController
+                                              .likeVideo(widget.videoId);
+                                        },
+                                      )),
+                                  Text(likeController.likeCount.value
+                                      .toString()),
+                                ],
+                              ),
+                              Obx(() => ElevatedButton(
                                     onPressed: () {
-                                      try {
-                                        likeController
-                                            .likeVideo(widget.videoId);
-                                        likeStatusController
-                                            .fetchLikeStatus(widget.videoId);
-                                        likeCountController
-                                            .count(widget.videoId);
-                                      } catch (e) {
-                                        Utils.snackBar("Error",
-                                            "Failed to update like status: $e");
-                                      }
+                                      subscriptionController
+                                          .subscribe(video.owner!);
                                     },
+                                    child: Text(
+                                      subscriptionController.isSubscribed.value
+                                          ? "subscribed".tr
+                                          : "subscribe".tr,
+                                    ),
                                   )),
-                              Text(likeCountController.likeCount.value
-                                  .toString())
                             ],
                           ),
-                          const SizedBox(width: 16),
-                          Obx(() => ElevatedButton(
-                                onPressed: () {
-                                  subscriptionController
-                                      .subscribe(video.owner!);
-                                  subscriptionStatusController
-                                      .getSubscribedStatus(video.owner!);
-                                },
-                                child: Text(
-                                  subscriptionStatusController
-                                          .isSubscribed.value
-                                      ? "subscribe".tr
-                                      : "unsubscribe".tr,
-                                ),
-                              )),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      const Divider(),
-                      Text(
-                        "comments".tr,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      TextField(
-                        controller:
-                            addCommentController.commentController.value,
-                        focusNode: addCommentController.commentFocusNode.value,
-                        decoration: InputDecoration(
-                          hintText: "add_comment".tr,
-                          suffixIcon: IconButton(
-                            icon: const Icon(Icons.send),
-                            onPressed: () {
-                              if (addCommentController
-                                  .commentController.value.text
-                                  .trim()
-                                  .isNotEmpty) {
-                                addCommentController.addComment(widget.videoId);
-                                viewCommentController
-                                    .viewComment(widget.videoId);
-                              }
-                            },
+                          const SizedBox(height: 16),
+                          const Divider(),
+                          Text(
+                            "comments".tr,
                           ),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      Obx(() {
-                        return ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: viewCommentController.comments.length,
-                          itemBuilder: (context, index) {
-                            final comment =
-                                viewCommentController.comments[index];
-                            final commentId = comment.sId!;
-                            final isUserComment = viewCommentController
-                                .isOwner.value; // Check ownership
+                          const SizedBox(height: 8),
+                          TextField(
+                            controller:
+                                viewCommentController.commentController.value,
+                            focusNode:
+                                viewCommentController.commentFocusNode.value,
+                            decoration: InputDecoration(
+                              hintText: "add_comment".tr,
+                              suffixIcon: IconButton(
+                                icon: const Icon(Icons.send),
+                                onPressed: () {
+                                  if (viewCommentController
+                                      .commentController.value.text
+                                      .trim()
+                                      .isNotEmpty) {
+                                    viewCommentController
+                                        .addComment(widget.videoId);
+                                    viewCommentController
+                                        .viewComment(widget.videoId);
+                                  }
+                                },
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          Obx(() {
+                            return ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: viewCommentController.comments.length,
+                              itemBuilder: (context, index) {
+                                final comment =
+                                    viewCommentController.comments[index];
+                                final commentId = comment.sId!;
 
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 8.0, horizontal: 16.0),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  // Avatar image
-                                  CircleAvatar(
-                                    radius: 20,
-                                    backgroundImage: NetworkImage(
-                                        comment.commentedBy?.avatar ?? ''),
-                                    backgroundColor: Colors.grey.shade200,
-                                  ),
-                                  const SizedBox(width: 10),
-                                  // Content and actions
-                                  Expanded(
-                                    child: Column(
+                                return AnimatedOpacity(
+                                  duration: const Duration(milliseconds: 300),
+                                  opacity: 1.0,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0, horizontal: 16.0),
+                                    child: Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        // Comment owner's name
-                                        Text(
-                                          comment.commentedBy?.username ??
-                                              "Unknown",
-                                          style: const TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.bold),
+                                        CircleAvatar(
+                                          radius: 20,
+                                          backgroundImage: NetworkImage(
+                                              comment.commentedBy?.avatar ??
+                                                  ''),
+                                          backgroundColor: Colors.grey.shade200,
                                         ),
-                                        const SizedBox(height: 5),
-                                        // Comment content
-                                        Text(comment.content ?? ""),
-                                        const SizedBox(height: 10),
-                                        Row(
-                                          children: [
-                                            Obx(() => IconButton(
-                                                  onPressed: () {
-                                                    viewCommentController
-                                                        .toggleCommentLike(
-                                                            commentId);
-                                                  },
-                                                  icon: Icon(
-                                                    viewCommentController
-                                                                .isLikedMap[
-                                                                    commentId]
-                                                                ?.value ??
-                                                            false
-                                                        ? Icons.favorite
-                                                        : Icons.favorite_border,
-                                                    color: viewCommentController
-                                                                .isLikedMap[
-                                                                    commentId]
-                                                                ?.value ??
-                                                            false
-                                                        ? Colors.red
-                                                        : Colors.grey,
-                                                  ),
-                                                )),
-                                            Obx(() => Text(
-                                                '${viewCommentController.likeCountMap[commentId]?.value ?? 0}')),
-                                            if (isUserComment) ...[
-                                              IconButton(
-                                                icon: const Icon(Icons.edit),
-                                                onPressed: () {
-                                                  showEditDialog(commentId,
-                                                      comment.content ?? "");
-                                                },
+                                        const SizedBox(width: 10),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                comment.commentedBy?.username ??
+                                                    "Unknown",
                                               ),
-                                              IconButton(
-                                                icon: const Icon(Icons.delete),
-                                                onPressed: () {
-                                                  confirmDeleteComment(
-                                                      commentId);
-                                                },
+                                              const SizedBox(height: 5),
+                                              Text(comment.content ?? ""),
+                                              const SizedBox(height: 10),
+                                              Row(
+                                                children: [
+                                                  Obx(() => IconButton(
+                                                        onPressed: () {
+                                                          viewCommentController
+                                                              .toggleCommentLike(
+                                                                  commentId);
+                                                        },
+                                                        icon: Icon(
+                                                          viewCommentController
+                                                                      .isLikedMap[
+                                                                          commentId]
+                                                                      ?.value ??
+                                                                  false
+                                                              ? Icons.favorite
+                                                              : Icons
+                                                                  .favorite_border,
+                                                          color: viewCommentController
+                                                                      .isLikedMap[
+                                                                          commentId]
+                                                                      ?.value ??
+                                                                  false
+                                                              ? Colors.red
+                                                              : Colors.grey,
+                                                        ),
+                                                      )),
+                                                  Obx(() => Text(
+                                                      '${viewCommentController.likeCountMap[commentId]?.value ?? 0}')),
+                                                  if (viewCommentController.ownerMap[commentId]?.value) ...[
+                                                    IconButton(
+                                                      icon: const Icon(
+                                                          Icons.edit),
+                                                      onPressed: () {
+                                                        showEditDialog(
+                                                            commentId,
+                                                            comment.content ??
+                                                                "");
+                                                      },
+                                                    ),
+                                                    IconButton(
+                                                      icon: const Icon(
+                                                          Icons.delete),
+                                                      onPressed: () {
+                                                        confirmDeleteComment(
+                                                            commentId);
+                                                      },
+                                                    ),
+                                                  ],
+                                                ],
                                               ),
                                             ],
-                                          ],
+                                          ),
                                         ),
                                       ],
                                     ),
                                   ),
-                                ],
-                              ),
+                                );
+                              },
                             );
-                          },
-                        );
-                      }),
-                    ],
-                  ),
+                          }),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-        );
-      }),
+              ),
+            );
+          });
+        },
+      ),
     );
   }
 }

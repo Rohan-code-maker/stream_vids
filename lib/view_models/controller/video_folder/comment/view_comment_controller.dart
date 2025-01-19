@@ -1,11 +1,13 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:stream_vids/models/user/logout/logout_model.dart';
+import 'package:stream_vids/models/video_folder/comment/add_comment_model.dart';
 import 'package:stream_vids/models/video_folder/comment/toggle_comment_like_model.dart';
 import 'package:stream_vids/models/video_folder/comment/update_comment_model.dart';
 import 'package:stream_vids/models/video_folder/comment/view_comment_model.dart';
 import 'package:stream_vids/models/video_folder/get_liked_videos/get_video_like_status_model.dart';
 import 'package:stream_vids/models/video_folder/get_liked_videos/like_count_model.dart';
+import 'package:stream_vids/repository/video_folder/comment/add_comment_repository.dart';
 import 'package:stream_vids/repository/video_folder/comment/count_comment_likes_repository.dart';
 import 'package:stream_vids/repository/video_folder/comment/delete_comment_repository.dart';
 import 'package:stream_vids/repository/video_folder/comment/get_comment_like_repository.dart';
@@ -26,39 +28,73 @@ class ViewCommentController extends GetxController {
   var comments = <Comments>[].obs;
   var isLikedMap = <String, RxBool>{}; // Map for like status
   var likeCountMap = <String, RxInt>{}; // Map for like count
-  RxBool isOwner = false.obs;
+  var ownerMap = <String, RxBool>{};
   TextEditingController updateController = TextEditingController();
   UserPreferences userPreferences = UserPreferences();
+
+  final _api = AddCommentRepository();
+  final commentController = TextEditingController().obs;
+  final commentFocusNode = FocusNode().obs;
+  RxBool isloading = false.obs;
+
+  Future<void> addComment(String videoId) async {
+    isloading.value = true;
+    Map<String, dynamic> content = {'content': commentController.value.text};
+    try {
+      final response = await _api.addCommentRepo(videoId, content);
+      if (response["statusCode"] == 200) {
+        final model = AddCommentModel.fromJson(response);
+        if (model.success!) {
+          clear();
+          viewComment(videoId);
+        }
+      } else {
+        Utils.snackBar("Error", "$response['message']");
+      }
+    } catch (e) {
+      final String err = Utils.extractErrorMessage(e.toString());
+      Utils.snackBar("Error", err);
+    } finally {
+      isloading.value = false;
+    }
+  }
+
+  void clear() {
+    commentController.value.text = "";
+  }
 
   Future<void> viewComment(String videoId) async {
     final user = await userPreferences.getUser();
     final commentOwner = user.user!.sId;
     // Fetch comments from API
-    final fetchedComments = await _viewCommentRepo.viewCommentRepo(videoId);
-    if (fetchedComments['statusCode'] == 200) {
-      final model = ViewCommentModel.fromJson(fetchedComments);
-      if (model.success!) {
-        comments.assignAll(model.data!.comments!);
+    try {
+      final fetchedComments = await _viewCommentRepo.viewCommentRepo(videoId);
+      if (fetchedComments['statusCode'] == 200) {
+        final model = ViewCommentModel.fromJson(fetchedComments);
+        if (model.success!) {
+          comments.assignAll(model.data!.comments!);
 
-        // Initialize like status and count for each comment
-        for (var comment in model.data!.comments!) {
-          final commentId = comment.sId!;
-          isLikedMap[commentId] = RxBool(false);
-          likeCountMap[commentId] = RxInt(0);
+          // Initialize like status and count for each comment
+          for (var comment in model.data!.comments!) {
+            final commentId = comment.sId!;
+            isLikedMap[commentId] = RxBool(false);
+            likeCountMap[commentId] = RxInt(0);
+            ownerMap[commentId] =
+                RxBool(commentOwner == comment.commentedBy!.sId);
 
-          // Fetch the like status and count for the comment
-          fetchCommentLikeStatus(commentId);
-          fetchCommentLikeCount(commentId);
-
-          if (commentOwner == comment.commentedBy!.sId) {
-            isOwner.value = true;
+            // Fetch the like status and count for the comment
+            fetchCommentLikeStatus(commentId);
+            fetchCommentLikeCount(commentId);
           }
+        } else {
+          Utils.snackBar("Error", model.message!);
         }
       } else {
-        Utils.snackBar("Error", model.message!);
+        Utils.snackBar("Error", fetchedComments['message']);
       }
-    } else {
-      Utils.snackBar("Error", fetchedComments['message']);
+    } catch (e) {
+      final String err = Utils.extractErrorMessage(e.toString());
+      Utils.snackBar("Error", err);
     }
   }
 
@@ -76,7 +112,8 @@ class ViewCommentController extends GetxController {
         Utils.snackBar("Error", status['message']);
       }
     } catch (e) {
-      print("Error fetching like status for comment $commentId: $e");
+      final String err = Utils.extractErrorMessage(e.toString());
+      Utils.snackBar("Error", err);
     }
   }
 
@@ -94,7 +131,8 @@ class ViewCommentController extends GetxController {
         Utils.snackBar("Error", count['message']);
       }
     } catch (e) {
-      print("Error fetching like count for comment $commentId: $e");
+      final String err = Utils.extractErrorMessage(e.toString());
+      Utils.snackBar("Error", err);
     }
   }
 
@@ -114,7 +152,8 @@ class ViewCommentController extends GetxController {
         Utils.snackBar("Error", response['message']);
       }
     } catch (e) {
-      print("Error toggling like for comment $commentId: $e");
+      final String err = Utils.extractErrorMessage(e.toString());
+      Utils.snackBar("Error", err);
     }
   }
 
@@ -133,7 +172,8 @@ class ViewCommentController extends GetxController {
         Utils.snackBar("Error", response['message']);
       }
     } catch (e) {
-      Utils.snackBar("Error", "Error api call: $e");
+      final String err = Utils.extractErrorMessage(e.toString());
+      Utils.snackBar("Error", err);
     }
   }
 
@@ -149,7 +189,8 @@ class ViewCommentController extends GetxController {
         Utils.snackBar("Error", response['message']);
       }
     } catch (e) {
-      Utils.snackBar("Error", "Error api call: $e");
+      final String err = Utils.extractErrorMessage(e.toString());
+      Utils.snackBar("Error", err);
     }
   }
 }

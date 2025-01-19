@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:stream_vids/res/routes/route_name.dart';
 import 'package:stream_vids/view_models/controller/user/watch_history/add_watch_history_controller.dart';
 import 'package:stream_vids/view_models/controller/video_folder/get_all_video/get_all_video_controller.dart';
-import 'package:stream_vids/view_models/services/splash_services.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,14 +12,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  SplashServices splashServices = SplashServices();
   final getAllVideoController = Get.put(GetAllVideoController());
   final addWatchHistory = Get.put(AddWatchHistoryController());
 
   @override
   void initState() {
     super.initState();
-    splashServices.handleAppNavigation();
     getAllVideoController.getAllVideo();
   }
 
@@ -44,12 +41,12 @@ class _HomeScreenState extends State<HomeScreen> {
               return GridView.builder(
                 padding: const EdgeInsets.all(16.0),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: isLargeScreen ? 3 : 1,
+                  crossAxisCount: isLargeScreen ? 4 : 2,
                   crossAxisSpacing: 16.0,
                   mainAxisSpacing: 16.0,
                   childAspectRatio: isLargeScreen
                       ? mq.aspectRatio * 0.5
-                      : mq.aspectRatio * 1.3,
+                      : mq.aspectRatio * 1,
                 ),
                 itemCount: getAllVideoController.videoList.length,
                 itemBuilder: (context, index) {
@@ -84,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               width: double.infinity,
                               height: isLargeScreen
                                   ? mq.height * 0.3
-                                  : mq.height * 0.5,
+                                  : mq.height * 0.3,
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -94,11 +91,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                 const EdgeInsets.symmetric(horizontal: 12.0),
                             child: Text(
                               video.title,
-                              maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 fontSize: isLargeScreen
-                                    ? mq.width * 0.05
+                                    ? mq.width * 0.03
                                     : mq.width * 0.03,
                                 fontWeight: FontWeight.bold,
                                 color: brightness == Brightness.light
@@ -125,7 +121,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 12.0),
                         ],
                       ),
                     ),

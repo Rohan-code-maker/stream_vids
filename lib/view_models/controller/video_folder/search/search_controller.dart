@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:stream_vids/models/video_folder/get_all_videos/get_all_video_model.dart';
 import 'package:stream_vids/repository/video_folder/get_all_video_repository/get_all_video_repository.dart';
+import 'package:stream_vids/utils/utils.dart';
 
 class SearchVideoController extends GetxController {
   final GetAllVideoRepository _api = GetAllVideoRepository();
@@ -42,9 +43,10 @@ class SearchVideoController extends GetxController {
       }
     } catch (e) {
       videoList.clear();
-      Get.snackbar(
+      final String err = Utils.extractErrorMessage(e.toString());
+      Utils.snackBar(
         'Error',
-        'Error occurred while searching for videos',
+        err,
       );
     } finally {
       isLoading(false);

@@ -34,8 +34,9 @@ class ForgotPasswordController extends GetxController {
         Get.toNamed(RouteName.loginScreen);
       }
     } catch (e) {
+      final String err = Utils.extractErrorMessage(e.toString());
       Utils.snackBar(
-          "Error", "Password Changes failed. Please check your credentials.");
+          "Error", err);
     }finally{
       loading.value = false;
     }

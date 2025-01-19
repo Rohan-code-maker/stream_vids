@@ -40,14 +40,15 @@ class ChangePasswordController extends GetxController {
 
         if (model.statusCode == 200) {
           Get.delete<ChangePasswordController>();
-          Get.toNamed(RouteName.homeScreen);
+          Get.toNamed(RouteName.navBarScreen);
           Utils.snackBar("Success", "Password Changed Successfully");
         } else {
           Utils.snackBar("Error", "Password Changes failed.");
         }
       }
     } catch (error) {
-      Utils.snackBar("Error", "Password Changes failed. Please check your credentials.");
+      final String err = Utils.extractErrorMessage(error.toString());
+      Utils.snackBar("Error", err);
     }finally{
       loading.value = false;
     }

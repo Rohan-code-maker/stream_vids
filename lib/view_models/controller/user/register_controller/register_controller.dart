@@ -70,6 +70,7 @@ class RegisterController extends GetxController {
         Utils.snackBar("Error", "No image selected");
       }
     } catch (e) {
+      
       Utils.snackBar("Error", "Failed to pick an image: $e");
     }
   }
@@ -184,7 +185,8 @@ class RegisterController extends GetxController {
           Utils.snackBar(
               "Error", "Unexpected status code: ${response['statusCode']}");
         }
-      } catch (err) {
+      } catch (e) {
+        final String err = Utils.extractErrorMessage(e.toString());
         Utils.snackBar("Error", "Error while registering: $err");
       }
     } catch (error) {

@@ -7,8 +7,6 @@ class UserPreferences {
     SharedPreferences sp = await SharedPreferences.getInstance();
     sp.setString('id', responseModel.user!.sId.toString());
     sp.setString('accessToken', responseModel.accessToken.toString());
-    sp.setString('refreshToken', responseModel.refreshToken.toString());
-
     return true;
   }
 
@@ -17,13 +15,12 @@ class UserPreferences {
     SharedPreferences sp = await SharedPreferences.getInstance();
     String? sId = sp.getString('id');
     String? accessToken = sp.getString('accessToken');
-    String? refreshToken = sp.getString('refreshToken');
 
     User user = User(sId: sId);
     return Data(
-        user: user,
-        accessToken: accessToken ?? "",
-        refreshToken: refreshToken ?? "");
+      user: user,
+      accessToken: accessToken ?? "",
+    );
   }
 
   // Method to clear the stored user data
@@ -31,8 +28,6 @@ class UserPreferences {
     SharedPreferences sp = await SharedPreferences.getInstance();
     await sp.remove('id');
     await sp.remove('accessToken');
-    await sp.remove('refreshToken');
-
     return true;
   }
 }

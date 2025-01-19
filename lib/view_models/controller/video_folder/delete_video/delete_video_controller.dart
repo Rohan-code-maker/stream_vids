@@ -12,21 +12,22 @@ class DeleteVideoController extends GetxController {
     loading.value = true;
     try {
       final response = await _api.deleteVideo(url);
-    if (response['statusCode'] == 200) {
-      final model = LogoutModel.fromJson(response);
-      if (model.success!) {
-        Get.delete<DeleteVideoController>();
-        Get.toNamed(RouteName.profileScreen);
-        Utils.snackBar("Success", "Video deleted successfully");
-      }else{
-        Utils.snackBar("Error", model.message.toString());
+      if (response['statusCode'] == 200) {
+        final model = LogoutModel.fromJson(response);
+        if (model.success!) {
+          Get.delete<DeleteVideoController>();
+          Get.toNamed(RouteName.profileScreen);
+          Utils.snackBar("Success", "Video deleted successfully");
+        } else {
+          Utils.snackBar("Error", model.message.toString());
+        }
+      } else {
+        Utils.snackBar("Error", "$response['message]");
       }
-    }else{
-      Utils.snackBar("Error", "$response['message]");
-    }
     } catch (e) {
-      Utils.snackBar("Error", "Error while deleting video");
-    }finally{
+      final String err = Utils.extractErrorMessage(e.toString());
+      Utils.snackBar("Error", err);
+    } finally {
       loading.value = false;
     }
   }

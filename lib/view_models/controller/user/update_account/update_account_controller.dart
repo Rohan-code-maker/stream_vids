@@ -42,7 +42,8 @@ class UpdateAccountController extends GetxController {
         Utils.snackBar("Error", "Response arrives with status code  ${response['statusCode']}");
       }
     } catch (e) {
-      Utils.snackBar("Error", "Failed to call the Api:$e");
+      final String err = Utils.extractErrorMessage(e.toString());
+      Utils.snackBar("Error", err);
     } finally {
       isLoading.value = false;
     }

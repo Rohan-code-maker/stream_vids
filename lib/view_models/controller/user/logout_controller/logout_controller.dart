@@ -11,7 +11,7 @@ class LogoutController extends GetxController {
   RxBool loading = false.obs;
 
   void logout() async {
-    loading.value = true; // Show loading indicator
+    loading.value = true;
 
     try {
       // Get user preferences
@@ -36,8 +36,8 @@ class LogoutController extends GetxController {
         Utils.snackBar("Error", "Logout Failed");
       }
     } catch (e) {
-      // Handle errors
-      Utils.snackBar("Error", "Logout failed:");
+      final String err = Utils.extractErrorMessage(e.toString());
+      Utils.snackBar("Error", err);
     } finally {
       // Hide loading indicator
       loading.value = false;

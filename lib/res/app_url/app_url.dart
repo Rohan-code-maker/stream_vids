@@ -16,7 +16,6 @@ class AppUrl {
   static const String addWatchHistoryUrl = "$baseUrl/users/history/:videoId";
   static const String getWatchHistoryUrl = "$baseUrl/users/history";
   static const String getChannelProfileUrl = "$baseUrl/users/channel";
-  static const String refreshTokenUrl = "$baseUrl/users/refresh-token";
   static const String updateAccountUrl = "$baseUrl/users/update-account";
   static const String updateAvatarUrl = "$baseUrl/users/avatar";
   static const String updateCoverImageUrl = "$baseUrl/users/cover-image";

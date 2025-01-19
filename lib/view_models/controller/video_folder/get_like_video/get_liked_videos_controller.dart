@@ -30,7 +30,8 @@ class GetLikedVideosController extends GetxController {
             "Failed to fetch liked videos: ${likedVideosModel.message}");
       }
     } catch (e) {
-      Utils.snackBar("Error", "Error fetching liked videos: $e");
+      final String err = Utils.extractErrorMessage(e.toString());
+      Utils.snackBar("Error", err);
     } finally {
       isLoading.value = false;
     }

@@ -16,90 +16,140 @@ class _UpdateAccountScreenState extends State<UpdateAccountScreen> {
   UpdateAccountController controller = Get.put(UpdateAccountController());
 
   final _updateKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
-    Size mq = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text('update_account'.tr),
         centerTitle: true,
+        title: Text('update_account'.tr),
       ),
-      body: Form(
-        key: _updateKey,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              InputField(
-                hintText: 'fullName_hint'.tr,
-                labelText: 'fullName_hint'.tr,
-                controller: controller.fullnameController.value,
-                currentFocusNode: controller.fullnameFocusNode.value,
-                nextFocusNode: controller.usernameFocusNode.value,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    Utils.toastMessageBottom("fullName_hint".tr);
-                    return 'fullName_hint'.tr;
-                  }
-                  return null;
-                },
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final isWideScreen = constraints.maxWidth > 600;
+          final mq = MediaQuery.of(context).size;
+
+          return SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Container(
+                  width: isWideScreen ? mq.width * 0.5 : mq.width,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                    border: Border.all(
+                      width: 2,
+                      color: Colors.black,
+                    ),
+                  ),
+                  child: Form(
+                    key: _updateKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: mq.height * 0.05,
+                        ),
+                        SizedBox(
+                          width: isWideScreen ? mq.width * 0.3 : mq.width * 0.8,
+                          child: Column(
+                            children: [
+                              Obx(
+                                () => InputField(
+                                  hintText: 'fullName_hint'.tr,
+                                  labelText: 'fullName_hint'.tr,
+                                  controller:
+                                      controller.fullnameController.value,
+                                  currentFocusNode:
+                                      controller.fullnameFocusNode.value,
+                                  nextFocusNode:
+                                      controller.usernameFocusNode.value,
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      Utils.toastMessageBottom(
+                                          "fullName_hint".tr);
+                                      return 'fullName_hint'.tr;
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                              SizedBox(height: mq.height * 0.05),
+                              Obx(
+                                () => InputField(
+                                  hintText: 'username_hint'.tr,
+                                  labelText: 'username_hint'.tr,
+                                  controller:
+                                      controller.usernameController.value,
+                                  currentFocusNode:
+                                      controller.usernameFocusNode.value,
+                                  nextFocusNode:
+                                      controller.emailFocusNode.value,
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      Utils.toastMessageBottom(
+                                          "username_hint".tr);
+                                      return 'username_hint'.tr;
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                              SizedBox(height: mq.height * 0.05),
+                              Obx(
+                                () => InputField(
+                                  hintText: 'email_hint'.tr,
+                                  labelText: 'email_hint'.tr,
+                                  controller: controller.emailController.value,
+                                  currentFocusNode:
+                                      controller.emailFocusNode.value,
+                                  nextFocusNode:
+                                      controller.fullnameFocusNode.value,
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      Utils.toastMessageBottom("email_hint".tr);
+                                      return 'email_hint'.tr;
+                                    }
+                                    if (!Utils.isValidEmail(controller
+                                        .emailController.value.text)) {
+                                      Utils.toastMessageBottom(
+                                          "invalid_email".tr);
+                                      return 'invalid_email'.tr;
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                              SizedBox(height: mq.height * 0.05),
+                              Obx(
+                                () => RoundBtn(
+                                  loading: controller.isLoading.value,
+                                  title: "update".tr,
+                                  width: isWideScreen
+                                      ? mq.width * 0.15
+                                      : mq.width * 0.5,
+                                  onPress: () {
+                                    if (_updateKey.currentState!.validate()) {
+                                      controller.updateAccount();
+                                    }
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: mq.height * 0.05),
+                      ],
+                    ),
+                  ),
+                ),
               ),
-              SizedBox(
-                height: mq.height * .05,
-              ),
-              InputField(
-                hintText: 'username_hint'.tr,
-                labelText: 'username_hint'.tr,
-                controller: controller.usernameController.value,
-                currentFocusNode: controller.usernameFocusNode.value,
-                nextFocusNode: controller.emailFocusNode.value,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    Utils.toastMessageBottom("username_hint".tr);
-                    return 'username_hint'.tr;
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(
-                height: mq.height * .05,
-              ),
-              InputField(
-                hintText: 'email_hint'.tr,
-                labelText: 'email_hint'.tr,
-                controller: controller.emailController.value,
-                currentFocusNode: controller.emailFocusNode.value,
-                nextFocusNode: controller.usernameFocusNode.value,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    Utils.toastMessageBottom("email_hint".tr);
-                    return 'email_hint'.tr;
-                  }
-                  if (!Utils.isValidEmail(
-                      controller.emailController.value.text)) {
-                    Utils.toastMessageBottom("invalid_email".tr);
-                    return 'invalid_email'.tr;
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(
-                height: mq.height * .1,
-              ),
-              Obx(() => RoundBtn(
-                  loading: controller.isLoading.value,
-                  title: "update".tr,
-                  width: mq.width * .35,
-                  onPress: () {
-                    if (_updateKey.currentState!.validate()) {
-                      controller.updateAccount();
-                    }
-                  })),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }

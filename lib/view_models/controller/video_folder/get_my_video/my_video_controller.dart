@@ -30,7 +30,8 @@ class MyVideoController extends GetxController {
         Utils.snackBar("Error", "${response['message']}");
       }
     } catch (e) {
-      Utils.snackBar("Error", "Error while loading video");
+      final String err = Utils.extractErrorMessage(e.toString());
+      Utils.snackBar("Error", err);
     } finally {
       loading(false);
     }

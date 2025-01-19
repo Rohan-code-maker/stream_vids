@@ -32,7 +32,7 @@ class LoginController extends GetxController {
     try {
       final response = await _api.loginApi(data);
       if (response == null || !response.containsKey('data')) {
-        Utils.snackBar("Error","Invalid response format");
+        Utils.snackBar("Error", "Invalid response format");
       }
 
       final dataModel = Data.fromJson(response['data']);

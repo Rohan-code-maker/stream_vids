@@ -158,8 +158,9 @@ Future<void> pickVideo() async {
           Utils.snackBar("Error",
               "Unexpected status code: ${response['statusCode']} \n ${response['message']}");
         }
-      } catch (err) {
-        Utils.snackBar("Error", "Error while Updating: $err");
+      } catch (e) {
+        final String err = Utils.extractErrorMessage(e.toString());
+        Utils.snackBar("Error", err);
       }
     } catch (e) {
       Utils.snackBar("Error", "Error while uploading image: $e");

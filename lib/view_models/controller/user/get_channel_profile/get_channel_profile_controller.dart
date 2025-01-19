@@ -30,7 +30,8 @@ class GetChannelProfileController extends GetxController {
         Utils.snackBar("Error", response['message']);
       }
     } catch (e) {
-      Utils.snackBar("Error", "Error occurred while fetching data: $e");
+      final String err = Utils.extractErrorMessage(e.toString());
+      Utils.snackBar("Error", err);
     } finally {
       isLoading(false);
     }

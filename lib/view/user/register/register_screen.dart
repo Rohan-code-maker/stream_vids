@@ -31,7 +31,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         builder: (context, constraints) {
           final isWideScreen = constraints.maxWidth > 600;
           final mq = MediaQuery.of(context).size;
-          final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
           return SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
@@ -45,7 +44,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     borderRadius: const BorderRadius.all(Radius.circular(8.0)),
                     border: Border.all(
                         width: 2,
-                        color: isDarkMode ? Colors.white : Colors.black),
+                        color:  Colors.black),
                   ),
                   child: Form(
                     key: _registerKey,

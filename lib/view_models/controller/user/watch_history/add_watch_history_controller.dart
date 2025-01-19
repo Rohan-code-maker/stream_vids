@@ -20,7 +20,8 @@ class AddWatchHistoryController extends GetxController {
         Utils.snackBar('Error', '$response["message"]');
       }
     } catch (e) {
-      Utils.snackBar('Error', 'Something went wrong: $e');
+      final String err = Utils.extractErrorMessage(e.toString());
+      Utils.snackBar('Error', err);
     }
   }
 }

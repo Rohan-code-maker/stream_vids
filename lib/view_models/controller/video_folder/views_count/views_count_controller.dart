@@ -21,7 +21,8 @@ class ViewsCountController extends GetxController {
         Utils.snackBar("Error", "Error: ${response['message']}");
       }
     } catch (e) {
-      Utils.snackBar("Error", "Error api call:$e");
+      final String err = Utils.extractErrorMessage(e.toString());
+      Utils.snackBar("Error", err);
     }
   }
 }

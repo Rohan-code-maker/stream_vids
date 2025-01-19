@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:stream_vids/res/routes/route_name.dart';
 import 'package:stream_vids/view_models/controller/user/watch_history/add_watch_history_controller.dart';
 import 'package:stream_vids/view_models/controller/video_folder/search/search_controller.dart';
-import 'package:stream_vids/view_models/services/splash_services.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -14,12 +13,6 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController _textEditingController = TextEditingController();
-  SplashServices splashServices = SplashServices();
-  @override
-  void initState() {
-    super.initState();
-    splashServices.handleAppNavigation();
-  }
 
   final SearchVideoController _searchController =
       Get.put(SearchVideoController());

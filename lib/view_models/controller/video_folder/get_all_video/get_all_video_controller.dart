@@ -25,7 +25,8 @@ class GetAllVideoController extends GetxController {
         Utils.snackBar("Error", videoModel.message);
       }
     } catch (e) {
-      Utils.snackBar("Error", "Error occurred while fetching data: $e");
+      final String err = Utils.extractErrorMessage(e.toString());
+      Utils.snackBar("Error", "Error occurred while fetching data: $err");
     } finally {
       isLoading(false);
     }
