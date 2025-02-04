@@ -18,59 +18,60 @@ class _UpdateAvatarScreenState extends State<UpdateAvatarScreen> {
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context).size;
     return Scaffold(
-        appBar: AppBar(
-          title: Text('update_avatar'.tr),
-          centerTitle: true,
-          leading: IconButton(
+      appBar: AppBar(
+        title: Text('update_avatar'.tr),
+        centerTitle: true,
+        leading: IconButton(
             onPressed: () {
               Get.back();
             },
             icon: const Icon(Icons.arrow_back_ios)),
-        ),
-        body: Form(
-          key: _avatarKey,
-          child: Center(
-            child: Obx(
-              () => Column(
-                children: [
-                  TextFormField(
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      labelText: 'avatar_hint'.tr,
-                      hintText: 'avatar_hint'.tr,
-                      suffixIcon: IconButton(
-                        icon: const Icon(Icons.photo),
-                        onPressed: () => _controller.pickImage(),
-                      ),
-                    ),
-                    controller: TextEditingController(
-                      text: _controller.avatarImageName.value,
-                    ),
-                    validator: (value) {
-                      if (_controller.avatarImage.value == null) {
-                        // Validate if avatar image is selected
-                        Utils.toastMessageBottom("select_photo".tr);
-                        return 'select_photo'.tr;
-                      }
-                      return null;
-                    },
+      ),
+      body: Form(
+        key: _avatarKey,
+        child: Center(
+          child: Column(
+            children: [
+              TextFormField(
+                readOnly: true,
+                decoration: InputDecoration(
+                  labelText: 'avatar_hint'.tr,
+                  hintText: 'avatar_hint'.tr,
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.photo),
+                    onPressed: () => _controller.pickImage(),
                   ),
-                  SizedBox(
-                    height: mq.height * .05,
-                  ),
-                  RoundBtn(
-                      loading: _controller.loading.value,
-                      title: "update".tr,
-                      width: mq.width * .35,
-                      onPress: () {
-                        if (_avatarKey.currentState!.validate()) {
-                          _controller.updateAvatar();
-                        }
-                      })
-                ],
+                ),
+                controller: TextEditingController(
+                  text: _controller.avatarImageName.value,
+                ),
+                validator: (value) {
+                  if (_controller.avatarImage.value == null) {
+                    // Validate if avatar image is selected
+                    Utils.toastMessageBottom("select_photo".tr);
+                    return 'select_photo'.tr;
+                  }
+                  return null;
+                },
               ),
-            ),
+              SizedBox(
+                height: mq.height * .05,
+              ),
+              Obx(
+                () => RoundBtn(
+                    loading: _controller.loading.value,
+                    title: "update".tr,
+                    width: mq.width * .35,
+                    onPress: () {
+                      if (_avatarKey.currentState!.validate()) {
+                        _controller.updateAvatar();
+                      }
+                    }),
+              )
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

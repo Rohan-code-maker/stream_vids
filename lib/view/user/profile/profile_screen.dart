@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stream_vids/res/routes/route_name.dart';
 import 'package:stream_vids/utils/utils.dart';
+import 'package:stream_vids/view_models/controller/theme_change/theme_controller.dart';
 import 'package:stream_vids/view_models/controller/user/get_channel_profile/get_channel_profile_controller.dart';
 import 'package:stream_vids/view_models/controller/user/logout_controller/logout_controller.dart';
 import 'package:stream_vids/view_models/controller/video_folder/delete_video/delete_video_controller.dart';
@@ -21,7 +22,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final LogoutController logoutController = Get.put(LogoutController());
   final DeleteVideoController deleteVideoController =
       Get.put(DeleteVideoController());
-
+  final ThemeController themeController = Get.find();
 
   @override
   void initState() {
@@ -35,23 +36,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final mq = MediaQuery.of(context).size;
+    final bool isWideScreen = mq.width > 800;
+
     return Scaffold(
-      key: UniqueKey(),
       appBar: AppBar(
-        title: const Text("Profile"),
+        title: Text('profile_screen'.tr),
         centerTitle: true,
         automaticallyImplyLeading: false,
         actions: [
-          Builder(
-            builder: (context) {
-              return IconButton(
-                icon: const Icon(Icons.menu),
-                onPressed: () {
-                  Scaffold.of(context).openEndDrawer();
-                },
-              );
-            },
-          ),
+          if (!isWideScreen)
+            Builder(
+              builder: (context) {
+                return IconButton(
+                  icon: const Icon(Icons.menu),
+                  onPressed: () {
+                    Scaffold.of(context).openEndDrawer();
+                  },
+                );
+              },
+            ),
         ],
       ),
       body: Obx(() {
@@ -65,167 +69,314 @@ class _ProfileScreenState extends State<ProfileScreen> {
           return const Center(child: Text("No data available"));
         }
 
-        return SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Full Name: ${user.fullname ?? "N/A"}",
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                "User Name: ${user.username ?? "N/A"}",
-                style: const TextStyle(fontSize: 16),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                "Email: ${user.email ?? "N/A"}",
-                style: const TextStyle(fontSize: 16),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                "Subscribers: ${user.subscribersCount ?? 0}",
-                style: const TextStyle(fontSize: 16),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                "Channels Subscribed To: ${user.channelsSubscribedToCount ?? 0}",
-                style: const TextStyle(fontSize: 16),
-              ),
-              const SizedBox(height: 16),
-              Obx(() {
-                if (videoController.loading.value) {
-                  return const Center(child: CircularProgressIndicator());
-                }
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            final bool isWide =
+                constraints.maxWidth > 800; // Desktop breakpoint
 
-                if (videoController.videoList.isEmpty) {
-                  return const Text("No videos found.");
-                }
+            return Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  flex: 5,
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        // Profile Header with Cover Image and Avatar
+                        Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            Container(
+                              width: double.infinity,
+                              height: mq.height * 0.25,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: NetworkImage(user.coverImage != ""
+                                      ? user.coverImage!
+                                      : 'https://images.pexels.com/photos/30472746/pexels-photo-30472746/free-photo-of-gilled-mushrooms-in-brazilian-forest.jpeg'),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              bottom: -50,
+                              left: (constraints.maxWidth / 2) - 50,
+                              child: CircleAvatar(
+                                radius: 50,
+                                backgroundColor: Colors.white,
+                                backgroundImage: user.avatar != null
+                                    ? NetworkImage(user.avatar!)
+                                    : const NetworkImage(
+                                        'https://via.placeholder.com/150.png?text=Avatar'),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: mq.height * 0.06),
 
-                return ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: videoController.videoList.length,
-                  itemBuilder: (context, index) {
-                    final video = videoController.videoList[index];
-                    return ListTile(
-                      key: ValueKey(video.sId),
-                      title: Text(video.title ?? "No Title"),
-                      subtitle: Text(video.description ?? "No Description"),
-                      leading: Image.network(video.thumbnail ?? ""),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.edit, color: Colors.blue),
-                            onPressed: () {
-                              // Handle the update logic here
-                              Get.toNamed(
-                                RouteName.updateVideoScreen
-                                    .replaceFirst(':videoId', video.sId),
-                                arguments: {
-                                  'title': video.title,
-                                  'description': video.description,
-                                },
+                        // User Info Card
+                        Card(
+                          elevation: 3,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: isWide
+                                ? Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                          child:
+                                              _buildUserInfo(user, mq, isWide)),
+                                      const SizedBox(width: 16),
+                                      Expanded(
+                                          child: _buildUserStats(user, mq)),
+                                    ],
+                                  )
+                                : Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      _buildUserInfo(user, mq, isWide),
+                                      Divider(height: mq.height * 0.001),
+                                      _buildUserStats(user, mq),
+                                    ],
+                                  ),
+                          ),
+                        ),
+                        SizedBox(
+                            height:
+                                isWide ? mq.height * 0.03 : mq.height * 0.05),
+
+                        // Video List Section
+                        Obx(() {
+                          if (videoController.loading.value) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          }
+                          if (videoController.videoList.isEmpty) {
+                            return const Center(
+                                child: Text("No videos found."));
+                          }
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: videoController.videoList.length,
+                            itemBuilder: (context, index) {
+                              final video = videoController.videoList[index];
+                              return Card(
+                                elevation: 2,
+                                margin: const EdgeInsets.symmetric(vertical: 8),
+                                child: ListTile(
+                                  key: ValueKey(video.sId),
+                                  contentPadding: const EdgeInsets.all(8),
+                                  leading: ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: Image.network(
+                                      video.thumbnail ?? '',
+                                      width: 80,
+                                      height: 80,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  title: Text(
+                                    video.title.toString().toUpperCase(),
+                                    style: TextStyle(
+                                      fontSize: isWide
+                                          ? mq.width * 0.03
+                                          : mq.height * 0.02,
+                                    ),
+                                    maxLines: 1, // Ensures only one line
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  trailing: Wrap(
+                                    spacing: 8,
+                                    children: [
+                                      IconButton(
+                                        icon: const Icon(Icons.edit,
+                                            color: Colors.blue),
+                                        onPressed: () {
+                                          Get.toNamed(
+                                            RouteName.updateVideoScreen
+                                                .replaceFirst(
+                                                    ':videoId', video.sId),
+                                            arguments: {
+                                              'title': video.title,
+                                              'description': video.description,
+                                            },
+                                          );
+                                        },
+                                      ),
+                                      IconButton(
+                                        icon: const Icon(Icons.delete,
+                                            color: Colors.red),
+                                        onPressed: () {
+                                          Utils.showConfirmation(
+                                            context: context,
+                                            title: "Delete Video",
+                                            message:
+                                                "Are you sure you want to delete this video?",
+                                            onConfirm: () {
+                                              deleteVideoController
+                                                  .deleteVideo(video.sId);
+                                            },
+                                          );
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                  onTap: () {
+                                    Get.toNamed(
+                                      RouteName.videoScreen
+                                          .replaceFirst(':videoId', video.sId),
+                                    );
+                                  },
+                                ),
                               );
                             },
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.delete, color: Colors.red),
-                            onPressed: () {
-                              // Handle the delete logic here
-                              Utils.showConfirmation(
-                                  context: context,
-                                  title: "Delete Video",
-                                  message: "Are you sure you want to delete",
-                                  onConfirm: () {
-                                    deleteVideoController
-                                        .deleteVideo(video.sId);
-                                  });
-                            },
-                          ),
-                        ],
-                      ),
-                      onTap: () {
-                        // Handle the main tap action
-                        Get.toNamed(
-                          RouteName.videoScreen
-                              .replaceFirst(':videoId', video.sId),
-                        );
-                      },
-                    );
-                  },
-                );
-              }),
-            ],
-          ),
+                          );
+                        }),
+                      ],
+                    ),
+                  ),
+                ),
+
+                // Show drawer only in desktop view
+                if (isWide)
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Expanded(
+                      flex: 2,
+                      child: _buildDrawerContent(),
+                    ),
+                  ),
+              ],
+            );
+          },
         );
       }),
-      endDrawer: Directionality(
-        textDirection: TextDirection.rtl,
-        child: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              DrawerHeader(
-                decoration: const BoxDecoration(
-                  color: Colors.blue,
-                ),
-                child: Text(
-                  'setting'.tr,
-                  style: const TextStyle(color: Colors.white, fontSize: 24),
-                ),
-              ),
-              ListTile(
-                title: Text("update_account".tr),
-                onTap: () {
-                  Get.toNamed(RouteName.updateAccountScreen);
-                },
-              ),
-              ListTile(
-                title: Text("update_avatar".tr),
-                onTap: () {
-                  Get.toNamed(RouteName.updateAvatarScreen);
-                },
-              ),
-              ListTile(
-                title: Text("update_coverimage".tr),
-                onTap: () {
-                  Get.toNamed(RouteName.updateCoverImageScreen);
-                },
-              ),
-              ListTile(
-                title: Text("change_password".tr),
-                onTap: () {
-                  Get.toNamed(RouteName.changePasswordScreen);
-                },
-              ),
-              ListTile(
-                title: Text("get_liked_videos".tr),
-                onTap: () {
-                  Get.toNamed(RouteName.likedVideoScreen);
-                },
-              ),
-              ListTile(
-                title: Text("logout".tr),
-                onTap: () {
-                  Utils.showConfirmation(
-                      context: context,
-                      title: "Logout",
-                      message: "Are you sure want to Logout",
-                      onConfirm: () {
-                        logoutController.logout();
-                      });
-                },
-              ),
-            ],
+      endDrawer: isWideScreen ? null : _buildDrawerContent(),
+    );
+  }
+
+  Widget _buildUserInfo(user, mq, isWide) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          user.fullname ?? "N/A",
+          style: TextStyle(
+            fontSize: isWide ? mq.width * 0.03 : mq.width * 0.05,
+            fontWeight: FontWeight.bold,
           ),
         ),
+        SizedBox(height: mq.height * 0.01),
+        Text(
+          "@${user.username ?? "N/A"}",
+          style: TextStyle(
+              fontSize: isWide ? mq.width * 0.02 : mq.width * 0.04,
+              color: Colors.grey),
+        ),
+        SizedBox(height: mq.height * 0.01),
+        Text(
+          user.email ?? "N/A",
+          style: TextStyle(
+            fontSize: isWide ? mq.width * 0.02 : mq.width * 0.04,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildUserStats(user, mq) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        _buildStatItem("Subscribers", user.subscribersCount ?? 0, mq),
+        _buildStatItem("Subscribed", user.channelsSubscribedToCount ?? 0, mq),
+      ],
+    );
+  }
+
+  Widget _buildStatItem(String label, int count, mq) {
+    return Column(
+      children: [
+        Text(
+          "$count",
+          style: TextStyle(
+            fontSize: mq.width * 0.04,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Text(
+          label,
+          style: const TextStyle(fontSize: 14, color: Colors.grey),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDrawerContent() {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          const DrawerHeader(
+            decoration: BoxDecoration(
+              color: Colors.blue,
+            ),
+            child: Text(
+              'Settings',
+              style: TextStyle(color: Colors.white, fontSize: 24),
+            ),
+          ),
+          ListTile(
+            title: Text("update_account".tr),
+            onTap: () {
+              Get.toNamed(RouteName.updateAccountScreen);
+            },
+          ),
+          ListTile(
+            title: Text("update_avatar".tr),
+            onTap: () {
+              Get.toNamed(RouteName.updateAvatarScreen);
+            },
+          ),
+          ListTile(
+            title: Text("update_coverimage".tr),
+            onTap: () {
+              Get.toNamed(RouteName.updateCoverImageScreen);
+            },
+          ),
+          ListTile(
+            title: Text("change_password".tr),
+            onTap: () {
+              Get.toNamed(RouteName.changePasswordScreen);
+            },
+          ),
+          ListTile(
+            title: Text("change_theme".tr),
+            onTap: () {
+              themeController.changeTheme();
+            },
+          ),
+          ListTile(
+            title: Text("logout".tr),
+            onTap: () {
+              Utils.showConfirmation(
+                context: context,
+                title: "logout".tr,
+                message: "sure_logout".tr,
+                onConfirm: () {
+                  logoutController.logout();
+                },
+              );
+            },
+          ),
+        ],
       ),
     );
   }

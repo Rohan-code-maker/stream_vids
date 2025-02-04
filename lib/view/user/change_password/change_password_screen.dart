@@ -26,6 +26,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
       appBar: AppBar(
         centerTitle: true,
         title: Text('change_password'.tr),
+        leading: IconButton(
+            onPressed: () {
+              Get.back();
+            },
+            icon: const Icon(Icons.arrow_back_ios)),
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
@@ -119,8 +124,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                   )),
                               SizedBox(height: mq.height * 0.05),
                               Obx(() => RoundBtn(
-                                    loading: changePasswordController
-                                        .loading.value,
+                                    loading:
+                                        changePasswordController.loading.value,
                                     title: "change_password".tr,
                                     width: isWideScreen
                                         ? mq.width * 0.15
@@ -133,20 +138,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                                       }
                                     },
                                   )),
-                              SizedBox(height: mq.height * 0.05),
-                              TextButton(
-                                onPressed: () {
-                                  Get.back();
-                                },
-                                child: Text(
-                                  "back_to_login".tr,
-                                  style: TextStyle(
-                                    fontSize: isWideScreen
-                                        ? mq.width * 0.015
-                                        : mq.height * 0.03,
-                                  ),
-                                ),
-                              ),
+                                  SizedBox(height: mq.height * 0.05),
                             ],
                           ),
                         )
