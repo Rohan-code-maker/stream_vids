@@ -32,6 +32,7 @@ class Languages extends Translations{
       "back":"Back",
       "home_screen":"Home Screen",
       "video_screen":"Video Screen",
+      "user_screen":"User Screen",
       "post_video":"Post Video",
       "forgot_password":"Forgot Password?",
       "watch_history":"Watch History",

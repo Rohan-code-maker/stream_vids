@@ -15,4 +15,5 @@ class RouteName {
   static const String watchHistory = "/watch-history";
   static const String updateVideoScreen = "/update/:videoId";
   static const String likedVideoScreen = "/liked-videos";
+  static const String userScreen = "/user/:userId";
 }

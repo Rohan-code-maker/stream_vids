@@ -12,6 +12,7 @@ void main() async {
   // Initialize LanguageService to get saved locale
   final LanguageService languageService = LanguageService();
   Locale initialLocale = await languageService.getSavedLocale();
+  // ignore: unused_local_variable
   final ThemeController themeController = Get.put(ThemeController());
 
   runApp(MyApp(initialLocale: initialLocale));

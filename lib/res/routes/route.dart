@@ -8,6 +8,7 @@ import 'package:stream_vids/view/user/profile/profile_screen.dart';
 import 'package:stream_vids/view/user/update_account/update_account_screen.dart';
 import 'package:stream_vids/view/user/update_avatar/update_avatar_screen.dart';
 import 'package:stream_vids/view/user/update_coverimage/update_coverimage_screen.dart';
+import 'package:stream_vids/view/user/user_screen/user_screen.dart';
 import 'package:stream_vids/view/user/watch_history/watch_history_screen.dart';
 import 'package:stream_vids/view/video_folder/home/home_screen.dart';
 import 'package:stream_vids/view/language_screen.dart';
@@ -123,6 +124,13 @@ class AppRoutes {
     GetPage(
       name: RouteName.updateVideoScreen,
       page: () => UpdateVideoScreen(videoId: Get.parameters['videoId'] ?? ''),
+      transition: Transition.leftToRightWithFade,
+      transitionDuration: const Duration(microseconds: 250),
+      middlewares: [AuthMiddleware()]
+    ),
+    GetPage(
+      name: RouteName.userScreen,
+      page: () => UserScreen(userId: Get.parameters['userId'] ?? ''),
       transition: Transition.leftToRightWithFade,
       transitionDuration: const Duration(microseconds: 250),
       middlewares: [AuthMiddleware()]

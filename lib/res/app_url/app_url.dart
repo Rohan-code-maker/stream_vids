@@ -29,4 +29,6 @@ class AppUrl {
   static const String commentLikeCountUrl = "$baseUrl/likes/like-count/:commentId";
   static const String updateCommentUrl = "$baseUrl/comments/c/:commentId";
   static const String viewsCountUrl = "$baseUrl/videos/views/:videoId";
+  static const String getUser = "$baseUrl/users/profile/:userId";
+  static const String getUserVideos = "$baseUrl/videos/user/:userId";
 }

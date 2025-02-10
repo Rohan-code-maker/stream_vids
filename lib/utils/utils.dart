@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:stream_vids/res/colors/app_colors.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class Utils {
   static void fieldFocusChange(
@@ -84,4 +85,9 @@ class Utils {
     }
     return "Unknown error occurred.";
   }
+
+  static String timeAgo(String timestamp) {
+  DateTime dateTime = DateTime.parse(timestamp);
+  return timeago.format(dateTime, locale: 'en'); // You can change locale if needed
+}
 }

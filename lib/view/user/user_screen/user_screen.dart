@@ -1,69 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stream_vids/res/routes/route_name.dart';
-import 'package:stream_vids/utils/utils.dart';
-import 'package:stream_vids/view_models/controller/theme_change/theme_controller.dart';
-import 'package:stream_vids/view_models/controller/user/get_channel_profile/get_channel_profile_controller.dart';
-import 'package:stream_vids/view_models/controller/user/logout_controller/logout_controller.dart';
-import 'package:stream_vids/view_models/controller/video_folder/delete_video/delete_video_controller.dart';
-import 'package:stream_vids/view_models/controller/video_folder/get_my_video/my_video_controller.dart';
+import 'package:stream_vids/view_models/controller/user/get_user_by_id/get_user_controller.dart';
 
-class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+class UserScreen extends StatefulWidget {
+  final String userId;
+  const UserScreen({super.key, required this.userId});
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  State<UserScreen> createState() => _UserScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
-  final GetChannelProfileController _controller =
-      Get.put(GetChannelProfileController());
-  final MyVideoController videoController = Get.put(MyVideoController());
-  final LogoutController logoutController = Get.put(LogoutController());
-  final DeleteVideoController deleteVideoController =
-      Get.put(DeleteVideoController());
-  final ThemeController themeController = Get.find();
+class _UserScreenState extends State<UserScreen> {
+  final _controller = Get.put(GetUserController());
 
   @override
   void initState() {
     super.initState();
-    _refreshVideos();
+    _controller.getUserById(widget.userId);
   }
 
-  Future<void> _refreshVideos() async {
-    videoController.myVideos();
+  @override
+  void dispose() {
+    Get.delete<GetUserController>();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final mq = MediaQuery.of(context).size;
-    final bool isWideScreen = mq.width > 800;
-
+    Size mq = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text('profile_screen'.tr),
+        title: Text("user_screen".tr),
         centerTitle: true,
-        automaticallyImplyLeading: false,
-        actions: [
-          if (!isWideScreen)
-            Builder(
-              builder: (context) {
-                return IconButton(
-                  icon: const Icon(Icons.menu),
-                  onPressed: () {
-                    Scaffold.of(context).openEndDrawer();
-                  },
-                );
-              },
-            ),
-        ],
+        leading: IconButton(
+            onPressed: () {
+              Get.back();
+            },
+            icon: const Icon(Icons.arrow_back_ios)),
       ),
       body: Obx(() {
         if (_controller.isLoading.value) {
           return const Center(child: CircularProgressIndicator());
         }
 
-        final user = _controller.channelProfile.value;
+        final user = _controller.channelProfile.value.data!;
 
         if (user.username == null || user.email == null) {
           return const Center(child: Text("No data available"));
@@ -153,20 +134,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                         // Video List Section
                         Obx(() {
-                          if (videoController.loading.value) {
+                          if (_controller.isLoading.value) {
                             return const Center(
                                 child: CircularProgressIndicator());
                           }
-                          if (videoController.videoList.isEmpty) {
+                          if (_controller.videoList.isEmpty) {
                             return const Center(
                                 child: Text("No videos found."));
                           }
                           return ListView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
-                            itemCount: videoController.videoList.length,
+                            itemCount: _controller.videoList.length,
                             itemBuilder: (context, index) {
-                              final video = videoController.videoList[index];
+                              final video = _controller.videoList[index];
                               return Card(
                                 elevation: 2,
                                 margin: const EdgeInsets.symmetric(vertical: 8),
@@ -177,8 +158,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     borderRadius: BorderRadius.circular(8),
                                     child: Image.network(
                                       video.thumbnail ?? '',
-                                      width: isWide ? mq.width * 0.08 : mq.width * 0.1,
-                                      height: isWide ? mq.width * 0.1 : mq.width * 0.3,
+                                      width: isWide
+                                          ? mq.width * 0.08
+                                          : mq.width * 0.1,
+                                      height: isWide
+                                          ? mq.width * 0.1
+                                          : mq.width * 0.3,
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -192,46 +177,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     maxLines: 1, // Ensures only one line
                                     overflow: TextOverflow.ellipsis,
                                   ),
-                                  trailing: Wrap(
-                                    spacing: 8,
-                                    children: [
-                                      IconButton(
-                                        icon: const Icon(Icons.edit,
-                                            color: Colors.blue),
-                                        onPressed: () {
-                                          Get.toNamed(
-                                            RouteName.updateVideoScreen
-                                                .replaceFirst(
-                                                    ':videoId', video.sId),
-                                            arguments: {
-                                              'title': video.title,
-                                              'description': video.description,
-                                            },
-                                          );
-                                        },
-                                      ),
-                                      IconButton(
-                                        icon: const Icon(Icons.delete,
-                                            color: Colors.red),
-                                        onPressed: () {
-                                          Utils.showConfirmation(
-                                            context: context,
-                                            title: "Delete Video",
-                                            message:
-                                                "Are you sure you want to delete this video?",
-                                            onConfirm: () {
-                                              deleteVideoController
-                                                  .deleteVideo(video.sId);
-                                            },
-                                          );
-                                        },
-                                      ),
-                                    ],
-                                  ),
                                   onTap: () {
                                     Get.toNamed(
                                       RouteName.videoScreen
-                                          .replaceFirst(':videoId', video.sId),
+                                          .replaceFirst(':videoId', video.sId!),
                                     );
                                   },
                                 ),
@@ -243,19 +192,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                 ),
-
-                // Show drawer only in desktop view
-                if (isWide)
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: _buildDrawerContent(),
-                  ),
               ],
             );
           },
         );
       }),
-      endDrawer: isWideScreen ? null : _buildDrawerContent(),
     );
   }
 
@@ -313,68 +254,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           style: const TextStyle(fontSize: 14, color: Colors.grey),
         ),
       ],
-    );
-  }
-
-  Widget _buildDrawerContent() {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          const DrawerHeader(
-            decoration: BoxDecoration(
-              color: Colors.blue,
-            ),
-            child: Text(
-              'Settings',
-              style: TextStyle(color: Colors.white, fontSize: 24),
-            ),
-          ),
-          ListTile(
-            title: Text("update_account".tr),
-            onTap: () {
-              Get.toNamed(RouteName.updateAccountScreen);
-            },
-          ),
-          ListTile(
-            title: Text("update_avatar".tr),
-            onTap: () {
-              Get.toNamed(RouteName.updateAvatarScreen);
-            },
-          ),
-          ListTile(
-            title: Text("update_coverimage".tr),
-            onTap: () {
-              Get.toNamed(RouteName.updateCoverImageScreen);
-            },
-          ),
-          ListTile(
-            title: Text("change_password".tr),
-            onTap: () {
-              Get.toNamed(RouteName.changePasswordScreen);
-            },
-          ),
-          ListTile(
-            title: Text("change_theme".tr),
-            onTap: () {
-              themeController.changeTheme();
-            },
-          ),
-          ListTile(
-            title: Text("logout".tr),
-            onTap: () {
-              Utils.showConfirmation(
-                context: context,
-                title: "logout".tr,
-                message: "sure_logout".tr,
-                onConfirm: () {
-                  logoutController.logout();
-                },
-              );
-            },
-          ),
-        ],
-      ),
     );
   }
 }

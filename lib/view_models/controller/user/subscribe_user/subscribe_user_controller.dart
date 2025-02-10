@@ -26,7 +26,7 @@ class SubscribeUserController extends GetxController {
       }
     } catch (e) {
       final String errorMessage = Utils.extractErrorMessage(e.toString());
-      Utils.snackBar("Error", "Error while api call: $errorMessage");
+      Utils.snackBar("Error", errorMessage);
     }
   }
 

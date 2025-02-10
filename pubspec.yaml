@@ -47,6 +47,7 @@ dependencies:
   chewie: ^1.4.2
   file_picker: ^8.1.7
   lottie: ^2.2.0
+  timeago: ^3.6.0
   
 
 dev_dependencies:

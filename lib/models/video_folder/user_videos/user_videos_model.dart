@@ -1,12 +1,12 @@
-class VideoModel {
+class UserVideosModel {
   int? statusCode;
   Data? data;
   String? message;
   bool? success;
 
-  VideoModel({this.statusCode, this.data, this.message, this.success});
+  UserVideosModel({this.statusCode, this.data, this.message, this.success});
 
-  VideoModel.fromJson(Map<String, dynamic> json) {
+  UserVideosModel.fromJson(Map<String, dynamic> json) {
     statusCode = json['statusCode'];
     data = json['data'] != null ? Data.fromJson(json['data']) : null;
     message = json['message'];
@@ -26,64 +26,53 @@ class VideoModel {
 }
 
 class Data {
-  Video? video;
+  List<UserVideos>? userVideos;
 
-  Data({this.video});
+  Data({this.userVideos});
 
   Data.fromJson(Map<String, dynamic> json) {
-    video = json['video'] != null ? Video.fromJson(json['video']) : null;
+    if (json['userVideos'] != null) {
+      userVideos = <UserVideos>[];
+      json['userVideos'].forEach((v) {
+        userVideos!.add(UserVideos.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    if (video != null) {
-      data['video'] = video!.toJson();
+    if (userVideos != null) {
+      data['userVideos'] = userVideos!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
-class Video {
+class UserVideos {
   String? sId;
   String? videoFile;
   String? thumbnail;
   String? title;
   String? description;
-  double? duration;
-  int? views;
-  bool? isPublished;
-  Owner? owner;
-  String? createdAt;
-  String? updatedAt;
-  int? iV;
+  CreatedBy? createdBy;
 
-  Video(
+  UserVideos(
       {this.sId,
       this.videoFile,
       this.thumbnail,
       this.title,
       this.description,
-      this.duration,
-      this.views,
-      this.isPublished,
-      this.owner,
-      this.createdAt,
-      this.updatedAt,
-      this.iV});
+      this.createdBy});
 
-  Video.fromJson(Map<String, dynamic> json) {
+  UserVideos.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     videoFile = json['videoFile'];
     thumbnail = json['thumbnail'];
     title = json['title'];
     description = json['description'];
-    duration = json['duration'];
-    views = json['views'];
-    isPublished = json['isPublished'];
-    owner = json['owner'] != null ? Owner.fromJson(json['owner']) : null;
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
-    iV = json['__v'];
+    createdBy = json['createdBy'] != null
+        ? CreatedBy.fromJson(json['createdBy'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -93,36 +82,30 @@ class Video {
     data['thumbnail'] = thumbnail;
     data['title'] = title;
     data['description'] = description;
-    data['duration'] = duration;
-    data['views'] = views;
-    data['isPublished'] = isPublished;
-    if (owner != null) {
-      data['owner'] = owner!.toJson();
+    if (createdBy != null) {
+      data['createdBy'] = createdBy!.toJson();
     }
-    data['createdAt'] = createdAt;
-    data['updatedAt'] = updatedAt;
-    data['__v'] = iV;
     return data;
   }
 }
 
-class Owner {
-  String? sId;
+class CreatedBy {
   String? username;
+  String? fullname;
   String? avatar;
 
-  Owner({this.sId, this.username, this.avatar});
+  CreatedBy({this.username, this.fullname, this.avatar});
 
-  Owner.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
+  CreatedBy.fromJson(Map<String, dynamic> json) {
     username = json['username'];
+    fullname = json['fullname'];
     avatar = json['avatar'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = sId;
     data['username'] = username;
+    data['fullname'] = fullname;
     data['avatar'] = avatar;
     return data;
   }
