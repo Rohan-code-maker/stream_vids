@@ -35,6 +35,7 @@ class Languages extends Translations{
       "user_screen":"User Screen",
       "post_video":"Post Video",
       "forgot_password":"Forgot Password?",
+      "reset_password":"Reset Password",
       "watch_history":"Watch History",
       "logout":"Logout",
       "sure_logout":"Are you sure want to Logout?",

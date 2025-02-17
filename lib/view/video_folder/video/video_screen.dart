@@ -132,6 +132,7 @@ class _VideoScreenState extends State<VideoScreen> {
   @override
   Widget build(BuildContext context) {
     Size mq = MediaQuery.of(context).size;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
       appBar: AppBar(
@@ -175,7 +176,7 @@ class _VideoScreenState extends State<VideoScreen> {
                           Expanded(
                             flex: 5,
                             child:
-                                _buildVideoInfoSection(video, mq, isWideScreen),
+                                _buildVideoInfoSection(video, mq, isWideScreen,isDarkMode),
                           ),
                           Container(
                             width: 1.5, 
@@ -187,16 +188,16 @@ class _VideoScreenState extends State<VideoScreen> {
                             flex: 2,
                             child: SingleChildScrollView(
                                 child: _buildCommentsSection(
-                                    video, mq, isWideScreen)),
+                                    video, mq, isWideScreen,isDarkMode)),
                           ),
                         ],
                       )
                     : Column(
                         children: [
-                          _buildVideoInfoSection(video, mq, isWideScreen),
+                          _buildVideoInfoSection(video, mq, isWideScreen,isDarkMode),
                           const SizedBox(height: 16),
                           const Divider(),
-                          _buildCommentsSection(video, mq, isWideScreen),
+                          _buildCommentsSection(video, mq, isWideScreen,isDarkMode),
                         ],
                       ),
               ),
@@ -207,7 +208,7 @@ class _VideoScreenState extends State<VideoScreen> {
     );
   }
 
-  Widget _buildVideoInfoSection(video, mq, isWideScreen) {
+  Widget _buildVideoInfoSection(video, mq, isWideScreen,isDarkMode) {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -299,6 +300,7 @@ class _VideoScreenState extends State<VideoScreen> {
                       subscriptionController.subscribe(video.owner!.sId!);
                     },
                     child: Text(
+                      style: const TextStyle(color: Colors.black),
                       subscriptionController.isSubscribed.value
                           ? "subscribed".tr
                           : "subscribe".tr,
@@ -311,7 +313,7 @@ class _VideoScreenState extends State<VideoScreen> {
     );
   }
 
-  Widget _buildCommentsSection(video, mq, isWideScreen) {
+  Widget _buildCommentsSection(video, mq, isWideScreen, isDarkMode) {
     return Column(
       children: [
         Text(

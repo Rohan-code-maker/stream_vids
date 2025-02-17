@@ -17,6 +17,8 @@ class _UpdateAvatarScreenState extends State<UpdateAvatarScreen> {
   @override
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context).size;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('update_avatar'.tr),
@@ -31,28 +33,44 @@ class _UpdateAvatarScreenState extends State<UpdateAvatarScreen> {
         key: _avatarKey,
         child: Center(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              TextFormField(
-                readOnly: true,
-                decoration: InputDecoration(
-                  labelText: 'avatar_hint'.tr,
-                  hintText: 'avatar_hint'.tr,
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.photo),
-                    onPressed: () => _controller.pickImage(),
+              Container(
+                width: mq.width * .8,
+                decoration: BoxDecoration(
+                  color: isDarkMode ? Colors.black : Colors.white,
+                  borderRadius: BorderRadius.circular(10.0),
+                  border: Border.all(
+                      color: isDarkMode ? Colors.black : Colors.white),
+                ),
+                child: Obx(
+                  () => TextFormField(
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0)),
+                      errorStyle: const TextStyle(color: Colors.red),
+                      labelText: 'avatar_hint'.tr,
+                      hintText: 'avatar_hint'.tr,
+                      suffixIcon: IconButton(
+                        icon: const Icon(Icons.photo),
+                        onPressed: () => _controller.pickImage(),
+                      ),
+                    ),
+                    controller: TextEditingController(
+                      text: _controller.avatarImageName.value,
+                    ),
+                    validator: (value) {
+                      if (_controller.avatarImage.value == null) {
+                        // Validate if avatar imagreyge is selected
+                        Utils.toastMessageBottom("select_photo".tr);
+                        return 'select_photo'.tr;
+                      }
+                      return null;
+                    },
                   ),
                 ),
-                controller: TextEditingController(
-                  text: _controller.avatarImageName.value,
-                ),
-                validator: (value) {
-                  if (_controller.avatarImage.value == null) {
-                    // Validate if avatar image is selected
-                    Utils.toastMessageBottom("select_photo".tr);
-                    return 'select_photo'.tr;
-                  }
-                  return null;
-                },
               ),
               SizedBox(
                 height: mq.height * .05,

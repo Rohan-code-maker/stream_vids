@@ -37,7 +37,6 @@ class InputField extends StatelessWidget {
       },
       obscureText: obscure,
       obscuringCharacter: obscureChar,
-      style: const TextStyle(color: Colors.black),
       decoration: InputDecoration(
           suffixIcon: suffixIcon,
           prefixIcon: prefixIcon,

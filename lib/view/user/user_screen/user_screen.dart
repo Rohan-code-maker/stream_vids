@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stream_vids/res/routes/route_name.dart';
 import 'package:stream_vids/view_models/controller/user/get_user_by_id/get_user_controller.dart';
+import 'package:stream_vids/view_models/controller/user/watch_history/add_watch_history_controller.dart';
+import 'package:stream_vids/view_models/controller/video_folder/get_user_videos/get_user_videos_controller.dart';
 
 class UserScreen extends StatefulWidget {
   final String userId;
@@ -13,22 +15,29 @@ class UserScreen extends StatefulWidget {
 
 class _UserScreenState extends State<UserScreen> {
   final _controller = Get.put(GetUserController());
+  final videoController = Get.put(GetUserVideosController());
+  final addWatchHistory = Get.put(AddWatchHistoryController());
 
   @override
   void initState() {
     super.initState();
     _controller.getUserById(widget.userId);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      videoController.userVideos(widget.userId);
+    });
   }
 
   @override
   void dispose() {
     Get.delete<GetUserController>();
+    Get.delete<GetUserVideosController>();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     Size mq = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
         title: Text("user_screen".tr),
@@ -134,20 +143,20 @@ class _UserScreenState extends State<UserScreen> {
 
                         // Video List Section
                         Obx(() {
-                          if (_controller.isLoading.value) {
+                          if (videoController.isLoading.value) {
                             return const Center(
                                 child: CircularProgressIndicator());
                           }
-                          if (_controller.videoList.isEmpty) {
+                          if (videoController.videoList.isEmpty) {
                             return const Center(
                                 child: Text("No videos found."));
                           }
                           return ListView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
-                            itemCount: _controller.videoList.length,
+                            itemCount: videoController.videoList.length,
                             itemBuilder: (context, index) {
-                              final video = _controller.videoList[index];
+                              final video = videoController.videoList[index];
                               return Card(
                                 elevation: 2,
                                 margin: const EdgeInsets.symmetric(vertical: 8),
@@ -178,6 +187,8 @@ class _UserScreenState extends State<UserScreen> {
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   onTap: () {
+                                    addWatchHistory
+                                        .addToWatchHistory(video.sId!);
                                     Get.toNamed(
                                       RouteName.videoScreen
                                           .replaceFirst(':videoId', video.sId!),

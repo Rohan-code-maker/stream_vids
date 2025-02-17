@@ -38,7 +38,7 @@ class _AddVideoScreenState extends State<AddVideoScreen> {
                 child: Container(
                   width: isWideScreen ? mq.width * 0.5 : mq.width,
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: isDarkMode ? Colors.black : Colors.white,
                     borderRadius: const BorderRadius.all(Radius.circular(8.0)),
                     border: Border.all(
                         width: 2,
