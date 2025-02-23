@@ -31,4 +31,5 @@ class AppUrl {
   static const String viewsCountUrl = "$baseUrl/videos/views/:videoId";
   static const String getUser = "$baseUrl/users/profile/:userId";
   static const String getUserVideos = "$baseUrl/videos/user/:userId";
+  static const String getAllChats = "$baseUrl/chats";
 }
