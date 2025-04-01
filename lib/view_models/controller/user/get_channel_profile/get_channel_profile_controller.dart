@@ -24,14 +24,14 @@ class GetChannelProfileController extends GetxController {
         Get.delete<GetChannelProfileController>();
         channelProfile.value = channelProfileModel.data!;
       } else {
-        Utils.snackBar("Error", channelProfileModel.message!);
+        Utils.snackBar("error".tr, channelProfileModel.message!);
       }
       }else{
-        Utils.snackBar("Error", response['message']);
+        Utils.snackBar("error".tr, response['message']);
       }
     } catch (e) {
       final String err = Utils.extractErrorMessage(e.toString());
-      Utils.snackBar("Error", err);
+      Utils.snackBar("error".tr, err);
     } finally {
       isLoading(false);
     }

@@ -66,7 +66,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         final user = _controller.channelProfile.value;
 
         if (user.username == null || user.email == null) {
-          return const Center(child: Text("No data available"));
+          return Center(child: Text("no_data".tr));
         }
 
         return LayoutBuilder(
@@ -158,8 +158,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 child: CircularProgressIndicator());
                           }
                           if (videoController.videoList.isEmpty) {
-                            return const Center(
-                                child: Text("No videos found."));
+                            return Center(
+                                child: Text("no_data".tr));
                           }
                           return ListView.builder(
                             shrinkWrap: true,
@@ -216,9 +216,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         onPressed: () {
                                           Utils.showConfirmation(
                                             context: context,
-                                            title: "Delete Video",
+                                            title: "delete_video".tr,
                                             message:
-                                                "Are you sure you want to delete this video?",
+                                                "are_you_sure",
                                             onConfirm: () {
                                               deleteVideoController
                                                   .deleteVideo(video.sId);
@@ -292,8 +292,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        _buildStatItem("Subscribers", user.subscribersCount ?? 0, mq),
-        _buildStatItem("Subscribed", user.channelsSubscribedToCount ?? 0, mq),
+        _buildStatItem("subscribers".tr, user.subscribersCount ?? 0, mq),
+        _buildStatItem("subscribed".tr, user.channelsSubscribedToCount ?? 0, mq),
       ],
     );
   }
@@ -321,13 +321,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
-          const DrawerHeader(
-            decoration: BoxDecoration(
+           DrawerHeader(
+            decoration: const BoxDecoration(
               color: Colors.blue,
             ),
             child: Text(
-              'Settings',
-              style: TextStyle(color: Colors.white, fontSize: 24),
+              'settings'.tr,
+              style: const TextStyle(color: Colors.white, fontSize: 24),
             ),
           ),
           ListTile(

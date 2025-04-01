@@ -15,14 +15,14 @@ class ViewsCountController extends GetxController {
         if (model.success!) {
           views.value = model.data!.views!;
         } else {
-          Utils.snackBar("Error", model.message!);
+          Utils.snackBar("error".tr, model.message!);
         }
       }else{
-        Utils.snackBar("Error", "Error: ${response['message']}");
+        Utils.snackBar("error".tr, "Error: ${response['message']}");
       }
     } catch (e) {
       final String err = Utils.extractErrorMessage(e.toString());
-      Utils.snackBar("Error", err);
+      Utils.snackBar("error".tr, err);
     }
   }
 }

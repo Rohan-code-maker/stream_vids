@@ -32,7 +32,7 @@ class LoginController extends GetxController {
     try {
       final response = await _api.loginApi(data);
       if (response == null || !response.containsKey('data')) {
-        Utils.snackBar("Error", "Invalid response format");
+        Utils.snackBar("error".tr, "invalid_response".tr);  
       }
 
       final dataModel = Data.fromJson(response['data']);
@@ -42,17 +42,17 @@ class LoginController extends GetxController {
         if (isSaved) {
           Get.delete<LoginController>();
           Get.offAllNamed(RouteName.navBarScreen);
-          Utils.snackBar("Success", "Login Successfully");
+          Utils.snackBar("success".tr, "login_success".tr);
           clearFields();
         } else {
-          Utils.snackBar("Error", "Failed to save user data.");
+          Utils.snackBar("error".tr, "failed_to_save_user".tr);
         }
       } else {
-        Utils.snackBar("Error", "Login failed: No access token found.");
+        Utils.snackBar("error".tr, "login_failed".tr);
       }
     } catch (error) {
       final String err = Utils.extractErrorMessage(error.toString());
-      Utils.snackBar("Error", "Login Failed: $err");
+      Utils.snackBar("error".tr, "${'login_failed'.tr} $err");
     } finally {
       loading.value = false;
     }

@@ -56,7 +56,7 @@ class _UserScreenState extends State<UserScreen> {
         final user = _controller.channelProfile.value.data!;
 
         if (user.username == null || user.email == null) {
-          return const Center(child: Text("No data available"));
+          return Center(child: Text("no_data".tr));
         }
 
         return LayoutBuilder(
@@ -148,8 +148,8 @@ class _UserScreenState extends State<UserScreen> {
                                 child: CircularProgressIndicator());
                           }
                           if (videoController.videoList.isEmpty) {
-                            return const Center(
-                                child: Text("No videos found."));
+                            return Center(
+                                child: Text("no_data".tr));
                           }
                           return ListView.builder(
                             shrinkWrap: true,
@@ -244,8 +244,8 @@ class _UserScreenState extends State<UserScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        _buildStatItem("Subscribers", user.subscribersCount ?? 0, mq),
-        _buildStatItem("Subscribed", user.channelsSubscribedToCount ?? 0, mq),
+        _buildStatItem("subscribers".tr, user.subscribersCount ?? 0, mq),
+        _buildStatItem("subscribed".tr, user.channelsSubscribedToCount ?? 0, mq),
       ],
     );
   }

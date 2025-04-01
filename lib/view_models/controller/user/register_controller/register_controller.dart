@@ -67,11 +67,11 @@ class RegisterController extends GetxController {
           }
         }
       } else {
-        Utils.snackBar("Error", "No image selected");
+        Utils.snackBar("error".tr, "select_photo".tr);
       }
     } catch (e) {
       
-      Utils.snackBar("Error", "Failed to pick an image: $e");
+      Utils.snackBar("error".tr, "Failed to pick an image: $e");
     }
   }
 
@@ -91,7 +91,7 @@ class RegisterController extends GetxController {
     loading.value = true;
 
     if (avatarImageName.value.isEmpty) {
-      Utils.snackBar("Error", "Please select an avatar image.");
+      Utils.snackBar("error".tr, "avatar_hint".tr);
       loading.value = false;
       return;
     }
@@ -174,23 +174,23 @@ class RegisterController extends GetxController {
             // Registration successful
             Get.delete<RegisterController>();
             Get.toNamed(RouteName.loginScreen);
-            Utils.snackBar("Success", "Registration Successful");
+            Utils.snackBar("success".tr, "register_success".tr);
             clearFields();
           } else {
             Utils.snackBar(
-                "Error", registerModel.message ?? "Unknown error occurred");
+                "error".tr, registerModel.message ?? "unknown_error".tr);
           }
         } else {
           // Handle unexpected status code
           Utils.snackBar(
-              "Error", "Unexpected status code: ${response['statusCode']}");
+              "error".tr, "Unexpected status code: ${response['statusCode']}");
         }
       } catch (e) {
         final String err = Utils.extractErrorMessage(e.toString());
-        Utils.snackBar("Error", "Error while registering: $err");
+        Utils.snackBar("error".tr, "${'error_register'.tr} $err");
       }
     } catch (error) {
-      Utils.snackBar("Error", "Registration failed: $error");
+      Utils.snackBar("error".tr, "${"register_failed".tr}$error");
     } finally {
       loading.value = false;
     }

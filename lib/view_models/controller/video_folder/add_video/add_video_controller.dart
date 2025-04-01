@@ -48,10 +48,10 @@ Future<void> pickVideo() async {
         videoName.value = videoFile.value.name;
             }
     } else {
-      Utils.snackBar("Error", "No video selected");
+      Utils.snackBar("error".tr, "select_video".tr);
     }
   } catch (e) {
-    Utils.snackBar("Error", "Error picking video: $e");
+    Utils.snackBar("error".tr, "Error picking video: $e");
   }
 }
 
@@ -141,23 +141,23 @@ Future<void> pickVideo() async {
           final model = PublishVideoModel.fromJson(response);
           if (model.success == true) {
             Get.delete<AddVideoController>();
-            Utils.snackBar("Success", "Video Posted successfully");
+            Utils.snackBar("success".tr, "Video Posted successfully");
             Get.toNamed(RouteName.navBarScreen);
             clearFields();
           } else {
-            Utils.snackBar("Error", model.message);
+            Utils.snackBar("error".tr, model.message);
           }
         } else {
           // Handle unexpected status code
-          Utils.snackBar("Error",
+          Utils.snackBar("error".tr,
               "Unexpected status code: ${response['statusCode']} \n ${response['message']}");
         }
       } catch (e) {
         final String err = Utils.extractErrorMessage(e.toString());
-        Utils.snackBar("Error", err);
+        Utils.snackBar("error".tr, err);
       }
     } catch (e) {
-      Utils.snackBar("Error", "Error while uploading image: $e");
+      Utils.snackBar("error".tr, "Error while uploading image: $e");
     } finally {
       loading.value = false;
     }

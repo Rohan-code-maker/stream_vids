@@ -30,13 +30,13 @@ class ForgotPasswordController extends GetxController {
       final model = ChangePasswordModel.fromJson(response);
       if (model.statusCode == 200) {
         Get.delete<ForgotPasswordController>();
-        Utils.snackBar("Success", "Password Reset Successful");
+        Utils.snackBar("success".tr, "password_reset_success".tr);
         Get.toNamed(RouteName.loginScreen);
       }
     } catch (e) {
       final String err = Utils.extractErrorMessage(e.toString());
       Utils.snackBar(
-          "Error", err);
+          "error".tr, err);
     }finally{
       loading.value = false;
     }

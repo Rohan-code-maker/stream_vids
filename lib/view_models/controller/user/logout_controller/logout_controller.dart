@@ -21,7 +21,7 @@ class LogoutController extends GetxController {
       // Call logout API
       final response = await _api
           .logoutApi({"accessToken": accessToken}).onError((err, stackTrace) {
-        Utils.snackBar("Error", "Error while Api call");
+        Utils.snackBar("error".tr, "error_api_call".tr);
       });
       final logoutModel = LogoutModel.fromJson(response);
 
@@ -30,14 +30,14 @@ class LogoutController extends GetxController {
         await userPreferences.clearUser();
         Get.delete<LogoutController>();
         Get.offAllNamed(RouteName.loginScreen);
-        Utils.snackBar("Success", "Logout Successfully");
+        Utils.snackBar("success".tr, "logout_success".tr);
       } else {
         // Logout failed
-        Utils.snackBar("Error", "Logout Failed");
+        Utils.snackBar("error".tr, "logout_failed".tr);
       }
     } catch (e) {
       final String err = Utils.extractErrorMessage(e.toString());
-      Utils.snackBar("Error", err);
+      Utils.snackBar("error".tr, err);
     } finally {
       // Hide loading indicator
       loading.value = false;

@@ -26,12 +26,12 @@ class GetLikedVideosController extends GetxController {
         likedVideos.assignAll(likedVideosModel.data!);
         Get.delete<GetLikedVideosController>();
       } else {
-        Utils.snackBar("Error",
+        Utils.snackBar("error".tr,
             "Failed to fetch liked videos: ${likedVideosModel.message}");
       }
     } catch (e) {
       final String err = Utils.extractErrorMessage(e.toString());
-      Utils.snackBar("Error", err);
+      Utils.snackBar("error".tr, err);
     } finally {
       isLoading.value = false;
     }

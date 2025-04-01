@@ -19,14 +19,14 @@ class GetAllVideoController extends GetxController {
           videoList.assignAll(videoModel.data.videos);
           Get.delete<GetAllVideoController>();
         } else {
-          Utils.snackBar("Info", "No videos available.");
+          Utils.snackBar("error".tr, "no_data".tr);
         }
       } else {
-        Utils.snackBar("Error", videoModel.message);
+        Utils.snackBar("error".tr, videoModel.message);
       }
     } catch (e) {
       final String err = Utils.extractErrorMessage(e.toString());
-      Utils.snackBar("Error", "Error occurred while fetching data: $err");
+      Utils.snackBar("error.tr", "Error occurred while fetching data: $err");
     } finally {
       isLoading(false);
     }

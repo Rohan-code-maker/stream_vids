@@ -45,7 +45,7 @@ class UpdateCoverimageController extends GetxController{
   void updateCoverImage() async {
     loading.value = true;
     if (coverImageName.value.isEmpty) {
-      Utils.snackBar("Error", "Please select an Cover image.");
+      Utils.snackBar("error".tr, "coverImage_hint".tr);
       loading.value = false;
       return;
     }
@@ -88,22 +88,22 @@ class UpdateCoverimageController extends GetxController{
           final model = UpdateAccountModel.fromJson(response);
           if (model.success == true) {
             Get.delete<UpdateCoverimageController>();
-            Utils.snackBar("Success", "CoverImage Updated successfully");
+            Utils.snackBar("success".tr, "coverimage_updated".tr);
             Get.toNamed(RouteName.navBarScreen, arguments: {'initialIndex': 2});
           } else {
-            Utils.snackBar("Error", model.message!);
+            Utils.snackBar("error".tr, model.message!);
           }
         } else {
           // Handle unexpected status code
           Utils.snackBar(
-              "Error", "Unexpected status code: ${response['statusCode']} \n ${response['message']}");
+              "error".tr, "Unexpected status code: ${response['statusCode']} \n ${response['message']}");
         }
       } catch (e) {
         final String err = Utils.extractErrorMessage(e.toString());
-        Utils.snackBar("Error", err);
+        Utils.snackBar("error".tr, err);
       }
     } catch (e) {
-      Utils.snackBar("Error", "Error while uploading image: $e");
+      Utils.snackBar("error".tr, "Error while uploading image: $e");
     } finally {
       loading.value = false;
     }

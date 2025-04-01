@@ -44,7 +44,7 @@ class UpdateAvatarController extends GetxController {
   void updateAvatar() async {
     loading.value = true;
     if (avatarImageName.value.isEmpty) {
-      Utils.snackBar("Error", "Please select an avatar image.");
+      Utils.snackBar("error".tr, "avatar_hint".tr);
       loading.value = false;
       return;
     }
@@ -85,21 +85,21 @@ class UpdateAvatarController extends GetxController {
           final model = UpdateAccountModel.fromJson(response);
           if (model.success == true) {
             Get.delete<UpdateAvatarController>();
-            Utils.snackBar("Success", "Avatar Updated successfully");
+            Utils.snackBar("success".tr, "avatar_updated".tr);
             Get.toNamed(RouteName.navBarScreen);
           } else {
-            Utils.snackBar("Error", model.message!);
+            Utils.snackBar("error".tr, model.message!);
           }
         } else {
-          Utils.snackBar("Error",
+          Utils.snackBar("error".tr,
               "Unexpected status code: ${response['statusCode']} \n ${response['message']}");
         }
       } catch (e) {
         final String err = Utils.extractErrorMessage(e.toString());
-        Utils.snackBar("Error", err);
+        Utils.snackBar("error".tr, err);
       }
     } catch (e) {
-      Utils.snackBar("Error", "Error while uploading image: $e");
+      Utils.snackBar("error".tr, "Error while uploading image: $e");
     } finally {
       loading.value = false;
     }

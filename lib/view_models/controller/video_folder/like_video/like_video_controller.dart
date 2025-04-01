@@ -23,14 +23,14 @@ class LikeVideoController extends GetxController {
           count(videoId);
           fetchLikeStatus(videoId);
         } else {
-          Utils.snackBar("Error", "${model.message}");
+          Utils.snackBar("error".tr, "${model.message}");
         }
       } else {
-        Utils.snackBar("Error", "${response['message']}");
+        Utils.snackBar("error".tr, "${response['message']}");
       }
     } catch (e) {
       final String err = Utils.extractErrorMessage(e.toString());
-      Utils.snackBar("Error", err);
+      Utils.snackBar("error".tr, err);
     }
   }
 
@@ -43,14 +43,14 @@ class LikeVideoController extends GetxController {
           likeCount.value = model.data!.likeCount!;
         } else {
           Utils.snackBar(
-              "Error", "Failed to fetch like count: ${model.message}");
+              "error".tr, "Failed to fetch like count: ${model.message}");
         }
       } else {
-        Utils.snackBar("Error", "${response["message"]}");
+        Utils.snackBar("error".tr, "${response["message"]}");
       }
     } catch (e) {
       final String err = Utils.extractErrorMessage(e.toString());
-      Utils.snackBar("Error", err);
+      Utils.snackBar("error".tr, err);
     }
   }
 
@@ -66,15 +66,15 @@ class LikeVideoController extends GetxController {
             isliked.value = false;
           }
         } else {
-          Utils.snackBar("Error", "Failed to fetch likes: ${model.message}");
+          Utils.snackBar("error".tr, "Failed to fetch likes: ${model.message}");
         }
       } else {
         Utils.snackBar(
-            "Error", "Failed to fetch likes: ${response["message"]}");
+            "error".tr, "Failed to fetch likes: ${response["message"]}");
       }
     } catch (e) {
       final String err = Utils.extractErrorMessage(e.toString());
-      Utils.snackBar("Error", err);
+      Utils.snackBar("error".tr, err);
     }
   }
 }

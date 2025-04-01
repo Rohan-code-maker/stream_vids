@@ -18,14 +18,14 @@ class GetWatchHistoryController extends GetxController {
           Get.delete<GetWatchHistoryController>();
           watchHistory.assignAll(model.data!);
         } else {
-          Utils.snackBar("Error", model.message!);
+          Utils.snackBar("error".tr, model.message!);
         }
       } else {
-        Utils.snackBar('Error', response['message']);
+        Utils.snackBar('error'.tr, response['message']);
       }
     } catch (e) {
       final String err = Utils.extractErrorMessage(e.toString());
-      Utils.snackBar('Error', err);
+      Utils.snackBar('error'.tr, err);
     } finally {
       isLoading.value = false;
     }

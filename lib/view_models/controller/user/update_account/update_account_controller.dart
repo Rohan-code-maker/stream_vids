@@ -33,17 +33,17 @@ class UpdateAccountController extends GetxController {
         final model = UpdateAccountModel.fromJson(response);
         if (model.statusCode == 200) {
           Get.delete<UpdateAccountController>();
-          Utils.snackBar("Success", "Account Updated successfully");
+          Utils.snackBar("success".tr, "account_updated".tr);
           Get.toNamed(RouteName.navBarScreen,arguments: {'initialIndex': 2});
         }else{
-          Utils.snackBar("Error", model.message!);
+          Utils.snackBar("error".tr, model.message!);
         }
       }else{
-        Utils.snackBar("Error", "Response arrives with status code  ${response['statusCode']}");
+        Utils.snackBar("error".tr, "Response arrives with status code  ${response['statusCode']}");
       }
     } catch (e) {
       final String err = Utils.extractErrorMessage(e.toString());
-      Utils.snackBar("Error", err);
+      Utils.snackBar("error".tr, err);
     } finally {
       isLoading.value = false;
     }

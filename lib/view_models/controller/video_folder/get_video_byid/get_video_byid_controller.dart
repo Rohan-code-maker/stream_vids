@@ -21,15 +21,15 @@ class GetVideoByIdController extends GetxController {
           video.value = model.data!.video;
         } else {
           video.value = null;
-          Utils.snackBar("Error", "${model.message}");
+          Utils.snackBar("error".tr, "${model.message}");
         }
       } else {
         Utils.snackBar(
-            "Error", "$response['message'] ?? Failed to fetch video");
+            "error".tr, "$response['message']");
       }
     } catch (e) {
       final String err = Utils.extractErrorMessage(e.toString());
-      Utils.snackBar("Error", err);
+      Utils.snackBar("error".tr, err);
     } finally {
       isLoading(false);
     }

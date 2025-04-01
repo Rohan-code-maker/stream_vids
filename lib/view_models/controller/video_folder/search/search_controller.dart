@@ -45,7 +45,7 @@ class SearchVideoController extends GetxController {
       videoList.clear();
       final String err = Utils.extractErrorMessage(e.toString());
       Utils.snackBar(
-        'Error',
+        'error'.tr,
         err,
       );
     } finally {

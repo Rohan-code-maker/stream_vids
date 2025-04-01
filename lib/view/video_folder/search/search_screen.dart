@@ -21,7 +21,7 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Search'),
+        title: Text('search'.tr),
         centerTitle: true,
         automaticallyImplyLeading: false,
       ),
@@ -32,7 +32,7 @@ class _SearchScreenState extends State<SearchScreen> {
             TextField(
               controller: _textEditingController,
               decoration: InputDecoration(
-                labelText: 'Search for videos',
+                labelText: 'search_video'.tr,
                 prefixIcon: const Icon(Icons.search),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
@@ -51,8 +51,8 @@ class _SearchScreenState extends State<SearchScreen> {
               }
 
               if (_searchController.videoList.isEmpty) {
-                return const Center(
-                  child: Text('No videos found'),
+                return Center(
+                  child: Text('no_data'.tr),
                 );
               }
 

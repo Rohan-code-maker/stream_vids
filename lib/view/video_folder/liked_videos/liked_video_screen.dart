@@ -36,7 +36,7 @@ class _LikedVideoScreenState extends State<LikedVideoScreen> {
         if (getLikedVideoController.isLoading.value) {
           return const Center(child: CircularProgressIndicator());
         } else if (getLikedVideoController.likedVideos.isEmpty) {
-          return const Center(child: Text('No liked videos found.'));
+          return Center(child: Text('no_data'.tr));
         } else {
           return LayoutBuilder(
             builder: (context, constraints) {

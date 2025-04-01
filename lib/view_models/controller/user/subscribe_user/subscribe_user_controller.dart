@@ -19,14 +19,14 @@ class SubscribeUserController extends GetxController {
           getSubscribedStatus(channelId);
         } else {
           Utils.snackBar(
-              "Error", "Failed to subscribe to channel: ${model.message}");
+              "error".tr, "Failed to subscribe to channel: ${model.message}");
         }
       } else {
-        Utils.snackBar("Error", response['message']);
+        Utils.snackBar("error".tr, response['message']);
       }
     } catch (e) {
       final String errorMessage = Utils.extractErrorMessage(e.toString());
-      Utils.snackBar("Error", errorMessage);
+      Utils.snackBar("error".tr, errorMessage);
     }
   }
 
@@ -42,15 +42,15 @@ class SubscribeUserController extends GetxController {
             isSubscribed.value = false;
           }
         } else {
-          Utils.snackBar("Error", model.message!);
+          Utils.snackBar("error".tr, model.message!);
         }
       } else {
         Utils.snackBar(
-            "Error", "Error during api call: ${response['message']}");
+            "error".tr, "Error during api call: ${response['message']}");
       }
     } catch (e) {
       final String err = Utils.extractErrorMessage(e.toString());
-      Utils.snackBar("Error", err);
+      Utils.snackBar("error".tr, err);
     }
   }
 }

@@ -33,7 +33,7 @@ class _UpdateVideoScreenState extends State<UpdateVideoScreen> {
     Size mq = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Update Video'),
+        title: Text('update_video'.tr),
         centerTitle: true,
         leading: IconButton(
             onPressed: () {

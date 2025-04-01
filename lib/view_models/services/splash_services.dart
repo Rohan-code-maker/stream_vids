@@ -29,7 +29,7 @@ class SplashServices {
       }
     } catch (error) {
       final String err = Utils.extractErrorMessage(error.toString());
-      Utils.snackBar("Error", "An error occurred: $err");
+      Utils.snackBar("error".tr, "An error occurred: $err");
     }
   }
 

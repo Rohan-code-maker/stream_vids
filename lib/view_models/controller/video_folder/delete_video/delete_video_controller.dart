@@ -17,16 +17,16 @@ class DeleteVideoController extends GetxController {
         if (model.success!) {
           Get.delete<DeleteVideoController>();
           Get.toNamed(RouteName.profileScreen);
-          Utils.snackBar("Success", "Video deleted successfully");
+          Utils.snackBar("success".tr, "video_deleted".tr);
         } else {
-          Utils.snackBar("Error", model.message.toString());
+          Utils.snackBar("error".tr, model.message.toString());
         }
       } else {
-        Utils.snackBar("Error", "$response['message]");
+        Utils.snackBar("error".tr, "$response['message]");
       }
     } catch (e) {
       final String err = Utils.extractErrorMessage(e.toString());
-      Utils.snackBar("Error", err);
+      Utils.snackBar("error".tr, err);
     } finally {
       loading.value = false;
     }

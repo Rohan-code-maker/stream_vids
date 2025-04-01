@@ -108,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 12.0),
                             child: Text(
-                              video.description,
+                              video.createdBy.username,
                               maxLines: 3,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
@@ -116,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ? mq.width * 0.01
                                     : mq.width * 0.03,
                                 color: brightness == Brightness.light
-                                    ? Colors.grey
+                                    ? Colors.black
                                     : Colors.grey[400],
                               ),
                             ),

@@ -61,7 +61,7 @@ class _VideoScreenState extends State<VideoScreen> {
     _videoPlayerController.initialize().then((_) {
       setState(() {});
     }).catchError((error, stackTrace) {
-      Utils.snackBar("Error", "Error initializing video: $error");
+      Utils.snackBar("error".tr, "${'error_init_video'.tr} $error");
     });
   }
 
@@ -70,15 +70,15 @@ class _VideoScreenState extends State<VideoScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text("Edit Comment"),
+          title: Text("edit_comment".tr),
           content: TextField(
             controller: viewCommentController.updateController,
-            decoration: const InputDecoration(hintText: "Update your comment"),
+            decoration: InputDecoration(hintText: "update_comment".tr),
           ),
           actions: [
             TextButton(
               onPressed: () => Get.back(),
-              child: const Text("Cancel"),
+              child: Text("cancel".tr),
             ),
             ElevatedButton(
               onPressed: () {
@@ -90,10 +90,10 @@ class _VideoScreenState extends State<VideoScreen> {
 
                   Get.back();
                 } else {
-                  Utils.snackBar("Error", "Comment cannot be empty");
+                  Utils.snackBar("error".tr, "comment_cannot_empty".tr);
                 }
               },
-              child: const Text("Save"),
+              child: Text("save".tr),
             ),
           ],
         );
@@ -106,12 +106,12 @@ class _VideoScreenState extends State<VideoScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text("Delete Comment"),
-          content: const Text("Are you sure you want to delete this comment?"),
+          title: Text("delete_comment".tr),
+          content: Text("are_you_sure_you_want_to_delete".tr),
           actions: [
             TextButton(
               onPressed: () => Get.back(),
-              child: const Text("Cancel"),
+              child: Text("cancel".tr),
             ),
             ElevatedButton(
               onPressed: () {
@@ -121,7 +121,7 @@ class _VideoScreenState extends State<VideoScreen> {
 
                 Get.back();
               },
-              child: const Text("Delete"),
+              child: Text("delete".tr),
             ),
           ],
         );
@@ -239,15 +239,15 @@ class _VideoScreenState extends State<VideoScreen> {
           ),
           SizedBox(height: mq.height * 0.02),
           Text(
-            "Description: ${video.description!.toUpperCase()}",
+            "${'desc'.tr} ${video.description!.toUpperCase()}",
             style: TextStyle(fontSize: mq.width * 0.03),
             maxLines: 4,
             overflow: TextOverflow.ellipsis,
           ),
           SizedBox(height: mq.height * 0.02),
-          Obx(() => Text("Total Views: ${viewCountController.views.value}")),
+          Obx(() => Text("${'total_views'.tr} ${viewCountController.views.value}")),
           SizedBox(height: mq.height * 0.02),
-          Text("Uploaded ${Utils.timeAgo(video.createdAt!)}"),
+          Text("${'uploaded'.tr} ${Utils.timeAgo(video.createdAt!)}"),
           SizedBox(height: mq.height * 0.02),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

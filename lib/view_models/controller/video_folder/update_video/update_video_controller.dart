@@ -147,23 +147,23 @@ Future<void> pickVideo() async {
           final model = VideoUpdateModel.fromJson(response);
           if (model.success == true) {
             Get.delete<UpdateVideoController>();
-            Utils.snackBar("Success", "Video Posted successfully");
+            Utils.snackBar("success".tr, "video_posted".tr);
             Get.toNamed(RouteName.videoScreen);
             clearFields();
           } else {
-            Utils.snackBar("Error", model.message!);
+            Utils.snackBar("error".tr, model.message!);
           }
         } else {
           // Handle unexpected status code
-          Utils.snackBar("Error",
+          Utils.snackBar("error".tr,
               "Unexpected status code: ${response['statusCode']} \n ${response['message']}");
         }
       } catch (e) {
         final String err = Utils.extractErrorMessage(e.toString());
-        Utils.snackBar("Error", err);
+        Utils.snackBar("error".tr, err);
       }
     } catch (e) {
-      Utils.snackBar("Error", "Error while uploading image: $e");
+      Utils.snackBar("error".tr, "Error while uploading image: $e");
     } finally {
       loading.value = false;
     }

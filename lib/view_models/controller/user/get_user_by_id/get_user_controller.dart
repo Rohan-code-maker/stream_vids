@@ -17,14 +17,14 @@ class GetUserController extends GetxController {
         if (channelProfileModel.success!) {
           channelProfile.value = channelProfileModel;
         } else {
-          Utils.snackBar("Error", channelProfileModel.message!);
+          Utils.snackBar("error".tr, channelProfileModel.message!);
         }
       } else {
-        Utils.snackBar("Error", response['message']);
+        Utils.snackBar("error".tr, response['message']);
       }
     } catch (e) {
       final String err = Utils.extractErrorMessage(e.toString());
-      Utils.snackBar("Error", err);
+      Utils.snackBar("error".tr, err);
     } finally {
       isLoading(false);
     }

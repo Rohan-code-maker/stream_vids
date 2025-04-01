@@ -53,7 +53,7 @@ class ViewCommentController extends GetxController {
       }
     } catch (e) {
       final String err = Utils.extractErrorMessage(e.toString());
-      Utils.snackBar("Error", err);
+      Utils.snackBar("error".tr, err);
     } finally {
       isloading.value = false;
     }
@@ -87,14 +87,14 @@ class ViewCommentController extends GetxController {
             fetchCommentLikeCount(commentId);
           }
         } else {
-          Utils.snackBar("Error", model.message!);
+          Utils.snackBar("error".tr, model.message!);
         }
       } else {
-        Utils.snackBar("Error", fetchedComments['message']);
+        Utils.snackBar("error".tr, fetchedComments['message']);
       }
     } catch (e) {
       final String err = Utils.extractErrorMessage(e.toString());
-      Utils.snackBar("Error", err);
+      Utils.snackBar("error".tr, err);
     }
   }
 
@@ -106,14 +106,14 @@ class ViewCommentController extends GetxController {
         if (model.success!) {
           isLikedMap[commentId]?.value = model.data!.isLiked!;
         } else {
-          Utils.snackBar("Error", model.message!);
+          Utils.snackBar("error".tr, model.message!);
         }
       } else {
-        Utils.snackBar("Error", status['message']);
+        Utils.snackBar("error".tr, status['message']);
       }
     } catch (e) {
       final String err = Utils.extractErrorMessage(e.toString());
-      Utils.snackBar("Error", err);
+      Utils.snackBar("error".tr, err);
     }
   }
 
@@ -125,14 +125,14 @@ class ViewCommentController extends GetxController {
         if (model.success!) {
           likeCountMap[commentId]?.value = model.data!.likeCount!;
         } else {
-          Utils.snackBar("Error", model.message!);
+          Utils.snackBar("error".tr, model.message!);
         }
       } else {
-        Utils.snackBar("Error", count['message']);
+        Utils.snackBar("error".tr, count['message']);
       }
     } catch (e) {
       final String err = Utils.extractErrorMessage(e.toString());
-      Utils.snackBar("Error", err);
+      Utils.snackBar("error".tr, err);
     }
   }
 
@@ -146,14 +146,14 @@ class ViewCommentController extends GetxController {
           fetchCommentLikeStatus(commentId);
           fetchCommentLikeCount(commentId);
         } else {
-          Utils.snackBar("Error", model.message!);
+          Utils.snackBar("error".tr, model.message!);
         }
       } else {
-        Utils.snackBar("Error", response['message']);
+        Utils.snackBar("error".tr, response['message']);
       }
     } catch (e) {
       final String err = Utils.extractErrorMessage(e.toString());
-      Utils.snackBar("Error", err);
+      Utils.snackBar("error".tr, err);
     }
   }
 
@@ -166,14 +166,14 @@ class ViewCommentController extends GetxController {
         if (model.success!) {
           updateController.clear();
         } else {
-          Utils.snackBar("Error", model.message!);
+          Utils.snackBar("error".tr, model.message!);
         }
       } else {
-        Utils.snackBar("Error", response['message']);
+        Utils.snackBar("error".tr, response['message']);
       }
     } catch (e) {
       final String err = Utils.extractErrorMessage(e.toString());
-      Utils.snackBar("Error", err);
+      Utils.snackBar("error".tr, err);
     }
   }
 
@@ -183,14 +183,14 @@ class ViewCommentController extends GetxController {
       if (response['statusCode'] == 200) {
         final model = LogoutModel.fromJson(response);
         if (!model.success!) {
-          Utils.snackBar("Error", model.message!);
+          Utils.snackBar("error".tr, model.message!);
         }
       } else {
-        Utils.snackBar("Error", response['message']);
+        Utils.snackBar("error".tr, response['message']);
       }
     } catch (e) {
       final String err = Utils.extractErrorMessage(e.toString());
-      Utils.snackBar("Error", err);
+      Utils.snackBar("error".tr, err);
     }
   }
 }
