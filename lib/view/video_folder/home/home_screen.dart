@@ -45,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   crossAxisSpacing: 16.0,
                   mainAxisSpacing: 16.0,
                   childAspectRatio: isLargeScreen
-                      ? mq.aspectRatio * 0.5
+                      ? mq.aspectRatio * 0.45
                       : mq.aspectRatio * 1,
                 ),
                 itemCount: getAllVideoController.videoList.length,
@@ -95,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               style: TextStyle(
                                 fontSize: isLargeScreen
                                     ? mq.width * 0.03
-                                    : mq.width * 0.03,
+                                    : mq.width * 0.05,
                                 fontWeight: FontWeight.bold,
                                 color: brightness == Brightness.light
                                     ? Colors.black
@@ -113,8 +113,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 fontSize: isLargeScreen
-                                    ? mq.width * 0.01
-                                    : mq.width * 0.03,
+                                    ? mq.width * 0.03
+                                    : mq.width * 0.05,
                                 color: brightness == Brightness.light
                                     ? Colors.black
                                     : Colors.grey[400],

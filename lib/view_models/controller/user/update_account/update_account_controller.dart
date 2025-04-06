@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stream_vids/models/user/update_account/update_account_model.dart';
 import 'package:stream_vids/repository/user/update_account/update_account_repository.dart';
-import 'package:stream_vids/res/routes/route_name.dart';
 import 'package:stream_vids/utils/utils.dart';
 
 class UpdateAccountController extends GetxController {
@@ -31,15 +30,16 @@ class UpdateAccountController extends GetxController {
       final response = await _api.updateAccountApi(data);
       if (response['statusCode'] == 200) {
         final model = UpdateAccountModel.fromJson(response);
-        if (model.statusCode == 200) {
+        if (model.success == true) {
           Get.delete<UpdateAccountController>();
           Utils.snackBar("success".tr, "account_updated".tr);
-          Get.toNamed(RouteName.navBarScreen,arguments: {'initialIndex': 2});
-        }else{
+          clearFields();
+        } else {
           Utils.snackBar("error".tr, model.message!);
         }
-      }else{
-        Utils.snackBar("error".tr, "Response arrives with status code  ${response['statusCode']}");
+      } else {
+        Utils.snackBar("error".tr,
+            "Response arrives with status code  ${response['statusCode']}");
       }
     } catch (e) {
       final String err = Utils.extractErrorMessage(e.toString());
@@ -47,5 +47,11 @@ class UpdateAccountController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  void clearFields() {
+    fullnameController.value.clear();
+    usernameController.value.clear();
+    emailController.value.clear();
   }
 }

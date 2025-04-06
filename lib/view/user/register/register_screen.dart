@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stream_vids/res/components/input_field.dart';
 import 'package:stream_vids/res/components/round_btn.dart';
+import 'package:stream_vids/res/routes/route_name.dart';
 import 'package:stream_vids/utils/utils.dart';
 import 'package:stream_vids/view_models/controller/user/register_controller/register_controller.dart';
 import 'package:lottie/lottie.dart';
@@ -26,11 +27,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
         title: Text(
           'register_screen'.tr,
         ),
+        leading: IconButton(
+            onPressed: () {
+              Get.back();
+            },
+            icon: const Icon(Icons.arrow_back_ios)),
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
           final isWideScreen = constraints.maxWidth > 600;
           final mq = MediaQuery.of(context).size;
+          final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
           return SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
@@ -40,7 +47,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: Container(
                   width: isWideScreen ? mq.width * 0.5 : mq.width,
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: isDarkMode ? Colors.black : Colors.white,
                     borderRadius: const BorderRadius.all(Radius.circular(8.0)),
                     border: Border.all(
                         width: 2,
@@ -239,7 +246,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               SizedBox(height: mq.height * 0.05),
                               TextButton(
                                 onPressed: () {
-                                  Get.back();
+                                  Get.toNamed(RouteName.loginScreen);
                                 },
                                 child: Text(
                                   "back_to_login".tr,

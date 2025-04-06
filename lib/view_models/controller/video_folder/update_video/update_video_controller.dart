@@ -10,7 +10,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
 import 'package:stream_vids/models/video_folder/video_update/video_update_model.dart';
 import 'package:stream_vids/repository/video_folder/video_update/video_update_repository.dart';
-import 'package:stream_vids/res/routes/route_name.dart';
 import 'package:stream_vids/utils/utils.dart';
 
 class UpdateVideoController extends GetxController {
@@ -28,39 +27,38 @@ class UpdateVideoController extends GetxController {
   var videoName = ''.obs;
   var thumbnailImageName = ''.obs;
 
-   void setVideoData(Map<String, dynamic> video) {
+  void setVideoData(Map<String, dynamic> video) {
     titleController.value.text = video['title'] ?? "";
     descriptionController.value.text = video['description'] ?? "";
   }
 
-Future<void> pickVideo() async {
-  try {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.video,
-    );
+  Future<void> pickVideo() async {
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.video,
+      );
 
-    if (result != null) {
-      if (kIsWeb) {
-        // For web, use XFile for video handling
-        videoFile.value = XFile.fromData(
-          result.files.single.bytes!,
-          name: result.files.single.name,
-        );
-        videoName.value = videoFile.value.name;
+      if (result != null) {
+        if (kIsWeb) {
+          // For web, use XFile for video handling
+          videoFile.value = XFile.fromData(
+            result.files.single.bytes!,
+            name: result.files.single.name,
+          );
+          videoName.value = videoFile.value.name;
+        } else {
+          // For mobile/desktop, use file path
+          String? filePath = result.files.single.path;
+          videoFile.value = XFile(filePath!);
+          videoName.value = videoFile.value.name;
+        }
       } else {
-        // For mobile/desktop, use file path
-        String? filePath = result.files.single.path;
-        videoFile.value = XFile(filePath!);
-        videoName.value = videoFile.value.name;
-            }
-    } else {
-      Utils.snackBar("Error", "No video selected");
+        Utils.snackBar("Error", "No video selected");
+      }
+    } catch (e) {
+      Utils.snackBar("Error", "Error picking video: $e");
     }
-  } catch (e) {
-    Utils.snackBar("Error", "Error picking video: $e");
   }
-}
-
 
   /// Function to pick an image from the gallery
   void pickImage() async {
@@ -142,13 +140,12 @@ Future<void> pickVideo() async {
       }
       // Call the register API
       try {
-        final response = await _api.updateVideo(formData,videoId);
+        final response = await _api.updateVideo(formData, videoId);
         if (response['statusCode'] == 200) {
           final model = VideoUpdateModel.fromJson(response);
           if (model.success == true) {
             Get.delete<UpdateVideoController>();
-            Utils.snackBar("success".tr, "video_posted".tr);
-            Get.toNamed(RouteName.videoScreen);
+            Utils.snackBar("success".tr, "video_updated".tr);
             clearFields();
           } else {
             Utils.snackBar("error".tr, model.message!);

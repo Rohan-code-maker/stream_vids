@@ -102,6 +102,7 @@ class Languages extends Translations {
           'video_updated': "Video Updated Successfully",
           'video_deleted': "Video deleted successfully",
           'video_posted': "Video posted successfully",
+          'no_watch_history': "No watch history found",
         },
         'hi_IN': {
           "english": "अंग्रेज़ी",
@@ -202,6 +203,7 @@ class Languages extends Translations {
           'video_updated': "वीडियो सफलतापूर्वक अपडेट हुआ",
           'video_deleted': "वीडियो सफलतापूर्वक हटाया गया",
           'video_posted': "वीडियो सफलतापूर्वक पोस्ट किया गया",
+          'no_watch_history': "कोई देखने का इतिहास नहीं मिला",
         },
         'ne_NP': {
           "english": "अंग्रेजी",
@@ -302,6 +304,7 @@ class Languages extends Translations {
           'video_updated': "भिडियो सफलतापूर्वक अपडेट भयो",
           'video_deleted': "भिडियो सफलतापूर्वक हटाइयो",
           'video_posted': "भिडियो सफलतापूर्वक पोस्ट भयो",
+          'no_watch_history': "हेर्ने इतिहास फेला परेन",
         },
       };
 }

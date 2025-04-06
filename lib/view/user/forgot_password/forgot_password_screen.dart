@@ -23,15 +23,20 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        automaticallyImplyLeading: true,
         title: Text(
           'forgot_password'.tr,
         ),
+        leading: IconButton(
+            onPressed: () {
+              Get.back();
+            },
+            icon: const Icon(Icons.arrow_back_ios)),
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
           final isWideScreen = constraints.maxWidth > 600;
           final mq = MediaQuery.of(context).size;
+          final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
           return SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
@@ -41,7 +46,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 child: Container(
                   width: isWideScreen ? mq.width * 0.5 : mq.width,
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: isDarkMode ? Colors.black : Colors.white,
                     borderRadius: const BorderRadius.all(Radius.circular(8.0)),
                     border: Border.all(
                       width: 2,
@@ -111,7 +116,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                 SizedBox(height: mq.height * 0.05),
                                 Obx(
                                   () => InputField(
-                                    obscure: true,
+                                    obscure: _isPasswordObscured.value,
                                     hintText: 'new_password_hint'.tr,
                                     labelText: 'new_password_hint'.tr,
                                     controller: forgotPasswordController
@@ -124,7 +129,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                       if (value == null || value.isEmpty) {
                                         return "new_password_hint".tr;
                                       }
-                                      if (value.length < 8) {
+                                      if (value.length < 4) {
                                         return "password_length".tr;
                                       }
                                       return null;

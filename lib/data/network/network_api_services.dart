@@ -181,8 +181,7 @@ class NetworkApiService extends BaseApiService {
 
       // Make the POST request
       final response = await dio
-          .post(url, data: data, options: options)
-          .timeout(const Duration(seconds: 20));
+          .post(url, data: data, options: options);
 
       responseJson = returnResponse(response);
     } on DioException catch (e) {
@@ -227,8 +226,7 @@ class NetworkApiService extends BaseApiService {
       // Configure options
       Options options = Options(headers: headers);
       final response = await dio
-          .patch(url, data: data, options: options)
-          .timeout(const Duration(seconds: 20));
+          .patch(url, data: data, options: options);
       responsejson = returnResponse(response);
     } on DioException catch (e) {
       // Handle Dio-specific errors

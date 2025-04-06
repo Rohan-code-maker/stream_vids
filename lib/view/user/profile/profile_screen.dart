@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stream_vids/res/routes/route_name.dart';
@@ -218,8 +219,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             context: context,
                                             title: "delete_video".tr,
                                             message:
-                                                "are_you_sure",
+                                                "are_you_sure".tr,
                                             onConfirm: () {
+                                              if (kDebugMode) {
+                                                print(video.sId);
+                                              }
                                               deleteVideoController
                                                   .deleteVideo(video.sId);
                                             },
