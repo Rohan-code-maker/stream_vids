@@ -32,4 +32,7 @@ class AppUrl {
   static const String getUser = "$baseUrl/users/profile/:userId";
   static const String getUserVideos = "$baseUrl/videos/user/:userId";
   static const String getAllChats = "$baseUrl/chats";
+  static const String getAvailableUsers = "$baseUrl/chats/users";
+  static const String createOneChat = "$baseUrl/chats/c/:recieverId";
+  static const String getAllMessages = "$baseUrl/messages/:chatId";
 }

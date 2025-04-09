@@ -292,8 +292,8 @@ class _VideoScreenState extends State<VideoScreen> {
                     style: ButtonStyle(
                       backgroundColor: WidgetStateProperty.all(
                         subscriptionController.isSubscribed.value
-                            ? const Color.fromARGB(255, 245, 64, 51)
-                            : const Color.fromARGB(255, 200, 199, 199),
+                            ? const Color.fromARGB(255, 238, 230, 229)
+                            : const Color(0xFFE62117),
                       ),
                     ),
                     onPressed: () {

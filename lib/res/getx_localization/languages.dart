@@ -103,6 +103,10 @@ class Languages extends Translations {
           'video_deleted': "Video deleted successfully",
           'video_posted': "Video posted successfully",
           'no_watch_history': "No watch history found",
+          'chat_screen': "Chat Screen",
+          'no_chats': "No Chats Found",
+          'chat_created': "Chat Created Successfully",
+          'available_users': "Available Users",
         },
         'hi_IN': {
           "english": "अंग्रेज़ी",

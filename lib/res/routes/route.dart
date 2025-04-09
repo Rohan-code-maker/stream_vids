@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 import 'package:stream_vids/res/routes/route_name.dart';
 import 'package:stream_vids/utils/auth_middleware.dart';
 import 'package:stream_vids/view/bottom_navbar/bottom_navbar_screen.dart';
+import 'package:stream_vids/view/chats/available_users/available_users.dart';
+import 'package:stream_vids/view/chats/get_all_chats/chat_screen.dart';
 import 'package:stream_vids/view/user/change_password/change_password_screen.dart';
 import 'package:stream_vids/view/user/forgot_password/forgot_password_screen.dart';
 import 'package:stream_vids/view/user/profile/profile_screen.dart';
@@ -131,6 +133,20 @@ class AppRoutes {
     GetPage(
       name: RouteName.userScreen,
       page: () => UserScreen(userId: Get.parameters['userId'] ?? ''),
+      transition: Transition.leftToRightWithFade,
+      transitionDuration: const Duration(microseconds: 250),
+      middlewares: [AuthMiddleware()]
+    ),
+    GetPage(
+      name: RouteName.chatScreen,
+      page: () => const ChatScreen(),
+      transition: Transition.leftToRightWithFade,
+      transitionDuration: const Duration(microseconds: 250),
+      middlewares: [AuthMiddleware()]
+    ),
+    GetPage(
+      name: RouteName.searchAvailableUsersScreen,
+      page: () => const AvailableUsers(),
       transition: Transition.leftToRightWithFade,
       transitionDuration: const Duration(microseconds: 250),
       middlewares: [AuthMiddleware()]

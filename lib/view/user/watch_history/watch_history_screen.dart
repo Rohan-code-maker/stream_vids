@@ -108,12 +108,12 @@ class _WatchHistoryScreenState extends State<WatchHistoryScreen> {
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 12.0),
                             child: Text(
-                              video.description,
-                              maxLines: 3,
+                              video.owner.username,
+                              maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 fontSize: isLargeScreen
-                                    ? mq.width * 0.01
+                                    ? mq.width * 0.02
                                     : mq.width * 0.03,
                                 color: brightness == Brightness.light
                                     ? Colors.grey

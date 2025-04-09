@@ -16,4 +16,6 @@ class RouteName {
   static const String updateVideoScreen = "/update/:videoId";
   static const String likedVideoScreen = "/liked-videos";
   static const String userScreen = "/user/:userId";
+  static const String chatScreen = "/chat";
+  static const String searchAvailableUsersScreen = "/search-available-users";
 }
