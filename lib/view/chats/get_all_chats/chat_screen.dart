@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stream_vids/res/routes/route_name.dart';
+import 'package:stream_vids/res/user_preferences/user_preferences.dart';
 import 'package:stream_vids/view_models/controller/chats/get_all_chats/get_all_chats_controller.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -12,11 +13,20 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final GetAllChatsController controller = Get.put(GetAllChatsController());
+  UserPreferences userPreferences = UserPreferences();
+
+  late String myUserId;
 
   @override
   void initState() {
     super.initState();
     controller.getAllChats();
+    getUserId();
+  }
+
+  Future<void> getUserId() async {
+    final user = await userPreferences.getUser();
+    myUserId = user.user!.sId!;
   }
 
   @override
@@ -85,17 +95,26 @@ class _ChatScreenState extends State<ChatScreen> {
                         final chat = chatList[index];
 
                         return ListTile(
-                          contentPadding: const EdgeInsets.symmetric(vertical: 8),
+                          contentPadding:
+                              const EdgeInsets.symmetric(vertical: 8),
                           leading: CircleAvatar(
                             radius: mq.width * 0.06,
                             backgroundColor: Colors.transparent,
                             child: ClipRRect(
-                              borderRadius: BorderRadius.circular(100),
-                              child: Image.network(chat.participants![1].avatar!,fit: BoxFit.cover,)),
+                                borderRadius: BorderRadius.circular(100),
+                                child: Image.network(
+                                  myUserId == chat.participants![0].sId
+                                      ? chat.participants![1].avatar!
+                                      : chat.participants![0].avatar!,
+                                  fit: BoxFit.cover,
+                                )),
                           ),
                           title: Text(
-                            chat.participants![1].fullname ?? 'Unknown',
-                            style: theme.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600),
+                            myUserId == chat.participants![0].sId
+                                ? chat.participants![1].fullname!
+                                : chat.participants![0].fullname!,
+                            style: theme.textTheme.bodyLarge
+                                ?.copyWith(fontWeight: FontWeight.w600),
                           ),
                           subtitle: Text(
                             chat.lastMessage?.content ?? '',
@@ -104,7 +123,10 @@ class _ChatScreenState extends State<ChatScreen> {
                             style: theme.textTheme.bodySmall,
                           ),
                           onTap: () {
-                            // TODO: Navigate to detailed chat screen using chat.id
+                            Get.toNamed(
+                              RouteName.userChatScreen
+                                  .replaceFirst(':chatId', chat.sId!),
+                            );
                           },
                         );
                       },

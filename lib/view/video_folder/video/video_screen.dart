@@ -175,29 +175,32 @@ class _VideoScreenState extends State<VideoScreen> {
                         children: [
                           Expanded(
                             flex: 5,
-                            child:
-                                _buildVideoInfoSection(video, mq, isWideScreen,isDarkMode),
+                            child: _buildVideoInfoSection(
+                                video, mq, isWideScreen, isDarkMode),
                           ),
                           Container(
-                            width: 1.5, 
+                            width: 1.5,
                             height: mq.height,
                             color: Colors.grey,
-                            margin: const EdgeInsets.symmetric(horizontal: 16.0),
+                            margin:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
                           ),
                           Expanded(
                             flex: 2,
                             child: SingleChildScrollView(
                                 child: _buildCommentsSection(
-                                    video, mq, isWideScreen,isDarkMode)),
+                                    video, mq, isWideScreen, isDarkMode)),
                           ),
                         ],
                       )
                     : Column(
                         children: [
-                          _buildVideoInfoSection(video, mq, isWideScreen,isDarkMode),
+                          _buildVideoInfoSection(
+                              video, mq, isWideScreen, isDarkMode),
                           const SizedBox(height: 16),
                           const Divider(),
-                          _buildCommentsSection(video, mq, isWideScreen,isDarkMode),
+                          _buildCommentsSection(
+                              video, mq, isWideScreen, isDarkMode),
                         ],
                       ),
               ),
@@ -208,7 +211,7 @@ class _VideoScreenState extends State<VideoScreen> {
     );
   }
 
-  Widget _buildVideoInfoSection(video, mq, isWideScreen,isDarkMode) {
+  Widget _buildVideoInfoSection(video, mq, isWideScreen, isDarkMode) {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -216,12 +219,8 @@ class _VideoScreenState extends State<VideoScreen> {
           if (_chewieController != null)
             AspectRatio(
               aspectRatio: isWideScreen
-                  ? (mq.width /
-                      (mq.height *
-                          0.8)) // Wider screens get a larger width ratio
-                  : (mq.width /
-                      (mq.height *
-                          0.4)), // Smaller screens have a more square aspect
+                  ? (mq.width / (mq.height * 0.8))
+                  : (mq.width / (mq.height * 0.4)),
               child: Chewie(controller: _chewieController!),
             )
           else
@@ -245,7 +244,8 @@ class _VideoScreenState extends State<VideoScreen> {
             overflow: TextOverflow.ellipsis,
           ),
           SizedBox(height: mq.height * 0.02),
-          Obx(() => Text("${'total_views'.tr} ${viewCountController.views.value}")),
+          Obx(() =>
+              Text("${'total_views'.tr} ${viewCountController.views.value}")),
           SizedBox(height: mq.height * 0.02),
           Text("${'uploaded'.tr} ${Utils.timeAgo(video.createdAt!)}"),
           SizedBox(height: mq.height * 0.02),
@@ -273,7 +273,8 @@ class _VideoScreenState extends State<VideoScreen> {
               InkWell(
                 onTap: () {
                   Get.toNamed(
-                    RouteName.userScreen.replaceFirst(":userId", video.owner!.sId),
+                    RouteName.userScreen
+                        .replaceFirst(":userId", video.owner!.sId),
                   );
                 },
                 child: Row(
@@ -332,7 +333,6 @@ class _VideoScreenState extends State<VideoScreen> {
                     .trim()
                     .isNotEmpty) {
                   viewCommentController.addComment(widget.videoId);
-                  viewCommentController.viewComment(widget.videoId);
                 }
               },
             ),
@@ -355,9 +355,10 @@ class _VideoScreenState extends State<VideoScreen> {
                   padding: const EdgeInsets.symmetric(
                       vertical: 8.0, horizontal: 16.0),
                   child: InkWell(
-                    onTap: (){
+                    onTap: () {
                       Get.toNamed(
-                        RouteName.userScreen.replaceFirst(":userId", comment.commentedBy!.sId!),
+                        RouteName.userScreen
+                            .replaceFirst(":userId", comment.commentedBy!.sId!),
                       );
                     },
                     child: Row(

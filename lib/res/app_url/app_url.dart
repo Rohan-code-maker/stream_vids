@@ -35,4 +35,5 @@ class AppUrl {
   static const String getAvailableUsers = "$baseUrl/chats/users";
   static const String createOneChat = "$baseUrl/chats/c/:recieverId";
   static const String getAllMessages = "$baseUrl/messages/:chatId";
+  static const String deleteMessage = "$baseUrl/messages/:chatId/:messageId";
 }

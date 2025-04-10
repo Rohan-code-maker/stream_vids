@@ -95,8 +95,6 @@ class _AvailableUsersState extends State<AvailableUsers> {
                               child: Image.network(
                                 chat.avatar ?? '',
                                 fit: BoxFit.cover,
-                                // width: mq.width * 0.12,
-                                // height: mq.width * 0.12,
                                 errorBuilder: (context, error, stackTrace) {
                                   return Icon(
                                     Icons.person,

@@ -47,7 +47,7 @@ class _WatchHistoryScreenState extends State<WatchHistoryScreen> {
                   crossAxisSpacing: 16.0,
                   mainAxisSpacing: 16.0,
                   childAspectRatio: isLargeScreen
-                      ? mq.aspectRatio * 0.5
+                      ? mq.aspectRatio * 0.45
                       : mq.aspectRatio * 1,
                 ),
                 itemCount: _controller.watchHistory.length,

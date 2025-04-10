@@ -18,4 +18,5 @@ class RouteName {
   static const String userScreen = "/user/:userId";
   static const String chatScreen = "/chat";
   static const String searchAvailableUsersScreen = "/search-available-users";
+  static const String userChatScreen = "/user-chat/:chatId";
 }

@@ -33,7 +33,6 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             icon: const Icon(Icons.message_outlined),
             onPressed: () {
-              // Implement search functionality here
               Get.toNamed(RouteName.chatScreen);
             },
           ),
@@ -54,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   crossAxisSpacing: 16.0,
                   mainAxisSpacing: 16.0,
                   childAspectRatio: isLargeScreen
-                      ? mq.aspectRatio * 0.5
+                      ? mq.aspectRatio * 0.45
                       : mq.aspectRatio * 1,
                 ),
                 itemCount: getAllVideoController.videoList.length,
