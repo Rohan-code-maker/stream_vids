@@ -29,7 +29,6 @@ class _UserChatScreenState extends State<UserChatScreen> {
   Future<void> getUserId() async {
     final user = await userPreferences.getUser();
     myUserId = user.user!.sId!;
-    setState(() {});
   }
 
   @override
@@ -40,8 +39,12 @@ class _UserChatScreenState extends State<UserChatScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('User Chat'),
+        title: Text('chats'.tr),
         centerTitle: true,
+        leading: IconButton(
+          onPressed: () => Get.back(),
+          icon: const Icon(Icons.arrow_back_ios),
+        ),
       ),
       body: Column(
         children: [
@@ -55,7 +58,7 @@ class _UserChatScreenState extends State<UserChatScreen> {
                   }
 
                   if (messages.isEmpty) {
-                    return const Center(child: Text('No messages yet.'));
+                    return Center(child: Text('no_messages'.tr));
                   }
 
                   return ListView.builder(
@@ -100,16 +103,16 @@ class _UserChatScreenState extends State<UserChatScreen> {
                             final confirm = await showDialog<bool>(
                               context: context,
                               builder: (context) => AlertDialog(
-                                title: const Text("Delete Message"),
-                                content: const Text("Are you sure you want to delete this message?"),
+                                title: Text("delete_message".tr),
+                                content: Text("are_you_sure_you_want_to_delete".tr),
                                 actions: [
                                   TextButton(
                                     onPressed: () => Navigator.of(context).pop(false),
-                                    child: const Text("Cancel"),
+                                    child: Text("cancel".tr),
                                   ),
                                   TextButton(
                                     onPressed: () => Navigator.of(context).pop(true),
-                                    child: const Text("Delete", style: TextStyle(color: Colors.red)),
+                                    child: Text("delete".tr, style: const TextStyle(color: Colors.red)),
                                   ),
                                 ],
                               ),
@@ -174,7 +177,7 @@ class _UserChatScreenState extends State<UserChatScreen> {
                     controller: controller.messageTextController.value,
                     focusNode: controller.messageFocusNode.value,
                     decoration: InputDecoration(
-                      hintText: "Send a message...",
+                      hintText: "send_message".tr,
                       filled: true,
                       fillColor: theme.cardColor,
                       contentPadding: const EdgeInsets.symmetric(

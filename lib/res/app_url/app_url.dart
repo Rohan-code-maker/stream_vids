@@ -36,4 +36,5 @@ class AppUrl {
   static const String createOneChat = "$baseUrl/chats/c/:recieverId";
   static const String getAllMessages = "$baseUrl/messages/:chatId";
   static const String deleteMessage = "$baseUrl/messages/:chatId/:messageId";
+  static const String deleteChat = "$baseUrl/chats/remove/:chatId";
 }

@@ -27,6 +27,7 @@ class _ChatScreenState extends State<ChatScreen> {
   Future<void> getUserId() async {
     final user = await userPreferences.getUser();
     myUserId = user.user!.sId!;
+    setState(() {});
   }
 
   @override
@@ -37,9 +38,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'chat_screen'.tr,
-        ),
+        title: Text('chat_screen'.tr),
         centerTitle: true,
         leading: IconButton(
           onPressed: () => Get.back(),
@@ -93,41 +92,81 @@ class _ChatScreenState extends State<ChatScreen> {
                       ),
                       itemBuilder: (context, index) {
                         final chat = chatList[index];
+                        final otherUser = myUserId == chat.participants![0].sId
+                            ? chat.participants![1]
+                            : chat.participants![0];
 
-                        return ListTile(
-                          contentPadding:
-                              const EdgeInsets.symmetric(vertical: 8),
-                          leading: CircleAvatar(
-                            radius: mq.width * 0.06,
-                            backgroundColor: Colors.transparent,
-                            child: ClipRRect(
+                        return Dismissible(
+                          key: ValueKey(chat.sId),
+                          direction: DismissDirection.endToStart,
+                          background: Container(
+                            color: Colors.red,
+                            alignment: Alignment.centerRight,
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: const Icon(Icons.delete, color: Colors.white),
+                          ),
+                          confirmDismiss: (_) async {
+                            final confirm = await showDialog<bool>(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: Text("delete_chat".tr),
+                                content: Text(
+                                    "are_you_sure_you_want_to_delete".tr),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(false),
+                                    child: Text("cancel".tr),
+                                  ),
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(true),
+                                    child: Text("delete".tr,
+                                        style: const TextStyle(color: Colors.red)),
+                                  ),
+                                ],
+                              ),
+                            );
+
+                            if (confirm == true) {
+                              await controller.deleteChat(chat.sId!);
+                              return true;
+                            }
+                            return false;
+                          },
+                          child: ListTile(
+                            contentPadding:
+                                const EdgeInsets.symmetric(vertical: 8),
+                            leading: CircleAvatar(
+                              radius: mq.width * 0.06,
+                              backgroundColor: Colors.transparent,
+                              child: ClipRRect(
                                 borderRadius: BorderRadius.circular(100),
                                 child: Image.network(
-                                  myUserId == chat.participants![0].sId
-                                      ? chat.participants![1].avatar!
-                                      : chat.participants![0].avatar!,
+                                  otherUser.avatar ?? '',
                                   fit: BoxFit.cover,
-                                )),
+                                ),
+                              ),
+                            ),
+                            title: Text(
+                              otherUser.fullname ?? '',
+                              style: theme.textTheme.bodyLarge?.copyWith(
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            subtitle: Text(
+                              chat.lastMessage?.content ?? '',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: theme.textTheme.bodySmall,
+                            ),
+                            onTap: () {
+                              Get.toNamed(
+                                RouteName.userChatScreen
+                                    .replaceFirst(':chatId', chat.sId!),
+                              );
+                            },
                           ),
-                          title: Text(
-                            myUserId == chat.participants![0].sId
-                                ? chat.participants![1].fullname!
-                                : chat.participants![0].fullname!,
-                            style: theme.textTheme.bodyLarge
-                                ?.copyWith(fontWeight: FontWeight.w600),
-                          ),
-                          subtitle: Text(
-                            chat.lastMessage?.content ?? '',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: theme.textTheme.bodySmall,
-                          ),
-                          onTap: () {
-                            Get.toNamed(
-                              RouteName.userChatScreen
-                                  .replaceFirst(':chatId', chat.sId!),
-                            );
-                          },
                         );
                       },
                     );
