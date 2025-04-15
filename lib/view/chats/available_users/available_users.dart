@@ -62,7 +62,7 @@ class _AvailableUsersState extends State<AvailableUsers> {
                 SizedBox(height: mq.height * 0.02),
                 Expanded(
                   child: Obx(() {
-                    var chatList = controller.availableUsersList;
+                    var chatList = controller.filteredChats;
 
                     if (chatList.isEmpty) {
                       return Center(

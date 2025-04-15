@@ -17,7 +17,7 @@ class CreateOneChatController extends GetxController {
         if (model.success!) {
           Get.delete<CreateOneChatController>();
           Utils.snackBar("success".tr, "chat_created".tr);
-          Get.toNamed(RouteName.chatScreen);
+          Get.offAndToNamed(RouteName.chatScreen);
         } else {
           Utils.snackBar("error".tr, model.message!);
         }

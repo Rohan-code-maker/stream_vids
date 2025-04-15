@@ -15,7 +15,7 @@ class _ChatScreenState extends State<ChatScreen> {
   final GetAllChatsController controller = Get.put(GetAllChatsController());
   UserPreferences userPreferences = UserPreferences();
 
-  late String myUserId;
+  String? myUserId;
 
   @override
   void initState() {
@@ -41,7 +41,7 @@ class _ChatScreenState extends State<ChatScreen> {
         title: Text('chat_screen'.tr),
         centerTitle: true,
         leading: IconButton(
-          onPressed: () => Get.back(),
+          onPressed: () => Get.toNamed(RouteName.navBarScreen),
           icon: const Icon(Icons.arrow_back_ios),
         ),
       ),
@@ -70,7 +70,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 SizedBox(height: mq.height * 0.02),
                 Expanded(
                   child: Obx(() {
-                    final chatList = controller.chatsList;
+                    final chatList = controller.filteredChats;
 
                     if (chatList.isEmpty) {
                       return Center(

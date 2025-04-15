@@ -59,9 +59,9 @@ class GetAllChatsController extends GetxController {
 
     // Prioritize matches by name and move to top
     var matches =
-        chatsList.where((c) => c.name!.toLowerCase().contains(query)).toList();
+        chatsList.where((c) => c.participants![1].fullname!.toLowerCase().contains(query)).toList();
     var others =
-        chatsList.where((c) => !c.name!.toLowerCase().contains(query)).toList();
+        chatsList.where((c) => !c.participants![1].fullname!.toLowerCase().contains(query)).toList();
     return [...matches, ...others];
   }
 

@@ -17,7 +17,7 @@ class _UserChatScreenState extends State<UserChatScreen> {
       Get.put(GetAllMessagesController());
   UserPreferences userPreferences = UserPreferences();
 
-  late String myUserId;
+  String? myUserId;
 
   @override
   void initState() {
@@ -64,7 +64,8 @@ class _UserChatScreenState extends State<UserChatScreen> {
                   return ListView.builder(
                     reverse: true,
                     padding: EdgeInsets.symmetric(
-                        horizontal: mq.width * 0.04, vertical: mq.height * 0.02),
+                        horizontal: mq.width * 0.04,
+                        vertical: mq.height * 0.02),
                     itemCount: messages.length,
                     itemBuilder: (context, index) {
                       final message = messages[index];
@@ -73,9 +74,8 @@ class _UserChatScreenState extends State<UserChatScreen> {
                           ? theme.colorScheme.primary
                           : Colors.grey.shade400;
 
-                      final alignment = isMine
-                          ? Alignment.centerRight
-                          : Alignment.centerLeft;
+                      final alignment =
+                          isMine ? Alignment.centerRight : Alignment.centerLeft;
 
                       final borderRadius = BorderRadius.only(
                         topLeft: const Radius.circular(12),
@@ -97,28 +97,35 @@ class _UserChatScreenState extends State<UserChatScreen> {
                             alignment: Alignment.centerRight,
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                             color: Colors.red,
-                            child: const Icon(Icons.delete, color: Colors.white),
+                            child:
+                                const Icon(Icons.delete, color: Colors.white),
                           ),
                           confirmDismiss: (_) async {
                             final confirm = await showDialog<bool>(
                               context: context,
                               builder: (context) => AlertDialog(
                                 title: Text("delete_message".tr),
-                                content: Text("are_you_sure_you_want_to_delete".tr),
+                                content:
+                                    Text("are_you_sure_you_want_to_delete".tr),
                                 actions: [
                                   TextButton(
-                                    onPressed: () => Navigator.of(context).pop(false),
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(false),
                                     child: Text("cancel".tr),
                                   ),
                                   TextButton(
-                                    onPressed: () => Navigator.of(context).pop(true),
-                                    child: Text("delete".tr, style: const TextStyle(color: Colors.red)),
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(true),
+                                    child: Text("delete".tr,
+                                        style:
+                                            const TextStyle(color: Colors.red)),
                                   ),
                                 ],
                               ),
                             );
                             if (confirm == true) {
-                              controller.deleteMessage(message.sId!, widget.chatId!);
+                              controller.deleteMessage(
+                                  message.sId!, widget.chatId!);
                               return true;
                             }
                             return false;
@@ -176,6 +183,13 @@ class _UserChatScreenState extends State<UserChatScreen> {
                   child: TextField(
                     controller: controller.messageTextController.value,
                     focusNode: controller.messageFocusNode.value,
+                    textInputAction:
+                        TextInputAction.send,
+                    onSubmitted: (value) {
+                      if (value.trim().isNotEmpty) {
+                        controller.sendMessage(widget.chatId!);
+                      }
+                    },
                     decoration: InputDecoration(
                       hintText: "send_message".tr,
                       filled: true,
@@ -184,7 +198,6 @@ class _UserChatScreenState extends State<UserChatScreen> {
                           horizontal: 16, vertical: 12),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(25),
-                        borderSide: BorderSide.none,
                       ),
                     ),
                   ),

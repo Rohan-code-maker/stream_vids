@@ -52,6 +52,7 @@ class GetAllMessagesController extends GetxController {
       final response = await _sendApi.sendMessage(content, chatId);
       if (response['statusCode'] == 200) {
         messageTextController.value.clear();
+        messageFocusNode.value.requestFocus();
         getAllMessages(chatId);
       } else {
         Utils.snackBar("error".tr, response['message']);

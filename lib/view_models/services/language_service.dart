@@ -20,6 +20,8 @@ class LanguageService {
         return const Locale('hi', 'IN');
       case 'ne':
         return const Locale('ne', 'NP');
+      case 'gu':
+        return const Locale('gu', 'IN');
       default:
         return const Locale('en', 'US'); // Default language
     }
