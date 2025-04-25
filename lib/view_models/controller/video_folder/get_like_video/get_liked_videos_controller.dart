@@ -15,7 +15,7 @@ class GetLikedVideosController extends GetxController {
   }
 
   // Fetch liked videos from the backend
-  Future<void> fetchLikedVideos() async {
+  void fetchLikedVideos() async {
     try {
       isLoading.value = true;
       final response = await repository.getLikedVideos();

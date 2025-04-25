@@ -37,7 +37,7 @@ class ViewCommentController extends GetxController {
   final commentFocusNode = FocusNode().obs;
   RxBool isloading = false.obs;
 
-  Future<void> addComment(String videoId) async {
+  void addComment(String videoId) async {
     isloading.value = true;
     Map<String, dynamic> content = {'content': commentController.value.text};
     try {
@@ -63,7 +63,7 @@ class ViewCommentController extends GetxController {
     commentController.value.text = "";
   }
 
-  Future<void> viewComment(String videoId) async {
+  void viewComment(String videoId) async {
     final user = await userPreferences.getUser();
     final commentOwner = user.user!.sId;
     // Fetch comments from API
@@ -98,7 +98,7 @@ class ViewCommentController extends GetxController {
     }
   }
 
-  Future<void> fetchCommentLikeStatus(String commentId) async {
+  void fetchCommentLikeStatus(String commentId) async {
     try {
       final status = await _commentLikeStatus.getCommentLikeRepo(commentId);
       if (status['statusCode'] == 200) {
@@ -117,7 +117,7 @@ class ViewCommentController extends GetxController {
     }
   }
 
-  Future<void> fetchCommentLikeCount(String commentId) async {
+  void fetchCommentLikeCount(String commentId) async {
     try {
       final count = await _countCommentLike.countCommentLikesRepo(commentId);
       if (count['statusCode'] == 200) {
@@ -136,7 +136,7 @@ class ViewCommentController extends GetxController {
     }
   }
 
-  Future<void> toggleCommentLike(String commentId) async {
+  void toggleCommentLike(String commentId) async {
     try {
       final response =
           await _toggleCommentLike.toggleCommentLikeRepo(commentId);
@@ -157,7 +157,7 @@ class ViewCommentController extends GetxController {
     }
   }
 
-  Future<void> updateComment(String commentId) async {
+  void updateComment(String commentId) async {
     try {
       Map<String, dynamic> content = {'content': updateController.text};
       final response = await _updateComment.updateComment(commentId, content);
@@ -177,7 +177,7 @@ class ViewCommentController extends GetxController {
     }
   }
 
-  Future<void> deleteComment(String commentId) async {
+  void deleteComment(String commentId) async {
     try {
       final response = await _deleteComment.deleteComment(commentId);
       if (response['statusCode'] == 200) {

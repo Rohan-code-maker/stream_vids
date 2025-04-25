@@ -85,7 +85,7 @@ class UpdateVideoController extends GetxController {
   }
 
   // Method to submit the video
-  Future<void> updateVideo(String videoId) async {
+  void updateVideo(String videoId) async {
     loading.value = true;
     try {
       dio.FormData formData = dio.FormData();

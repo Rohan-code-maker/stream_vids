@@ -84,10 +84,8 @@ class _VideoScreenState extends State<VideoScreen> {
               onPressed: () {
                 final content = viewCommentController.updateController.text;
                 if (content.isNotEmpty) {
-                  viewCommentController.updateComment(commentId).then((_) {
-                    viewCommentController.viewComment(widget.videoId);
-                  });
-
+                  viewCommentController.updateComment(commentId);
+                  viewCommentController.viewComment(widget.videoId);
                   Get.back();
                 } else {
                   Utils.snackBar("error".tr, "comment_cannot_empty".tr);
@@ -115,10 +113,8 @@ class _VideoScreenState extends State<VideoScreen> {
             ),
             ElevatedButton(
               onPressed: () {
-                viewCommentController.deleteComment(commentId).then((_) {
-                  viewCommentController.viewComment(widget.videoId);
-                });
-
+                viewCommentController.deleteComment(commentId);
+                viewCommentController.viewComment(widget.videoId);
                 Get.back();
               },
               child: Text("delete".tr),
@@ -238,7 +234,7 @@ class _VideoScreenState extends State<VideoScreen> {
           ),
           SizedBox(height: mq.height * 0.02),
           Text(
-            "${'desc'.tr} ${video.description!.toUpperCase()}",
+            "${'desc'.tr}: ${video.description!.toLowerCase()}",
             style: TextStyle(fontSize: mq.width * 0.03),
             maxLines: 4,
             overflow: TextOverflow.ellipsis,

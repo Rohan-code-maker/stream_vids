@@ -8,7 +8,7 @@ class GetWatchHistoryController extends GetxController {
   var watchHistory = [].obs;
   var isLoading = false.obs;
 
-  Future<void> fetchWatchHistory() async {
+  void fetchWatchHistory() async {
     try {
       isLoading.value = true;
       final response = await _api.getWatchHistory();

@@ -6,27 +6,43 @@ import 'package:stream_vids/utils/utils.dart';
 class GetAllVideoController extends GetxController {
   final GetAllVideoRepository _api = GetAllVideoRepository();
 
-  var isLoading = true.obs;
+  var isLoading = false.obs;
   var videoList = [].obs;
+  var currentPage = 1.obs;
+  var isLastPage = false.obs;
 
-  void getAllVideo() async {
+  @override
+  void onInit() {
+    super.onInit();
+    getAllVideo(isInitial: true);
+  }
+
+  void getAllVideo({bool isInitial = false}) async {
+    if (isLoading.value || isLastPage.value) return;
+
+    if (isInitial) {
+      currentPage.value = 1;
+      videoList.clear();
+      isLastPage.value = false;
+    }
+
     isLoading(true);
     try {
-      final response = await _api.getAllVideoApi();
+      final response = await _api.getAllVideoApi(page: currentPage.value);
       final videoModel = GetAllVideoModel.fromJson(response);
       if (videoModel.success) {
-        if (videoModel.data.videos.isNotEmpty) {
-          videoList.assignAll(videoModel.data.videos);
-          Get.delete<GetAllVideoController>();
-        } else {
-          Utils.snackBar("error".tr, "no_data".tr);
+        final newVideos = videoModel.data.videos;
+        if (newVideos.isEmpty || newVideos.length < 10) {
+          isLastPage(true);
         }
+        videoList.addAll(newVideos);
+        currentPage.value++;
       } else {
         Utils.snackBar("error".tr, videoModel.message);
       }
     } catch (e) {
       final String err = Utils.extractErrorMessage(e.toString());
-      Utils.snackBar("error.tr", "Error occurred while fetching data: $err");
+      Utils.snackBar("error".tr, "Error occurred while fetching data: $err");
     } finally {
       isLoading(false);
     }

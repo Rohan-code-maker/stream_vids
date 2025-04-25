@@ -14,7 +14,7 @@ class LikeVideoController extends GetxController {
   final _api3 = GetVideoLikeStatusRepository();
   RxBool isliked = false.obs;
 
-  Future<void> likeVideo(String videoId) async {
+  void likeVideo(String videoId) async {
     try {
       final response = await _api.likeVideoRepo(videoId);
       if (response['statusCode'] == 200) {
@@ -34,7 +34,7 @@ class LikeVideoController extends GetxController {
     }
   }
 
-  Future<void> count(String videoId) async {
+  void count(String videoId) async {
     try {
       final response = await _api2.getLikeCount(videoId);
       if (response['statusCode'] == 200) {
@@ -54,7 +54,7 @@ class LikeVideoController extends GetxController {
     }
   }
 
-  Future<void> fetchLikeStatus(String videoId) async {
+  void fetchLikeStatus(String videoId) async {
     try {
       final response = await _api3.getLikeStatus(videoId);
       if (response["statusCode"] == 200) {

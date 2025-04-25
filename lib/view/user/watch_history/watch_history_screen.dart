@@ -95,7 +95,7 @@ class _WatchHistoryScreenState extends State<WatchHistoryScreen> {
                               style: TextStyle(
                                 fontSize: isLargeScreen
                                     ? mq.width * 0.03
-                                    : mq.width * 0.03,
+                                    : mq.width * 0.05,
                                 fontWeight: FontWeight.bold,
                                 color: brightness == Brightness.light
                                     ? Colors.black

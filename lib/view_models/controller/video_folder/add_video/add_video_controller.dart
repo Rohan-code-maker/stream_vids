@@ -81,7 +81,7 @@ Future<void> pickVideo() async {
   }
 
   // Method to submit the video
-  Future<void> submitVideo() async {
+  void submitVideo() async {
     loading.value = true;
     try {
       dio.FormData formData = dio.FormData();
@@ -141,7 +141,7 @@ Future<void> pickVideo() async {
           final model = PublishVideoModel.fromJson(response);
           if (model.success == true) {
             Get.delete<AddVideoController>();
-            Utils.snackBar("success".tr, "Video Posted successfully");
+            Utils.snackBar("success".tr, "video_posted".tr);
             Get.toNamed(RouteName.navBarScreen);
             clearFields();
           } else {

@@ -114,6 +114,7 @@ class Languages extends Translations {
           'no_messages': "No Messages Found",
           'delete_message': "Delete Message",
           'send_message': "Send a message...",
+          'desc':"Description",
         },
 
         // Hindi (India)
@@ -226,6 +227,7 @@ class Languages extends Translations {
           'no_messages': "कोई संदेश नहीं मिला",
           'delete_message': "संदेश हटाएं",
           'send_message': "एक संदेश भेजें...",
+          'desc':"विवरण",
         },
 
         // Nepali (Nepal)
@@ -339,6 +341,7 @@ class Languages extends Translations {
           'no_messages': "सन्देश फेला परेन",
           'delete_message': "सन्देश हटाउनुहोस्",
           'send_message': "सन्देश पठाउनुहोस्...",
+          'desc':"विवरण",
         },
 
         // Gujarati (India)
@@ -452,6 +455,7 @@ class Languages extends Translations {
           'no_messages': "કોઈ સંદેશાઓ મળી નથી",
           'delete_message': "સંદેશ કાઢી નાખો",
           'send_message': "સંદેશ મોકલો...",
+          'desc':"વર્ણન",
         }
       };
 }

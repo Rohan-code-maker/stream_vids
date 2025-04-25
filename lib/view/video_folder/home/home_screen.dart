@@ -14,11 +14,19 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final getAllVideoController = Get.put(GetAllVideoController());
   final addWatchHistory = Get.put(AddWatchHistoryController());
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    getAllVideoController.getAllVideo();
+    getAllVideoController.getAllVideo(isInitial: true);
+
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        getAllVideoController.getAllVideo();
+      }
+    });
   }
 
   @override
@@ -47,6 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
               final isLargeScreen = constraints.maxWidth > 600;
 
               return GridView.builder(
+                controller: _scrollController,
                 padding: const EdgeInsets.all(16.0),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: isLargeScreen ? 4 : 2,
@@ -56,8 +65,18 @@ class _HomeScreenState extends State<HomeScreen> {
                       ? mq.aspectRatio * 0.45
                       : mq.aspectRatio * 1,
                 ),
-                itemCount: getAllVideoController.videoList.length,
+                itemCount: getAllVideoController.videoList.length +
+                    (getAllVideoController.isLoading.value
+                        ? 1
+                        : 0),
                 itemBuilder: (context, index) {
+                  if (index == getAllVideoController.videoList.length) {
+                    return const Padding(
+                      padding: EdgeInsets.all(16),
+                      child: Center(child: CircularProgressIndicator()),
+                    );
+                  }
+
                   final video = getAllVideoController.videoList[index];
                   final brightness = Theme.of(context).brightness;
 

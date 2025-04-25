@@ -10,7 +10,9 @@ class AppUrl {
   static const String changePasswordUrl = "$baseUrl/users/change-password";
   static const String forgotPasswordUrl = "$baseUrl/users/forgot-password";
   static const String addVideoUrl = "$baseUrl/videos";
-  static const String getAllVideoUrl = "$baseUrl/videos?query=";
+  static String getAllVideoUrl({int page = 1, String query = ""}) {
+    return "$baseUrl/videos?page=$page&limit=10&sortBy=createdAt&sortType=desc&query=$query";
+  }
   static const String getVideoByIdUrl = "$baseUrl/videos/:videoId";
   static const String getMyVideoUrl = "$baseUrl/videos/my-video";
   static const String addWatchHistoryUrl = "$baseUrl/users/history/:videoId";
@@ -25,8 +27,10 @@ class AppUrl {
   static const String getlikeVideoUrl = "$baseUrl/likes/videos";
   static const String subscribeUrl = "$baseUrl/subscriptions/c/:channelId";
   static const String commentUrl = "$baseUrl/comments/:videoId";
-  static const String toggleCommentLikeUrl = "$baseUrl/likes/toggle/c/:commentId";
-  static const String commentLikeCountUrl = "$baseUrl/likes/like-count/:commentId";
+  static const String toggleCommentLikeUrl =
+      "$baseUrl/likes/toggle/c/:commentId";
+  static const String commentLikeCountUrl =
+      "$baseUrl/likes/like-count/:commentId";
   static const String updateCommentUrl = "$baseUrl/comments/c/:commentId";
   static const String viewsCountUrl = "$baseUrl/videos/views/:videoId";
   static const String getUser = "$baseUrl/users/profile/:userId";

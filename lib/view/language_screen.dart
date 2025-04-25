@@ -46,9 +46,9 @@ class _LanguageScreenState extends State<LanguageScreen>
 
   void _changeLanguage(Locale locale) async {
     _languageService.setLocale(locale);
+    splashServices.handleAppNavigation();
     Utils.snackBar('Language Selected',
         'App language is now set to ${locale.languageCode.toUpperCase()}');
-    splashServices.handleAppNavigation();
   }
 
   @override

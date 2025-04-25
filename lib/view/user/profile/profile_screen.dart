@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stream_vids/res/routes/route_name.dart';
@@ -6,7 +5,6 @@ import 'package:stream_vids/utils/utils.dart';
 import 'package:stream_vids/view_models/controller/theme_change/theme_controller.dart';
 import 'package:stream_vids/view_models/controller/user/get_channel_profile/get_channel_profile_controller.dart';
 import 'package:stream_vids/view_models/controller/user/logout_controller/logout_controller.dart';
-import 'package:stream_vids/view_models/controller/video_folder/delete_video/delete_video_controller.dart';
 import 'package:stream_vids/view_models/controller/video_folder/get_my_video/my_video_controller.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -21,8 +19,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       Get.put(GetChannelProfileController());
   final MyVideoController videoController = Get.put(MyVideoController());
   final LogoutController logoutController = Get.put(LogoutController());
-  final DeleteVideoController deleteVideoController =
-      Get.put(DeleteVideoController());
   final ThemeController themeController = Get.find();
 
   @override
@@ -221,10 +217,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             message:
                                                 "are_you_sure".tr,
                                             onConfirm: () {
-                                              if (kDebugMode) {
-                                                print(video.sId);
-                                              }
-                                              deleteVideoController
+                                              videoController
                                                   .deleteVideo(video.sId);
                                             },
                                           );
