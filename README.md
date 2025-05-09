@@ -125,3 +125,13 @@ Upon running the API and Flutter app, the system will:
 - Enable real-time messaging with chat editing and deletion.
 - Display profile data, video list, and support dark mode in the mobile app.
 - Persist and retrieve all data using MongoDB and Cloudinary.
+
+![Image](https://github.com/user-attachments/assets/75fad1cc-9da1-40ad-aeef-af9148e941d0)
+![Image](https://github.com/user-attachments/assets/c9b2d2e7-1e73-4818-90d7-a7993ae53daa)
+![Image](https://github.com/user-attachments/assets/81af51cf-343d-4263-b476-5109383b3b30)
+![Image](https://github.com/user-attachments/assets/42390028-1032-47b7-8c36-3621e3dffb43)
+![Image](https://github.com/user-attachments/assets/563af552-324b-4cf2-bf30-d5430dda1f85)
+![Image](https://github.com/user-attachments/assets/d972b507-3e41-4503-b763-8dcde90cc15a)
+![Image](https://github.com/user-attachments/assets/0a17ca36-9fbd-4894-810d-d1ef5972c13f)
+![Image](https://github.com/user-attachments/assets/53534084-1159-4b77-83a4-9dd02960cd47)
+![Image](https://github.com/user-attachments/assets/318377be-4373-438e-b021-243ffe29c3fd)
